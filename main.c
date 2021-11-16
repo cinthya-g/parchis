@@ -9,6 +9,7 @@
 int main()
 {
     /*
+     * //Pruebas con raylib, IGNORAR
     const int screenWidth = 1000;
     const int screenHeight = 800;
     InitWindow(screenWidth, screenHeight, "Tablero");
@@ -28,6 +29,8 @@ int main()
     Board *juego = newBoard();
     creacionMaestraALV(juego);
     displayBoard(juego);
+    Turno();
+
 
     return 0;
 }

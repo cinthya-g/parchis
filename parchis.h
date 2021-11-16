@@ -14,6 +14,16 @@ typedef struct casEnd Final;
 typedef struct casVicLap CasVicLap;
 
 
+typedef struct board Board;
+typedef struct dados Dados;
+typedef struct casilla Casilla;
+typedef struct ficha Ficha;
+typedef struct casInicio Base;
+typedef struct casEnd Final;
+typedef struct casVicLap CasVicLap;
+
+
+
 Dados tiroDados();
 
 Board* newBoard();
@@ -25,7 +35,10 @@ CasVicLap* emptyEnding(char Player);
 //CasVicLap* emptyEndingY();
 void finishEnding(CasVicLap* recorridoFinal,int contador,char Player);
 void creacionMaestraALV(Board* juego);
+void Turno();
 
 void displayBoard(Board *juego);
+
+
 
 #endif //PARCHIS_PARCHIS_H

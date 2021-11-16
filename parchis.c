@@ -71,7 +71,7 @@ Dados tiroDados()
     Dice.die1 = ( (rand() % 6)+1);
     Dice.die2 = ( (rand() % 6)+1);
 
-    printf("%d,%d",Dice.die1,Dice.die2);
+    //rintf("%d,%d",Dice.die1,Dice.die2);
 
     return Dice;
 }
@@ -296,7 +296,7 @@ void creacionMaestraALV(Board *juego)
     //Crea tablero vacio
 
     //Se crean las 68 casillas
-    for(int i = 1; i < 69; i++){
+    for(int i = 0; i < 69; i++){
         finishBoard(juego,i);
     }
     //Se crean las 4 casillas base de cada color (inicio)
@@ -410,4 +410,12 @@ void displayBoard(Board *juego){
 
              */
 
+}
+
+
+
+void Turno()
+{
+    Dados tiro = tiroDados();
+    printf("%d,%d",tiro.die1,tiro.die2);
 }
