@@ -22,13 +22,12 @@ typedef struct casInicio Base;
 typedef struct casEnd Final;
 typedef struct casVicLap CasVicLap;
 
-
-
 Dados tiroDados();
 
 Board* newBoard();
 void finishBoard(Board* juego, int contador);
 void beginning(Board* juego);
+void ending(Board* juego);
 CasVicLap* emptyEnding(char Player);
 //CasVicLap* emptyEndingG();
 //CasVicLap* emptyEndingB();
@@ -38,7 +37,6 @@ void creacionMaestraALV(Board* juego);
 void Turno();
 
 void displayBoard(Board *juego);
-
 
 
 #endif //PARCHIS_PARCHIS_H
