@@ -4,12 +4,13 @@
 #include <raylib.h>
 #include <string.h>
 #include "parchis.h"
+#include "turnos.h"
 
 
 int main()
 {
     /*
-     * //Pruebas con raylib, IGNORAR
+     * //Pruebas con raylib, IGNORAR!!
     const int screenWidth = 1000;
     const int screenHeight = 800;
     InitWindow(screenWidth, screenHeight, "Tablero");
@@ -26,8 +27,9 @@ int main()
     }
     CloseWindow();
      */
+
     Board *juego = newBoard();
-    creacionMaestraALV(juego);
+    creacionMaestra(juego);
     displayBoard(juego);
     Turno();
 

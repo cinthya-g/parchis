@@ -31,7 +31,7 @@ endif()
 
 # This is the main part:
 #add_executable(${PROJECT_NAME} main.c)
-add_executable(${PROJECT_NAME} main.c parchis.c parchis.h)
+add_executable(${PROJECT_NAME} main.c parchis.c parchis.h turnos.c turnos.h)
 
 
 #set(raylib_VERBOSE 1)
