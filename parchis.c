@@ -1,12 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #include "parchis.h"
 #include "turnos.h"
 
 struct ficha{
-    char Player[2];//Determina el color del jugador (b, y, r, g)
-    char Path;//Path es un acumulador de el progreso de la ficha
+    char Player;//Determina el color del jugador (b, y, r, g)
+    char Path;//En que casilla está (1-68)
+    int Id; //1, 2, 3, 4
+    int PaGanar; //Debe llegar a 64, inicia en 0
 };
 
 struct casilla{
@@ -46,6 +49,8 @@ struct casInicio{
 };
 
 struct board{
+    char currentPlayer;
+
     struct casilla *inicio;
     struct casVicLap *winR;
     struct casVicLap *winY;
@@ -80,7 +85,9 @@ void finishBoard(Board* juego, int contador)
         juego->inicio->ficha2 = NULL;
         //juego->inicio->next=malloc(sizeof(Casilla));
         juego->inicio->next = NULL;
-
+        //printf("Casilla # %d\n",juego->inicio->NumCasilla);
+        //printf("La casilla es segura? %d\n",juego->inicio->BanSafe);
+        //printf("Es una salida? %c\n\n",juego->inicio->BanSalida);
         return;
     }
     Casilla *focusNode = juego->inicio;
@@ -91,7 +98,7 @@ void finishBoard(Board* juego, int contador)
     focusNode->next = malloc(sizeof(Casilla));
 
     focusNode->NumCasilla = contador;
-
+    //printf("Casilla # %d\n",focusNode->NumCasilla);
     //---------------------Se Puede Comer?---------------------------------------
 
     //Asignamos las casillas en donde se puede comer (0) y donde no (1)
@@ -131,6 +138,7 @@ void finishBoard(Board* juego, int contador)
     focusNode->ficha2=NULL;
 
     focusNode->next->next = NULL;
+    printf("\n\n");
 }
 
 //Añade los espacios de inicio
@@ -147,14 +155,22 @@ void beginning(Board* juego)
     juego->baseR->ficha3=malloc(sizeof(Ficha));
     juego->baseR->ficha4=malloc(sizeof(Ficha));
     juego->baseR->ficha1->Path=0;
-    juego->baseR->ficha1->Player[0] = 'R'; juego->baseR->ficha1->Player[1] = '1';
+    juego->baseR->ficha1->Player = 'R';
     juego->baseR->ficha2->Path=0;
-    juego->baseR->ficha2->Player[0] = 'R'; juego->baseR->ficha2->Player[1] = '2';
+    juego->baseR->ficha2->Player = 'R';
     juego->baseR->ficha3->Path=0;
-    juego->baseR->ficha3->Player[0] = 'R'; juego->baseR->ficha3->Player[1] = '3';
+    juego->baseR->ficha3->Player = 'R';
     juego->baseR->ficha4->Path=0;
-    juego->baseR->ficha4->Player[0] = 'R'; juego->baseR->ficha4->Player[1] = '4';
+    juego->baseR->ficha4->Player = 'R';
+    juego->baseR->ficha1->Id=1;
+    juego->baseR->ficha2->Id=2;
+    juego->baseR->ficha3->Id=3;
+    juego->baseR->ficha4->Id=4;
 
+    /*printf("\n#%d  Jugador: %c   Fichas: %d, %d, %d, %d",
+           juego->baseR->NumCasilla, juego->baseR->Player,
+           juego->baseR->ficha1->Id, juego->baseR->ficha2->Id,
+           juego->baseR->ficha3->Id, juego->baseR->ficha4->Id);*/
     //---------------------------Posiciones iniciales BLUE-----------------------
     juego->baseB=malloc(sizeof(Base));
     juego->baseB->NumCasilla=0;
@@ -164,14 +180,21 @@ void beginning(Board* juego)
     juego->baseB->ficha3=malloc(sizeof(Ficha));
     juego->baseB->ficha4=malloc(sizeof(Ficha));
     juego->baseB->ficha1->Path=0;
-    juego->baseB->ficha1->Player[0] = 'B'; juego->baseB->ficha1->Player[1] = '1';
+    juego->baseB->ficha1->Player = 'B';
     juego->baseB->ficha2->Path=0;
-    juego->baseB->ficha2->Player[0] = 'B'; juego->baseB->ficha2->Player[1] = '2';
+    juego->baseB->ficha2->Player = 'B';
     juego->baseB->ficha3->Path=0;
-    juego->baseB->ficha3->Player[0] = 'B'; juego->baseB->ficha3->Player[1] = '3';
+    juego->baseB->ficha3->Player = 'B';
     juego->baseB->ficha4->Path=0;
-    juego->baseB->ficha4->Player[0] = 'B'; juego->baseB->ficha4->Player[1] = '4';
-
+    juego->baseB->ficha4->Player = 'B';
+    juego->baseB->ficha1->Id=1;
+    juego->baseB->ficha2->Id=2;
+    juego->baseB->ficha3->Id=3;
+    juego->baseB->ficha4->Id=4;
+    /*printf("\n#%d  Jugador: %c   Fichas: %d, %d, %d, %d",
+           juego->baseB->NumCasilla, juego->baseB->Player,
+           juego->baseB->ficha1->Id, juego->baseB->ficha2->Id,
+           juego->baseB->ficha3->Id, juego->baseB->ficha4->Id);*/
     //---------------------------Posiciones iniciales GREEN-------------------
     juego->baseG=malloc(sizeof(Base));
     juego->baseG->NumCasilla=0;
@@ -181,14 +204,21 @@ void beginning(Board* juego)
     juego->baseG->ficha3=malloc(sizeof(Ficha));
     juego->baseG->ficha4=malloc(sizeof(Ficha));
     juego->baseG->ficha1->Path=0;
-    juego->baseG->ficha1->Player[0] = 'G'; juego->baseG->ficha1->Player[1] = '1';
+    juego->baseG->ficha1->Player = 'G';
     juego->baseG->ficha2->Path=0;
-    juego->baseG->ficha2->Player[0] = 'G'; juego->baseG->ficha2->Player[1] = '2';
+    juego->baseG->ficha2->Player = 'G';
     juego->baseG->ficha3->Path=0;
-    juego->baseG->ficha3->Player[0] = 'G'; juego->baseG->ficha3->Player[1] = '3';
+    juego->baseG->ficha3->Player = 'G';
     juego->baseG->ficha4->Path=0;
-    juego->baseG->ficha4->Player[0] = 'G'; juego->baseG->ficha4->Player[1] = '4';
-
+    juego->baseG->ficha4->Player = 'G';
+    juego->baseG->ficha1->Id=1;
+    juego->baseG->ficha2->Id=2;
+    juego->baseG->ficha3->Id=3;
+    juego->baseG->ficha4->Id=4;
+    /*printf("\n#%d  Jugador: %c   Fichas: %d, %d, %d, %d",
+           juego->baseG->NumCasilla, juego->baseG->Player,
+           juego->baseG->ficha1->Id, juego->baseG->ficha2->Id,
+           juego->baseG->ficha3->Id, juego->baseG->ficha4->Id);*/
     //---------------------------Posiciones iniciales YELLOW-------------------
     juego->baseY=malloc(sizeof(Base));
     juego->baseY->NumCasilla=0;
@@ -198,14 +228,21 @@ void beginning(Board* juego)
     juego->baseY->ficha3=malloc(sizeof(Ficha));
     juego->baseY->ficha4=malloc(sizeof(Ficha));
     juego->baseY->ficha1->Path=0;
-    juego->baseY->ficha1->Player[0] = 'Y'; juego->baseY->ficha1->Player[1] = '1';
+    juego->baseY->ficha1->Player = 'Y';
     juego->baseY->ficha2->Path=0;
-    juego->baseY->ficha2->Player[0] = 'Y'; juego->baseY->ficha2->Player[1] = '2';
+    juego->baseY->ficha2->Player = 'Y';
     juego->baseY->ficha3->Path=0;
-    juego->baseY->ficha3->Player[0] = 'Y'; juego->baseY->ficha3->Player[1] = '3';
+    juego->baseY->ficha3->Player = 'Y';
     juego->baseY->ficha4->Path=0;
-    juego->baseY->ficha4->Player[0] = 'Y'; juego->baseY->ficha4->Player[1] = '4';
-
+    juego->baseY->ficha4->Player = 'Y';
+    juego->baseY->ficha1->Id=1;
+    juego->baseY->ficha2->Id=2;
+    juego->baseY->ficha3->Id=3;
+    juego->baseY->ficha4->Id=4;
+    /*printf("\n#%d  Jugador: %c   Fichas: %d, %d, %d, %d",
+           juego->baseY->NumCasilla, juego->baseY->Player,
+           juego->baseY->ficha1->Id, juego->baseY->ficha2->Id,
+           juego->baseY->ficha3->Id, juego->baseY->ficha4->Id);*/
 }
 
 //----------------Creacion de 4 listas vacias para recorrido ganador -------------------
@@ -219,6 +256,7 @@ CasVicLap* emptyEnding(char Player)
     firstEnding->ficha2 = NULL;
     firstEnding->Player = Player;
     firstEnding->next = NULL;
+    //printf("\nemptyEnding- Numero de casillaVL: %d\t Color del player: %c\n",firstEnding->NumCasilla,firstEnding->Player);
 
     return firstEnding;
 }
@@ -236,6 +274,8 @@ void finishEnding(CasVicLap* recorridoFinal,int contador,char Player)
     recorridoFinal->ficha2 = NULL;
     recorridoFinal->end= NULL;
 
+    //printf("emptyEnding- Numero de casillaVL: %d\t Color del player: %c\n",recorridoFinal->NumCasilla,recorridoFinal->Player);
+
     recorridoFinal->next->next = NULL;
 }
 
@@ -247,6 +287,7 @@ void ending(Board* juego)
     finalR->NumCasilla = 108;
     finalR->ficha1 = NULL; finalR->ficha2 = NULL;
     finalR->ficha3 = NULL; finalR->ficha4 = NULL;
+    //printf("Jugador: %c\n Numero de Casilla: %d\n",finalR->Player,finalR->NumCasilla);
     juego->winR->end=finalR;
 
     Final *finalB = juego->winB->end;
@@ -255,6 +296,7 @@ void ending(Board* juego)
     finalB->NumCasilla = 108;
     finalB->ficha1 = NULL; finalB->ficha2 = NULL;
     finalB->ficha3 = NULL; finalB->ficha4 = NULL;
+    //printf("Jugador: %c\n Numero de Casilla: %d\n",finalB->Player,finalB->NumCasilla);
     juego->winB->end=finalB;
 
     Final *finalG = juego->winG->end;
@@ -263,6 +305,7 @@ void ending(Board* juego)
     finalG->NumCasilla = 108;
     finalG->ficha1 = NULL; finalG->ficha2 = NULL;
     finalG->ficha3 = NULL; finalG->ficha4 = NULL;
+    //printf("Jugador: %c\n Numero de Casilla: %d\n",finalG->Player,finalG->NumCasilla);
     juego->winG->end=finalG;
 
     Final *finalY = juego->winY->end;
@@ -271,8 +314,10 @@ void ending(Board* juego)
     finalY->NumCasilla = 108;
     finalY->ficha1 = NULL; finalY->ficha2 = NULL;
     finalY->ficha3 = NULL; finalY->ficha4 = NULL;
+    //printf("Jugador: %c\n Numero de Casilla: %d\n",finalY->Player,finalY->NumCasilla);
     juego->winY->end=finalY;
 }
+
 
 void creacionMaestra(Board *juego)
 {
@@ -309,32 +354,33 @@ void displayBoard(Board *juego){
     printf("#####################  DISPLAY BOARD PERRO  ##############################\n");
     Casilla *focusnode =juego->inicio;
     //ROJO
-    printf("\n#%d  Jugador: %c   Fichas: %s, %s, %s, %s",
+    printf("\n#%d  Jugador: %c   Fichas: %d, %d, %d, %d",
            juego->baseR->NumCasilla, juego->baseR->Player,
-           juego->baseR->ficha1->Player, juego->baseR->ficha2->Player,
-           juego->baseR->ficha3->Player, juego->baseR->ficha4->Player);
+           juego->baseR->ficha1->Id, juego->baseR->ficha2->Id,
+           juego->baseR->ficha3->Id, juego->baseR->ficha4->Id);
     //AZUL
-    printf("\n#%d  Jugador: %c   Fichas: %s, %s, %s, %s",
+    printf("\n#%d  Jugador: %c   Fichas: %d, %d, %d, %d",
            juego->baseB->NumCasilla, juego->baseB->Player,
-           juego->baseB->ficha1->Player, juego->baseB->ficha2->Player,
-           juego->baseB->ficha3->Player, juego->baseB->ficha4->Player);
+           juego->baseB->ficha1->Id, juego->baseB->ficha2->Id,
+           juego->baseB->ficha3->Id, juego->baseB->ficha4->Id);
 
     //VERDE
-    printf("\n#%d  Jugador: %c   Fichas: %s, %s, %s, %s",
+    printf("\n#%d  Jugador: %c   Fichas: %d, %d, %d, %d",
            juego->baseG->NumCasilla, juego->baseG->Player,
-           juego->baseG->ficha1->Player, juego->baseG->ficha2->Player,
-           juego->baseG->ficha3->Player, juego->baseG->ficha4->Player);
+           juego->baseG->ficha1->Id, juego->baseG->ficha2->Id,
+           juego->baseG->ficha3->Id, juego->baseG->ficha4->Id);
     //Amarillo
-    printf("\n#%d  Jugador: %c   Fichas: %s, %s, %s, %s\n",
+    printf("\n#%d  Jugador: %c   Fichas: %d, %d, %d, %d\n",
            juego->baseY->NumCasilla, juego->baseY->Player,
-           juego->baseY->ficha1->Player, juego->baseY->ficha2->Player,
-           juego->baseY->ficha3->Player, juego->baseY->ficha4->Player);
+           juego->baseY->ficha1->Id, juego->baseY->ficha2->Id,
+           juego->baseY->ficha3->Id, juego->baseY->ficha4->Id);
 
     while(focusnode->next!=NULL)
     {
         printf("Casilla # %d\n",focusnode->NumCasilla);
         printf("La casilla es segura? %d\n",focusnode->BanSafe);
-        printf("Es una salida? %c\n\n",focusnode->BanSalida);
+        printf("Es una salida? %c\n",focusnode->BanSalida);
+        //printf("Las fichas actuales son: [%d] [%d]\n\n",focusnode->ficha1->Id,focusnode->ficha2->Id);
 
         focusnode=focusnode->next;
     }
