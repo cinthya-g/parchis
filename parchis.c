@@ -7,9 +7,9 @@
 
 struct ficha{
     char Player;//Determina el color del jugador (b, y, r, g)
-    char Path;//En que casilla está (1-68)
-    int Id; //1, 2, 3, 4
-    int PaGanar; //Debe llegar a 64, inicia en 0
+    char Path;//Path es un acumulador de el progreso de la ficha
+    int Id;
+    int PaGanar;
 };
 
 struct casilla{
@@ -129,8 +129,6 @@ void finishBoard(Board* juego, int contador)
     }
     else
         focusNode->BanSalida = '0';
-
-
     //printf("Es una salida? %c\n",focusNode->BanSalida);
     //----------------------------------------------------------------------------
     //------------Asigna como nulos los dos espacios de cada casilla -------------
@@ -138,7 +136,17 @@ void finishBoard(Board* juego, int contador)
     focusNode->ficha2=NULL;
 
     focusNode->next->next = NULL;
-    printf("\n\n");
+/*
+    focusNode = juego->inicio;
+    while(focusNode->NumCasilla < 69)
+    {
+        focusNode=focusNode->next;
+        if(focusNode->NumCasilla==68)
+            focusNode->next = NULL;
+        break;
+    }
+    */
+
 }
 
 //Añade los espacios de inicio
@@ -167,10 +175,6 @@ void beginning(Board* juego)
     juego->baseR->ficha3->Id=3;
     juego->baseR->ficha4->Id=4;
 
-    /*printf("\n#%d  Jugador: %c   Fichas: %d, %d, %d, %d",
-           juego->baseR->NumCasilla, juego->baseR->Player,
-           juego->baseR->ficha1->Id, juego->baseR->ficha2->Id,
-           juego->baseR->ficha3->Id, juego->baseR->ficha4->Id);*/
     //---------------------------Posiciones iniciales BLUE-----------------------
     juego->baseB=malloc(sizeof(Base));
     juego->baseB->NumCasilla=0;
@@ -191,10 +195,7 @@ void beginning(Board* juego)
     juego->baseB->ficha2->Id=2;
     juego->baseB->ficha3->Id=3;
     juego->baseB->ficha4->Id=4;
-    /*printf("\n#%d  Jugador: %c   Fichas: %d, %d, %d, %d",
-           juego->baseB->NumCasilla, juego->baseB->Player,
-           juego->baseB->ficha1->Id, juego->baseB->ficha2->Id,
-           juego->baseB->ficha3->Id, juego->baseB->ficha4->Id);*/
+
     //---------------------------Posiciones iniciales GREEN-------------------
     juego->baseG=malloc(sizeof(Base));
     juego->baseG->NumCasilla=0;
@@ -215,10 +216,7 @@ void beginning(Board* juego)
     juego->baseG->ficha2->Id=2;
     juego->baseG->ficha3->Id=3;
     juego->baseG->ficha4->Id=4;
-    /*printf("\n#%d  Jugador: %c   Fichas: %d, %d, %d, %d",
-           juego->baseG->NumCasilla, juego->baseG->Player,
-           juego->baseG->ficha1->Id, juego->baseG->ficha2->Id,
-           juego->baseG->ficha3->Id, juego->baseG->ficha4->Id);*/
+
     //---------------------------Posiciones iniciales YELLOW-------------------
     juego->baseY=malloc(sizeof(Base));
     juego->baseY->NumCasilla=0;
@@ -239,10 +237,7 @@ void beginning(Board* juego)
     juego->baseY->ficha2->Id=2;
     juego->baseY->ficha3->Id=3;
     juego->baseY->ficha4->Id=4;
-    /*printf("\n#%d  Jugador: %c   Fichas: %d, %d, %d, %d",
-           juego->baseY->NumCasilla, juego->baseY->Player,
-           juego->baseY->ficha1->Id, juego->baseY->ficha2->Id,
-           juego->baseY->ficha3->Id, juego->baseY->ficha4->Id);*/
+
 }
 
 //----------------Creacion de 4 listas vacias para recorrido ganador -------------------
@@ -349,41 +344,74 @@ void creacionMaestra(Board *juego)
     ending(juego);
 }
 
-
 void displayBoard(Board *juego){
-    printf("#####################  DISPLAY BOARD PERRO  ##############################\n");
+    printf("\n#####################  DISPLAY BOARD PERRO  ##############################\n");
     Casilla *focusnode =juego->inicio;
     //ROJO
-    printf("\n#%d  Jugador: %c   Fichas: %d, %d, %d, %d",
-           juego->baseR->NumCasilla, juego->baseR->Player,
-           juego->baseR->ficha1->Id, juego->baseR->ficha2->Id,
-           juego->baseR->ficha3->Id, juego->baseR->ficha4->Id);
+    printf("Numero de casilla: %d  Jugador: %c\n",
+           juego->baseR->NumCasilla, juego->baseR->Player);
+    if(juego->baseR->ficha1!=NULL)
+        printf("Ficha: %c%d\n",juego->baseR->ficha1->Player,juego->baseR->ficha1->Id);
+    if(juego->baseR->ficha2!=NULL)
+        printf("Ficha: %c%d\n",juego->baseR->ficha2->Player,juego->baseR->ficha2->Id);
+    if(juego->baseR->ficha3!=NULL)
+        printf("Ficha: %c%d\n",juego->baseR->ficha3->Player,juego->baseR->ficha3->Id);
+    if(juego->baseR->ficha4!=NULL)
+        printf("Ficha: %c%d\n",juego->baseR->ficha4->Player,juego->baseR->ficha4->Id);
+
     //AZUL
-    printf("\n#%d  Jugador: %c   Fichas: %d, %d, %d, %d",
-           juego->baseB->NumCasilla, juego->baseB->Player,
-           juego->baseB->ficha1->Id, juego->baseB->ficha2->Id,
-           juego->baseB->ficha3->Id, juego->baseB->ficha4->Id);
+    printf("\nNumero de casilla: %d  Jugador: %c\n",
+           juego->baseB->NumCasilla, juego->baseB->Player);
+    if(juego->baseB->ficha1!=NULL)
+        printf("Ficha: %c%d\n",juego->baseB->ficha1->Player,juego->baseB->ficha1->Id);
+    if(juego->baseB->ficha2!=NULL)
+        printf("Ficha: %c%d\n",juego->baseB->ficha2->Player,juego->baseB->ficha2->Id);
+    if(juego->baseB->ficha3!=NULL)
+        printf("Ficha: %c%d\n",juego->baseB->ficha3->Player,juego->baseB->ficha3->Id);
+    if(juego->baseB->ficha4!=NULL)
+        printf("Ficha: %c%d\n",juego->baseB->ficha4->Player,juego->baseB->ficha4->Id);
 
     //VERDE
-    printf("\n#%d  Jugador: %c   Fichas: %d, %d, %d, %d",
-           juego->baseG->NumCasilla, juego->baseG->Player,
-           juego->baseG->ficha1->Id, juego->baseG->ficha2->Id,
-           juego->baseG->ficha3->Id, juego->baseG->ficha4->Id);
-    //Amarillo
-    printf("\n#%d  Jugador: %c   Fichas: %d, %d, %d, %d\n",
-           juego->baseY->NumCasilla, juego->baseY->Player,
-           juego->baseY->ficha1->Id, juego->baseY->ficha2->Id,
-           juego->baseY->ficha3->Id, juego->baseY->ficha4->Id);
+    printf("\nNumero de casilla: %d  Jugador: %c\n",
+           juego->baseG->NumCasilla, juego->baseG->Player);
+    if(juego->baseG->ficha1!=NULL)
+        printf("Ficha: %c%d\n",juego->baseG->ficha1->Player,juego->baseG->ficha1->Id);
+    if(juego->baseG->ficha2!=NULL)
+        printf("Ficha: %c%d\n",juego->baseG->ficha2->Player,juego->baseG->ficha2->Id);
+    if(juego->baseG->ficha3!=NULL)
+        printf("Ficha: %c%d\n",juego->baseG->ficha3->Player,juego->baseG->ficha3->Id);
+    if(juego->baseG->ficha4!=NULL)
+        printf("Ficha: %c%d\n",juego->baseG->ficha4->Player,juego->baseG->ficha4->Id);
+
+    //AMARILLO
+    printf("\nNumero de casilla: %d  Jugador: %c\n",
+           juego->baseY->NumCasilla, juego->baseY->Player);
+    if(juego->baseY->ficha1!=NULL)
+        printf("Ficha: %c%d\n",juego->baseY->ficha1->Player,juego->baseY->ficha1->Id);
+    if(juego->baseY->ficha2!=NULL)
+        printf("Ficha: %c%d\n",juego->baseY->ficha2->Player,juego->baseY->ficha2->Id);
+    if(juego->baseY->ficha3!=NULL)
+        printf("Ficha: %c%d\n",juego->baseY->ficha3->Player,juego->baseY->ficha3->Id);
+    if(juego->baseY->ficha4!=NULL)
+        printf("Ficha: %c%d\n",juego->baseY->ficha4->Player,juego->baseY->ficha4->Id);
 
     while(focusnode->next!=NULL)
     {
         printf("Casilla # %d\n",focusnode->NumCasilla);
         printf("La casilla es segura? %d\n",focusnode->BanSafe);
         printf("Es una salida? %c\n",focusnode->BanSalida);
-        //printf("Las fichas actuales son: [%d] [%d]\n\n",focusnode->ficha1->Id,focusnode->ficha2->Id);
+        if(focusnode->ficha1 != NULL)
+            printf("SLOT1 [%c%d]\n", focusnode->ficha1->Player, focusnode->ficha1->Id);
+        if(focusnode->ficha2 != NULL)
+            printf("SLOT2 [%c%d]\n", focusnode->ficha2->Player, focusnode->ficha2->Id);
+        if(focusnode->ficha1 == NULL && focusnode->ficha2 == NULL)
+            printf("Slots vacios\n");
+
+        printf("\n");
 
         focusnode=focusnode->next;
     }
+
     //-----------------RED-------------------------------------------------
     CasVicLap *focusLapR=juego->winR;
     while(focusLapR->next!=NULL)

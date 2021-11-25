@@ -9,7 +9,25 @@
 
 int main(void)
 {
-    /*
+    //CREACION DE TABLERO LOGICO
+    //ESTAS FUNCIONES SON LAS IMPORTANTES DE MOMENTO
+    Board *juego = newBoard();
+    //creacionMaestra es la que nos otorga un tablero de 68 fichas nomales con 1 extra
+    creacionMaestra(juego);
+    displayBoard(juego);
+
+    //Ignorar de momento, hasta que no arreglemos creacionMaestra no podemos debuggear estas funciones
+    char playerInicial=quienInicia();
+    //printf("Jugador que inicia: %c\n",playerInicial);
+
+    char player = cambiarJugador(playerInicial);
+    Turno(playerInicial, juego);
+    displayBoard(juego);
+
+    return 0;
+
+
+/*
     // INICIALIZACION DE RAYLIB
     //--------------------------------------------------------------------------------------
     const int width = 1600;
@@ -76,7 +94,7 @@ int main(void)
     guardarPosicionesIniciales(&pix);
 
     Dados dice;
-    guardarDadosInicio(&dice);
+    //guardarDadosInicio(&dice);
 
 
     //---------------------------------------------------------------------------------------
@@ -120,8 +138,8 @@ int main(void)
         DrawTexture(textureB4, obtenerXB4(&pix), obtenerYB4(&pix), WHITE);
 
         //DADOS
-        int d1 = updateDado1(&dice); int d2 = updateDado2(&dice);
-        DrawText(TextFormat("D1 [%d]  D2 [%d]", d1, d2), 1230, 780, 50, WHITE);
+        //int d1 = updateDado1(&dice); int d2 = updateDado2(&dice);
+        DrawText(TextFormat("D1 [%d]  D2 [%d]", 0, 0), 1230, 780, 50, WHITE);
         DrawTexture(textureDado, 1100, 750, WHITE);
 
         //TÍTULO
@@ -137,17 +155,6 @@ int main(void)
     CloseWindow();        // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 
-    */
+*/
 
-
-    Board *juego = newBoard();
-    creacionMaestra(juego);
-    displayBoard(juego);
-    char playerInicial=quienInicia();
-    //printf("Jugador que inicia: %c\n",playerInicial);
-    char player = cambiarJugador(playerInicial);
-    Turno(playerInicial, juego);
-    //displayBoard(juego);
-
-    return 0;
 }
