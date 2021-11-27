@@ -9,23 +9,16 @@
 
 int main(void)
 {
-    //CREACION DE TABLERO LOGICO
-    //ESTAS FUNCIONES SON LAS IMPORTANTES DE MOMENTO
+
     Board *juego = newBoard();
-    //creacionMaestra es la que nos otorga un tablero de 68 fichas nomales con 1 extra
     creacionMaestra(juego);
     displayBoard(juego);
-
-    //Ignorar de momento, hasta que no arreglemos creacionMaestra no podemos debuggear estas funciones
     char playerInicial=quienInicia();
     //printf("Jugador que inicia: %c\n",playerInicial);
-
     char player = cambiarJugador(playerInicial);
     Turno(playerInicial, juego);
     displayBoard(juego);
-
-    return 0;
-
+    
 
 /*
     // INICIALIZACION DE RAYLIB

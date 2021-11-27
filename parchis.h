@@ -15,12 +15,12 @@ typedef struct casVicLap CasVicLap;
 
 
 Board* newBoard();
-CasVicLap* emptyEnding(char Player);
+void emptyEnding(Board *juego, char Player);
 
 void finishBoard(Board* juego, int contador);
 void beginning(Board* juego);
 void ending(Board* juego);
-void finishEnding(CasVicLap* recorridoFinal,int contador,char Player);
+void finishEnding(Board* juego, int contador,char Player);
 void creacionMaestra(Board* juego);
 
 void displayBoard(Board *juego);

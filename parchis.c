@@ -3,7 +3,6 @@
 #include <string.h>
 #include <time.h>
 #include "parchis.h"
-#include "turnos.h"
 
 struct ficha{
     char Player;//Determina el color del jugador (b, y, r, g)
@@ -52,6 +51,7 @@ struct board{
     char currentPlayer;
 
     struct casilla *inicio;
+
     struct casVicLap *winR;
     struct casVicLap *winY;
     struct casVicLap *winB;
@@ -64,57 +64,51 @@ struct board{
 };
 
 
-//Crea un tablero vacío
+//Crea un tablero con la casilla 1 implementada
 Board *newBoard(){
     Board *juego = malloc(sizeof(Board));
-    juego->inicio = NULL;
+    juego->inicio=malloc(sizeof(Casilla));
+    juego->inicio->NumCasilla = 1;
+    juego->inicio->BanSafe = 1;
+    juego->inicio->BanSalida = 'R';
+    juego->inicio->ficha1 = NULL;
+    juego->inicio->ficha2 = NULL;
+
+    juego->inicio->next = NULL;
 
     return juego;
 }
 
-//Añade 68 casillas al tablero vacío
+//Añade 67 casillas restantes al tablero
 void finishBoard(Board* juego, int contador)
 {
-    if(juego->inicio==NULL)
-    {
-        juego->inicio=malloc(sizeof(Casilla));
-        juego->inicio->NumCasilla = contador;
-        juego->inicio->BanSafe = 1;
-        juego->inicio->BanSalida = 'R';
-        juego->inicio->ficha1 = NULL;
-        juego->inicio->ficha2 = NULL;
-        //juego->inicio->next=malloc(sizeof(Casilla));
-        juego->inicio->next = NULL;
-        //printf("Casilla # %d\n",juego->inicio->NumCasilla);
-        //printf("La casilla es segura? %d\n",juego->inicio->BanSafe);
-        //printf("Es una salida? %c\n\n",juego->inicio->BanSalida);
-        return;
-    }
-    Casilla *focusNode = juego->inicio;
-    while(focusNode->next != NULL){
-        focusNode = focusNode->next;
+    Casilla *focusNodeFirst = juego->inicio;
+    while(focusNodeFirst->next != NULL){
+        focusNodeFirst = focusNodeFirst->next;
     }
 
-    focusNode->next = malloc(sizeof(Casilla));
+    focusNodeFirst->next = malloc(sizeof(Casilla));
+    Casilla *focusNode = focusNodeFirst->next;
 
     focusNode->NumCasilla = contador;
-    //printf("Casilla # %d\n",focusNode->NumCasilla);
+
     //---------------------Se Puede Comer?---------------------------------------
 
     //Asignamos las casillas en donde se puede comer (0) y donde no (1)
-    if(focusNode->NumCasilla==1||focusNode->NumCasilla==8||focusNode->NumCasilla==13||focusNode->NumCasilla==18||focusNode->NumCasilla==25||focusNode->NumCasilla==30||focusNode->NumCasilla==35||focusNode->NumCasilla==42||focusNode->NumCasilla==47||focusNode->NumCasilla==52||focusNode->NumCasilla==59||focusNode->NumCasilla==64)
+    if(focusNode->NumCasilla==1||focusNode->NumCasilla==8||focusNode->NumCasilla==13||focusNode->NumCasilla==18
+    ||focusNode->NumCasilla==25||focusNode->NumCasilla==30||focusNode->NumCasilla==35||focusNode->NumCasilla==42
+    ||focusNode->NumCasilla==47||focusNode->NumCasilla==52||focusNode->NumCasilla==59||focusNode->NumCasilla==64)
     {
         focusNode->BanSafe = 1;
     }
     else
         focusNode->BanSafe = 0;
 
-    //printf("La casilla es segura? %d\n",focusNode->BanSafe);
     //----------------------------------------------------------------------------
 
     //---------------------------Es salida?---------------------------------------
 
-    //Asignamos a las casillas correspondeintes la bandera de si son la salida de que jugador son
+    //Asignamos a las casillas correspondientes la bandera de si son la salida de que jugador son
     if(focusNode->NumCasilla==1||focusNode->NumCasilla==18||focusNode->NumCasilla==35||focusNode->NumCasilla==52)
     {
         if (focusNode->NumCasilla==1){
@@ -129,27 +123,15 @@ void finishBoard(Board* juego, int contador)
     }
     else
         focusNode->BanSalida = '0';
-    //printf("Es una salida? %c\n",focusNode->BanSalida);
     //----------------------------------------------------------------------------
     //------------Asigna como nulos los dos espacios de cada casilla -------------
     focusNode->ficha1=NULL;
     focusNode->ficha2=NULL;
 
-    focusNode->next->next = NULL;
-/*
-    focusNode = juego->inicio;
-    while(focusNode->NumCasilla < 69)
-    {
-        focusNode=focusNode->next;
-        if(focusNode->NumCasilla==68)
-            focusNode->next = NULL;
-        break;
-    }
-    */
-
+    focusNode->next = NULL;
 }
 
-//Añade los espacios de inicio
+//Añade los espacios de inicio donde se almacenan las 4 fichas de salida de cada color
 void beginning(Board* juego)
 {
     //-----------------------------Casillas de Inicio-------------------------------------
@@ -240,40 +222,74 @@ void beginning(Board* juego)
 
 }
 
-//----------------Creacion de 4 listas vacias para recorrido ganador -------------------
-
-//FUNCION GENERAL
-CasVicLap* emptyEnding(char Player)
+//----------------Creacion de 4 listas para recorrido ganador de cada color-------------------
+void emptyEnding(Board *juego, char Player)
 {
-    CasVicLap *firstEnding = malloc(sizeof(CasVicLap));
-    firstEnding->NumCasilla = 101;
-    firstEnding->ficha1 = NULL;
-    firstEnding->ficha2 = NULL;
-    firstEnding->Player = Player;
-    firstEnding->next = NULL;
-    //printf("\nemptyEnding- Numero de casillaVL: %d\t Color del player: %c\n",firstEnding->NumCasilla,firstEnding->Player);
+    if(Player == 'R'){
+        juego->winR = malloc(sizeof(CasVicLap));
+        juego->winR->NumCasilla = 101;
+        juego->winR->Player = 'R';
+        juego->winR->ficha1 = NULL; juego->winR->ficha2 = NULL;
+        juego->winR->next = NULL;
+        juego->winR->end = NULL;
+    }
 
-    return firstEnding;
+    if(Player == 'G'){
+        juego->winG = malloc(sizeof(CasVicLap));
+        juego->winG->NumCasilla = 101;
+        juego->winG->Player = 'G';
+        juego->winG->ficha1 = NULL; juego->winG->ficha2 = NULL;
+        juego->winG->next = NULL;
+        juego->winG->end = NULL;
+    }
+    if(Player == 'B'){
+        juego->winB = malloc(sizeof(CasVicLap));
+        juego->winB->NumCasilla = 101;
+        juego->winB->Player = 'B';
+        juego->winB->ficha1 = NULL; juego->winB->ficha2 = NULL;
+        juego->winB->next = NULL;
+        juego->winB->end = NULL;
+    }
+    if(Player == 'Y'){
+        juego->winY = malloc(sizeof(CasVicLap));
+        juego->winY->NumCasilla = 101;
+        juego->winY->Player = 'Y';
+        juego->winY->ficha1 = NULL; juego->winY->ficha2 = NULL;
+        juego->winY->next = NULL;
+        juego->winY->end = NULL;
+    }
 }
 
-void finishEnding(CasVicLap* recorridoFinal,int contador,char Player)
+//Añade las otras 6 casillas al recorrido ganador de cada color
+void finishEnding(Board* juego, int contador,char Player)
 {
-    while(recorridoFinal->next != NULL && contador < 108)
+    CasVicLap *recorridoFinalFirst;
+    if(Player == 'R')
+        recorridoFinalFirst = juego->winR;
+    if(Player == 'G')
+        recorridoFinalFirst = juego->winG;
+    if(Player == 'B')
+        recorridoFinalFirst = juego->winB;
+    if(Player == 'Y')
+        recorridoFinalFirst = juego->winY;
+
+    while(recorridoFinalFirst->next != NULL)
     {
-        recorridoFinal = recorridoFinal->next;
+        recorridoFinalFirst = recorridoFinalFirst->next;
     }
-    recorridoFinal->next = malloc(sizeof(CasVicLap));
+
+    recorridoFinalFirst->next = malloc(sizeof(CasVicLap));
+    CasVicLap *recorridoFinal = recorridoFinalFirst->next;
+
     recorridoFinal->NumCasilla = contador;
     recorridoFinal->Player = Player;
     recorridoFinal->ficha1 = NULL;
     recorridoFinal->ficha2 = NULL;
-    recorridoFinal->end= NULL;
 
-    //printf("emptyEnding- Numero de casillaVL: %d\t Color del player: %c\n",recorridoFinal->NumCasilla,recorridoFinal->Player);
-
-    recorridoFinal->next->next = NULL;
+    recorridoFinal->next = NULL;
 }
 
+//Creacion de casillas de gane de cada color
 void ending(Board* juego)
 {
     Final *finalR = juego->winR->end;
@@ -313,33 +329,35 @@ void ending(Board* juego)
     juego->winY->end=finalY;
 }
 
-
+//Crea en su totalidad el tablero
 void creacionMaestra(Board *juego)
 {
     //Se crean las 68 casillas
-    for(int i = 0; i < 69; i++){
-        finishBoard(juego,i);
+    for(int i = 2; i < 69; i++){
+        finishBoard(juego, i);
     }
     //Se crean las 4 casillas base de cada color (inicio)
     beginning(juego);
 
     //Crea recorrido final de cada color
-    CasVicLap *finalR = emptyEnding('R');
-    CasVicLap *finalB = emptyEnding('B');
-    CasVicLap *finalG = emptyEnding('G');
-    CasVicLap *finalY = emptyEnding('Y');
-    for(int i=101;i < 108;i++)
+    emptyEnding(juego, 'R');
+    emptyEnding(juego, 'B');
+    emptyEnding(juego, 'G');
+    emptyEnding(juego, 'Y');
+
+    for(int i = 102;i < 108;i++)
     {
-        finishEnding(finalR,i,'R');
-        finishEnding(finalB,i,'B');
-        finishEnding(finalG,i,'G');
-        finishEnding(finalY,i,'Y');
+        finishEnding(juego, i,'R');
+        finishEnding(juego, i,'B');
+        finishEnding(juego, i,'G');
+        finishEnding(juego, i,'Y');
     }
     //Se guarda en Board
-    juego->winR=finalR;
-    juego->winB=finalB;
-    juego->winG=finalG;
-    juego->winY=finalY;
+    juego->winR->end = NULL;
+    juego->winG->end = NULL;
+    juego->winB->end = NULL;
+    juego->winY->end = NULL;
+
 //Crea casillas ganadoras de cada color
     ending(juego);
 }
@@ -395,7 +413,7 @@ void displayBoard(Board *juego){
     if(juego->baseY->ficha4!=NULL)
         printf("Ficha: %c%d\n",juego->baseY->ficha4->Player,juego->baseY->ficha4->Id);
 
-    while(focusnode->next!=NULL)
+    while(focusnode != NULL)
     {
         printf("Casilla # %d\n",focusnode->NumCasilla);
         printf("La casilla es segura? %d\n",focusnode->BanSafe);
@@ -414,7 +432,7 @@ void displayBoard(Board *juego){
 
     //-----------------RED-------------------------------------------------
     CasVicLap *focusLapR=juego->winR;
-    while(focusLapR->next!=NULL)
+    while(focusLapR != NULL)
     {
         printf("R Numero de casillaVL: %d\t Color del player: %c\n",focusLapR->NumCasilla,focusLapR->Player);
         focusLapR=focusLapR->next;
@@ -425,7 +443,7 @@ void displayBoard(Board *juego){
 
     //--------------GREEN------------------------------------------------------
     CasVicLap *focusLapG=juego->winG;
-    while(focusLapG->next!=NULL){
+    while(focusLapG != NULL){
         printf("G Numero de casillaVL: %d\t Color del player: %c\n",focusLapG->NumCasilla,focusLapG->Player);
         focusLapG=focusLapG->next;
     }
@@ -436,7 +454,7 @@ void displayBoard(Board *juego){
 
     //-------------BLUE------------------------------------------------------
     CasVicLap *focusLapB=juego->winB;
-    while(focusLapB->next!=NULL){
+    while(focusLapB != NULL){
         printf("B Numero de casillaVL: %d\t Color del player: %c\n",focusLapB->NumCasilla,focusLapB->Player);
         focusLapB=focusLapB->next;
     }
@@ -446,7 +464,7 @@ void displayBoard(Board *juego){
 
     //------------YELLOW----------------------------------------------------------
     CasVicLap *focusLapY=juego->winY;
-    while(focusLapY->next!=NULL){
+    while(focusLapY != NULL){
         printf("Y Numero de casillaVL: %d\t Color del player: %c\n",focusLapY->NumCasilla,focusLapY->Player);
         focusLapY=focusLapY->next;
     }

@@ -61,8 +61,30 @@ char quienInicia();
 char cambiarJugador(char Player);
 void Turno(char Player,Board *Tablero);
 void displayOpcionesDeFichaInicio(char Player,Board *Tablero);
-Ficha *fichaElecta(int fichaInput,char Player,Board *Tablero);
-void movimientoFicha(Dados *tiro,Ficha *ficha,Board *Tablero,char Player);
+Ficha *fichaElecta(int fichaInput,char playerFichaUsuario,char Player,Board *Tablero,int hayFichasEnInicio,int Tiro);
+void movimientoFicha(int Dado,Ficha *ficha,Board *Tablero,char Player);
+int valorDado1(Dados dados);
+int valorDado2(Dados dados);
+void movimientoFichaDelInicio(int dado , Ficha *fichaQueEstamosMoviendo , Board *Tablero , char Player);
+void comer(Casilla *casillaComida,int cualCasilla,Board *Tablero,char Player);
+int existeFichaR1EnInicio(Board*Tablero,char Player);
+int existeFichaR2EnInicio(Board*Tablero,char Player);
+int existeFichaR3EnInicio(Board*Tablero,char Player);
+int existeFichaR4EnInicio(Board*Tablero,char Player);
+int existeFichaG1EnInicio(Board*Tablero,char Player);
+int existeFichaG2EnInicio(Board*Tablero,char Player);
+int existeFichaG3EnInicio(Board*Tablero,char Player);
+int existeFichaG4EnInicio(Board*Tablero,char Player);
+int existeFichaB1EnInicio(Board*Tablero,char Player);
+int existeFichaB2EnInicio(Board*Tablero,char Player);
+int existeFichaB3EnInicio(Board*Tablero,char Player);
+int existeFichaB4EnInicio(Board*Tablero,char Player);
+int existeFichaY1EnInicio(Board*Tablero,char Player);
+int existeFichaY2EnInicio(Board*Tablero,char Player);
+int existeFichaY3EnInicio(Board*Tablero,char Player);
+int existeFichaY4EnInicio(Board*Tablero,char Player);
+int hayFichasEnInicio(Board* Tablero, char Player);
+
 
 //Posiciones en pixeles
 void guardarPosicionesIniciales(PixelPos *posiciones);
@@ -102,12 +124,6 @@ int obtenerXY3(PixelPos *pos);
 int obtenerYY3(PixelPos *pos);
 int obtenerXY4(PixelPos *pos);
 int obtenerYY4(PixelPos *pos);
-//--------------------------------------------------
-
-int updateDado1(Dados *dice);
-int updateDado2(Dados *dice);
-
-
 
 
 
