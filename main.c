@@ -7,18 +7,30 @@
 #include "parchis.h"
 #include "turnos.h"
 
+int VICTORIA=0;
+
 int main(void)
 {
 
     Board *juego = newBoard();
     creacionMaestra(juego);
-    displayBoard(juego);
     char playerInicial=quienInicia();
-    //printf("Jugador que inicia: %c\n",playerInicial);
-    char player = cambiarJugador(playerInicial);
-    Turno(playerInicial, juego);
-    displayBoard(juego);
-    
+    do{
+        displayBoard(juego);
+        char player = cambiarJugador(playerInicial);
+        Turno(player, juego);
+        displayBoard(juego);
+        VICTORIA=revisarVictoria(juego);
+        if(VICTORIA==1)
+            printf("FELICIDADES GANO EL JUGADOR ROJO");
+        else if(VICTORIA==2)
+            printf("FELICIDADES GANO EL JUGADOR VERDE");
+        else if(VICTORIA==3)
+            printf("FELICIDADES GANO EL JUGADOR AZUL");
+        else if(VICTORIA==4)
+            printf("FELICIDADES GANO EL JUGADOR AMARILLO");
+    }while(VICTORIA==0);
+
 
 /*
     // INICIALIZACION DE RAYLIB
@@ -32,6 +44,8 @@ int main(void)
     //Iniciar tablero y fichas
     Image fondo = LoadImage("..\\tablero.png");
         Texture2D textureBg = LoadTextureFromImage(fondo);
+        Image fondoinicio = LoadImage("..\\fondoinicio.png");
+        Texture2D textureInitBg = LoadTextureFromImage(fondoinicio);
 
         //Fichas rojas y su textura
     Image imgR1 = LoadImage("..\\fichas\\R1.png");
@@ -75,7 +89,7 @@ int main(void)
         Texture2D textureDado = LoadTextureFromImage(dado);
 
 
-    UnloadImage(fondo);
+    UnloadImage(fondo); UnloadImage(fondoinicio);
     UnloadImage(imgR1); UnloadImage(imgR2); UnloadImage(imgR3); UnloadImage(imgR4);
     UnloadImage(imgB1); UnloadImage(imgB2); UnloadImage(imgB3); UnloadImage(imgB4);
     UnloadImage(imgG1); UnloadImage(imgG2); UnloadImage(imgG3); UnloadImage(imgG4);
@@ -91,7 +105,7 @@ int main(void)
 
 
     //---------------------------------------------------------------------------------------
-
+    int inicio = 0, jugadores = 0;
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
@@ -102,52 +116,55 @@ int main(void)
         // Draw
         //----------------------------------------------------------------------------------
         BeginDrawing();
-
         ClearBackground(RAYWHITE);
 
-        DrawTexture(textureBg, 0, 0, WHITE);
-        //ROJO
-        DrawTexture(textureR1, obtenerXR1(&pix), obtenerYR1(&pix), WHITE);
-        DrawTexture(textureR2, obtenerXR2(&pix), obtenerYR2(&pix), WHITE);
-        DrawTexture(textureR3, obtenerXR3(&pix), obtenerYR3(&pix), WHITE);
-        DrawTexture(textureR4, obtenerXR4(&pix), obtenerYR4(&pix), WHITE);
-
-        //VERDE
-        DrawTexture(textureG1, obtenerXG1(&pix), obtenerYG1(&pix), WHITE);
-        DrawTexture(textureG2, obtenerXG2(&pix), obtenerYG2(&pix), WHITE);
-        DrawTexture(textureG3, obtenerXG3(&pix), obtenerYG3(&pix), WHITE);
-        DrawTexture(textureG4, obtenerXG4(&pix), obtenerYG4(&pix), WHITE);
-
-        //AMARILLO
-        DrawTexture(textureY1, obtenerXY1(&pix), obtenerYY1(&pix), WHITE);
-        DrawTexture(textureY2, obtenerXY2(&pix), obtenerYY2(&pix), WHITE);
-        DrawTexture(textureY3, obtenerXY3(&pix), obtenerYY3(&pix), WHITE);
-        DrawTexture(textureY4, obtenerXY4(&pix), obtenerYY4(&pix), WHITE);
-
-        //AZUL
-        DrawTexture(textureB1, obtenerXB1(&pix), obtenerYB1(&pix), WHITE);
-        DrawTexture(textureB2, obtenerXB2(&pix), obtenerYB2(&pix), WHITE);
-        DrawTexture(textureB3, obtenerXB3(&pix), obtenerYB3(&pix), WHITE);
-        DrawTexture(textureB4, obtenerXB4(&pix), obtenerYB4(&pix), WHITE);
-
-        //DADOS
-        //int d1 = updateDado1(&dice); int d2 = updateDado2(&dice);
-        DrawText(TextFormat("D1 [%d]  D2 [%d]", 0, 0), 1230, 780, 50, WHITE);
-        DrawTexture(textureDado, 1100, 750, WHITE);
-
-        //TÍTULO
-        DrawText("PERPENDICULAR PARCHEESI", 360, 45, 60, RAYWHITE);
+        DrawTexture(textureInitBg, 0, 0, WHITE);
+        DrawText("ola", 110, 150, 200, RAYWHITE);
+        DrawText("Seleccione jugadores:", 560, 380, 40, RAYWHITE);
 
 
-        EndDrawing();
-        //----------------------------------------------------------------------------------
-    }
+            DrawTexture(textureBg, 0, 0, WHITE);
+            //ROJO
+            DrawTexture(textureR1, obtenerXR1(&pix), obtenerYR1(&pix), WHITE);
+            DrawTexture(textureR2, obtenerXR2(&pix), obtenerYR2(&pix), WHITE);
+            DrawTexture(textureR3, obtenerXR3(&pix), obtenerYR3(&pix), WHITE);
+            DrawTexture(textureR4, obtenerXR4(&pix), obtenerYR4(&pix), WHITE);
 
-    // De-Initialization
-    //--------------------------------------------------------------------------------------
-    CloseWindow();        // Close window and OpenGL context
-    //--------------------------------------------------------------------------------------
+            //VERDE
+            DrawTexture(textureG1, obtenerXG1(&pix), obtenerYG1(&pix), WHITE);
+            DrawTexture(textureG2, obtenerXG2(&pix), obtenerYG2(&pix), WHITE);
+            DrawTexture(textureG3, obtenerXG3(&pix), obtenerYG3(&pix), WHITE);
+            DrawTexture(textureG4, obtenerXG4(&pix), obtenerYG4(&pix), WHITE);
 
-*/
+            //AMARILLO
+            DrawTexture(textureY1, obtenerXY1(&pix), obtenerYY1(&pix), WHITE);
+            DrawTexture(textureY2, obtenerXY2(&pix), obtenerYY2(&pix), WHITE);
+            DrawTexture(textureY3, obtenerXY3(&pix), obtenerYY3(&pix), WHITE);
+            DrawTexture(textureY4, obtenerXY4(&pix), obtenerYY4(&pix), WHITE);
 
+            //AZUL
+            DrawTexture(textureB1, obtenerXB1(&pix), obtenerYB1(&pix), WHITE);
+            DrawTexture(textureB2, obtenerXB2(&pix), obtenerYB2(&pix), WHITE);
+            DrawTexture(textureB3, obtenerXB3(&pix), obtenerYB3(&pix), WHITE);
+            DrawTexture(textureB4, obtenerXB4(&pix), obtenerYB4(&pix), WHITE);
+
+            //DADOS
+            //int d1 = updateDado1(&dice); int d2 = updateDado2(&dice);
+            DrawText(TextFormat("D1 [%d]  D2 [%d]", 0, 0), 1230, 780, 50, WHITE);
+            DrawTexture(textureDado, 1100, 750, WHITE);
+
+            //TÍTULO
+            DrawText("PERPENDICULAR PARCHEESI", 360, 45, 60, RAYWHITE);
+
+
+            EndDrawing();
+            //----------------------------------------------------------------------------------
+        }
+
+        // De-Initialization
+        //--------------------------------------------------------------------------------------
+        CloseWindow();        // Close window and OpenGL context
+        //--------------------------------------------------------------------------------------
+
+        */
 }

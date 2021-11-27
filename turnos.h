@@ -67,6 +67,8 @@ int valorDado1(Dados dados);
 int valorDado2(Dados dados);
 void movimientoFichaDelInicio(int dado , Ficha *fichaQueEstamosMoviendo , Board *Tablero , char Player);
 void comer(Casilla *casillaComida,int cualCasilla,Board *Tablero,char Player);
+int Revisarbarreras(Board* Tablero,Ficha *fichaAMover,int tiro);
+int revisarVictoria(Board *Tablero);
 int existeFichaR1EnInicio(Board*Tablero,char Player);
 int existeFichaR2EnInicio(Board*Tablero,char Player);
 int existeFichaR3EnInicio(Board*Tablero,char Player);
@@ -83,6 +85,23 @@ int existeFichaY1EnInicio(Board*Tablero,char Player);
 int existeFichaY2EnInicio(Board*Tablero,char Player);
 int existeFichaY3EnInicio(Board*Tablero,char Player);
 int existeFichaY4EnInicio(Board*Tablero,char Player);
+int existeFichaR1EnEnd(Board*Tablero);
+int existeFichaR2EnEnd(Board*Tablero);
+int existeFichaR3EnEnd(Board*Tablero);
+int existeFichaR4EnEnd(Board*Tablero);
+int existeFichaG1EnEnd(Board*Tablero);
+int existeFichaG2EnEnd(Board*Tablero);
+int existeFichaG3EnEnd(Board*Tablero);
+int existeFichaG4EnEnd(Board*Tablero);
+int existeFichaB1EnEnd(Board*Tablero);
+int existeFichaB2EnEnd(Board*Tablero);
+int existeFichaB3EnEnd(Board*Tablero);
+int existeFichaB4EnEnd(Board*Tablero);
+int existeFichaY1EnEnd(Board*Tablero);
+int existeFichaY2EnEnd(Board*Tablero);
+int existeFichaY3EnEnd(Board*Tablero);
+int existeFichaY4EnEnd(Board*Tablero);
+
 int hayFichasEnInicio(Board* Tablero, char Player);
 
 
@@ -124,7 +143,5 @@ int obtenerXY3(PixelPos *pos);
 int obtenerYY3(PixelPos *pos);
 int obtenerXY4(PixelPos *pos);
 int obtenerYY4(PixelPos *pos);
-
-
 
 #endif //PARCHIS_TURNOS_H

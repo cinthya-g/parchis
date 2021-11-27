@@ -13,6 +13,7 @@ typedef struct casInicio Base;
 typedef struct casEnd Final;
 typedef struct casVicLap CasVicLap;
 
+int numPlayers();
 
 Board* newBoard();
 void emptyEnding(Board *juego, char Player);

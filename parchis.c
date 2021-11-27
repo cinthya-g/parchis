@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <raylib.h>
 #include "parchis.h"
 
 struct ficha{
@@ -62,6 +63,19 @@ struct board{
     struct casInicio *baseB;
     struct casInicio *baseG;
 };
+
+//----------------------------------------------------------------------------
+int numPlayers(){
+    int p;
+    do{
+        p = GetKeyPressed();
+    }while(p<0 || p>4);
+    return p;
+}
+
+
+//----------------------------------------------------------------------------
+
 
 
 //Crea un tablero con la casilla 1 implementada

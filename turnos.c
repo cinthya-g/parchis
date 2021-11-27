@@ -9,7 +9,7 @@ struct ficha{
     char Player;//Determina el color del jugador (b, y, r, g)
     char Path;//Path es un acumulador de el progreso de la ficha
     int Id;
-    int PaGanar;
+    char PaGanar;
 };
 struct casilla{
     int NumCasilla;//Indica el numero de la casilla | nuemros siempre entre 1-68
@@ -387,14 +387,14 @@ char quienInicia()
 
 char cambiarJugador(char Player){
     char jugadorEnTurno[4]={'R','G','Y','B'};
-    if(Player == jugadorEnTurno[0])
-        Player = jugadorEnTurno[1];
-    else if (Player == jugadorEnTurno[1])
-        Player = jugadorEnTurno[2];
-    else if(Player == jugadorEnTurno[2])
-        Player = jugadorEnTurno[3];
-    else
-        Player = jugadorEnTurno[0];
+    if(Player == 'R')
+        Player = 'G';
+    else if (Player == 'G')
+        Player = 'Y';
+    else if(Player == 'Y')
+        Player = 'B';
+    else if(Player == 'B')
+        Player = 'R';
 
     return Player;
 }
@@ -574,12 +574,14 @@ void Turno(char Player,Board *Tablero)
     Dados tiro = tiroDados();
     int Dado1=valorDado1(tiro);
     int Dado2=valorDado2(tiro);
-    Dado1=5;
-    Dado2=4;
+    //Dado1=5;
+    //Dado2=4;
+    printf("Tiro:\nDado1= %d Dado2= %d",Dado1,Dado2);
     int numeroDeMovimientosPorTurno=0;
     int dadoUsado=0;
     int dadoAUsar;
-    int sumaDados=Dado1+Dado2;//CUANDO USEMOS ESTA MADRE, TENEMOS QUE SUMARLE DOS AL numeroDeMovimientosPorTurno para que se acaben los movimientos
+    int sumaDados=Dado1+Dado2;
+    int banderaDeBarrera=0;
     while(numeroDeMovimientosPorTurno<2)
     {
         int numeroDeFichasEnInicio=hayFichasEnInicio(Tablero,Player);
@@ -1011,8 +1013,6 @@ void Turno(char Player,Board *Tablero)
             }
             numeroDeMovimientosPorTurno=2;
         }
-        if(numeroDeMovimientosPorTurno>=2)
-            return;
         //-------------------LOGICA PARA ELEGIR DADOS--------------
         numeroDeFichasEnInicio=hayFichasEnInicio(Tablero,Player);
         if(numeroDeFichasEnInicio!=4)
@@ -1057,11 +1057,59 @@ void Turno(char Player,Board *Tablero)
 
             Ficha *fichaAManipular=fichaElecta(FichaAMover,Player, Player,Tablero,numeroDeFichasEnInicio,dadoAUsar);//Se le asiga a la variable, la ficha que vamos a usar mediante la funcion que regresa la ficha que eligio el usuario en entrada de texto
 
+            while(fichaAManipular->PaGanar==0)
+            {
+                printf("Esa ficha no puede ser movida del inicio ya que no tienes un 5, selecciona una ficha valida");
+                do{
+                    printf("\nSelecciona una ficha que quieras mover\n");
+                    printf("Input:");
+                    scanf("%d",&FichaAMover);
+                    if(FichaAMover < 0 || FichaAMover > 4)
+                        printf("Selecciona una ficha valida, entre 1 y 4\n");
+                }while(FichaAMover < 0 || FichaAMover > 4);
+
+                fichaAManipular=fichaElecta(FichaAMover,Player, Player,Tablero,numeroDeFichasEnInicio,dadoAUsar);
+            }
             printf("Esta deberia de ser la impresion de la ficha que vas a mover: %c%d\n",fichaAManipular->Player,fichaAManipular->Id);
             if(dadoAUsar==1)
+            {
+                banderaDeBarrera=Revisarbarreras(Tablero,fichaAManipular,Dado1);
+                while(banderaDeBarrera==1)
+                {
+                    printf("Movimiento invalido, una barrera bloque atu proceso, selecciona otra ficha para realizar el movimiento\n");
+                    do{
+                        printf("\nSelecciona una ficha que quieras mover\n");
+                        printf("Input:");
+                        scanf("%d",&FichaAMover);
+                        if(FichaAMover < 0 || FichaAMover > 4)
+                            printf("Selecciona una ficha valida, entre 1 y 4\n");
+                    }while(FichaAMover < 0 || FichaAMover > 4);
+
+                    fichaAManipular=fichaElecta(FichaAMover,Player, Player,Tablero,numeroDeFichasEnInicio,dadoAUsar);
+                    banderaDeBarrera=Revisarbarreras(Tablero,fichaAManipular,Dado1);
+                }
                 movimientoFicha(Dado1, fichaAManipular, Tablero, Player);
+            }
             else if(dadoAUsar==2)
+            {
+                banderaDeBarrera=Revisarbarreras(Tablero,fichaAManipular,Dado2);
+                while(banderaDeBarrera==1)
+                {
+                    printf("Movimiento invalido, una barrera bloque atu proceso, selecciona otra ficha para realizar el movimiento\n");
+                    do{
+                        printf("\nSelecciona una ficha que quieras mover\n");
+                        printf("Input:");
+                        scanf("%d",&FichaAMover);
+                        if(FichaAMover < 0 || FichaAMover > 4)
+                            printf("Selecciona una ficha valida, entre 1 y 4\n");
+                    }while(FichaAMover < 0 || FichaAMover > 4);
+
+                    fichaAManipular=fichaElecta(FichaAMover,Player, Player,Tablero,numeroDeFichasEnInicio,dadoAUsar);
+                    banderaDeBarrera=Revisarbarreras(Tablero,fichaAManipular,Dado2);
+                }
+
                 movimientoFicha(Dado2, fichaAManipular, Tablero, Player);
+            }
         }
         else
         {
@@ -1080,6 +1128,8 @@ int valorDado2(Dados dados)
 {
     return dados.die2;
 }
+
+//------------------------------- ARREGLAR DISPLAY --------------------------------
 void displayOpcionesDeFichaInicio(char Player,Board *Tablero)//Imprime las fichas en la casilla de inicio
 {
     printf("\nFichas en INICIO:");
@@ -1426,20 +1476,21 @@ Ficha *fichaElecta(int IDfichaInputUsuario,char playerFichaUsuario,char Player,B
     {
         while(focusnode!=NULL)
         {
-            if(focusnode->ficha1!=NULL)
+            if(focusnode->ficha1!=NULL){
                 if(IDfichaInputUsuario==focusnode->ficha1->Id && playerFichaUsuario==focusnode->ficha1->Player)
                 {
                     fichaderetorno=focusnode->ficha1;
                     focusnode->ficha1=NULL;
                     return fichaderetorno;
                 }
-                else if(focusnode->ficha2!=NULL)
-                    if(IDfichaInputUsuario==focusnode->ficha2->Id && playerFichaUsuario==focusnode->ficha2->Player)
-                    {
-                        fichaderetorno=focusnode->ficha2;
-                        focusnode->ficha2=NULL;
-                        return fichaderetorno;
-                    }
+            }
+            else if(focusnode->ficha2!=NULL)
+                if(IDfichaInputUsuario==focusnode->ficha2->Id && playerFichaUsuario==focusnode->ficha2->Player)
+                {
+                    fichaderetorno=focusnode->ficha2;
+                    focusnode->ficha2=NULL;
+                    return fichaderetorno;
+                }
             focusnode=focusnode->next;
         }
     }
@@ -1449,20 +1500,21 @@ Ficha *fichaElecta(int IDfichaInputUsuario,char playerFichaUsuario,char Player,B
         Casilla * focusnode=Tablero->inicio;
         while(focusnode!=NULL)
         {
-            if(focusnode->ficha1!=NULL)
+            if(focusnode->ficha1!=NULL){
                 if(IDfichaInputUsuario==focusnode->ficha1->Id && playerFichaUsuario==focusnode->ficha1->Player)
                 {
                     fichaderetorno=focusnode->ficha1;
                     focusnode->ficha1=NULL;
                     return fichaderetorno;
                 }
-                else if(focusnode->ficha2!=NULL)
-                    if(IDfichaInputUsuario==focusnode->ficha2->Id && playerFichaUsuario==focusnode->ficha2->Player)
-                    {
-                        fichaderetorno=focusnode->ficha2;
-                        focusnode->ficha2=NULL;
-                        return fichaderetorno;
-                    }
+            }
+            else if(focusnode->ficha2!=NULL)
+                if(IDfichaInputUsuario==focusnode->ficha2->Id && playerFichaUsuario==focusnode->ficha2->Player)
+                {
+                    fichaderetorno=focusnode->ficha2;
+                    focusnode->ficha2=NULL;
+                    return fichaderetorno;
+                }
 
             focusnode=focusnode->next;
         }
@@ -1472,20 +1524,21 @@ Ficha *fichaElecta(int IDfichaInputUsuario,char playerFichaUsuario,char Player,B
         Casilla * focusnode=Tablero->inicio;
         while(focusnode!=NULL)
         {
-            if(focusnode->ficha1!=NULL)
+            if(focusnode->ficha1!=NULL){
                 if(IDfichaInputUsuario==focusnode->ficha1->Id && playerFichaUsuario==focusnode->ficha1->Player)
                 {
                     fichaderetorno=focusnode->ficha1;
                     focusnode->ficha1=NULL;
                     return fichaderetorno;
                 }
-                else if(focusnode->ficha2!=NULL)
-                    if(IDfichaInputUsuario==focusnode->ficha2->Id && playerFichaUsuario==focusnode->ficha2->Player)
-                    {
-                        fichaderetorno=focusnode->ficha2;
-                        focusnode->ficha2=NULL;
-                        return fichaderetorno;
-                    }
+            }
+            else if(focusnode->ficha2!=NULL)
+                if(IDfichaInputUsuario==focusnode->ficha2->Id && playerFichaUsuario==focusnode->ficha2->Player)
+                {
+                    fichaderetorno=focusnode->ficha2;
+                    focusnode->ficha2=NULL;
+                    return fichaderetorno;
+                }
 
             focusnode=focusnode->next;
         }
@@ -1495,20 +1548,21 @@ Ficha *fichaElecta(int IDfichaInputUsuario,char playerFichaUsuario,char Player,B
         Casilla * focusnode=Tablero->inicio;
         while(focusnode!=NULL)
         {
-            if(focusnode->ficha1!=NULL)
+            if(focusnode->ficha1!=NULL){
                 if(IDfichaInputUsuario==focusnode->ficha1->Id && playerFichaUsuario==focusnode->ficha1->Player)
                 {
                     fichaderetorno=focusnode->ficha1;
                     focusnode->ficha1=NULL;
                     return fichaderetorno;
                 }
-                else if(focusnode->ficha2!=NULL)
-                    if(IDfichaInputUsuario==focusnode->ficha2->Id && playerFichaUsuario==focusnode->ficha2->Player)
-                    {
-                        fichaderetorno=focusnode->ficha2;
-                        focusnode->ficha2=NULL;
-                        return fichaderetorno;
-                    }
+            }
+            else if(focusnode->ficha2!=NULL)
+                if(IDfichaInputUsuario==focusnode->ficha2->Id && playerFichaUsuario==focusnode->ficha2->Player)
+                {
+                    fichaderetorno=focusnode->ficha2;
+                    focusnode->ficha2=NULL;
+                    return fichaderetorno;
+                }
 
             focusnode=focusnode->next;
         }
@@ -1518,6 +1572,7 @@ Ficha *fichaElecta(int IDfichaInputUsuario,char playerFichaUsuario,char Player,B
 void movimientoFicha(int dado , Ficha *fichaQueEstamosMoviendo , Board *Tablero , char Player)
 {
     Casilla *focusnode=Tablero->inicio;
+    Casilla *focusbarrera=Tablero->inicio;
 
 
     //-----------------------------JUGADOR ROJO------------------------------------
@@ -2029,4 +2084,169 @@ void comer(Casilla *casillaComida,int cualCasilla,Board *Tablero,char Player)
 
     printf("Esta deberia de ser la impresion de la ficha que vas a mover: %c%d\n",fichaAManipular->Player,fichaAManipular->Id);
     movimientoFicha(20,fichaAManipular,Tablero,Player);
+}
+int Revisarbarreras(Board* Tablero,Ficha *fichaAMover,int tiro)
+{
+    Casilla *focusnode=Tablero->inicio;
+    Casilla *focusnodeBarreraInicio=Tablero->inicio;
+
+    while(focusnode!=NULL)
+    {
+        if(focusnode->NumCasilla==fichaAMover->Path)
+        {
+            for(int i=0;i<tiro;i++)
+            {	if(focusnode->NumCasilla==68)
+                {
+                    focusnode=Tablero->inicio;
+                }
+                if(focusnode->ficha1!=NULL&&focusnode->ficha2!=NULL)
+                    return 1;
+                focusnode=focusnode->next;
+            }
+        }
+        focusnode=focusnode->next;
+    }
+    return 0;
+}
+int revisarVictoria(Board *Tablero)
+{
+    int fichaR1EnEndTrue=existeFichaR1EnEnd(Tablero);
+    int fichaR2EnEndTrue=existeFichaR2EnEnd(Tablero);
+    int fichaR3EnEndTrue=existeFichaR3EnEnd(Tablero);
+    int fichaR4EnEndTrue=existeFichaR4EnEnd(Tablero);
+    int fichaG1EnEndTrue=existeFichaG1EnEnd(Tablero);
+    int fichaG2EnEndTrue=existeFichaG2EnEnd(Tablero);
+    int fichaG3EnEndTrue=existeFichaG3EnEnd(Tablero);
+    int fichaG4EnEndTrue=existeFichaG4EnEnd(Tablero);
+    int fichaB1EnEndTrue=existeFichaB1EnEnd(Tablero);
+    int fichaB2EnEndTrue=existeFichaB2EnEnd(Tablero);
+    int fichaB3EnEndTrue=existeFichaB3EnEnd(Tablero);
+    int fichaB4EnEndTrue=existeFichaB4EnEnd(Tablero);
+    int fichaY1EnEndTrue=existeFichaY1EnEnd(Tablero);
+    int fichaY2EnEndTrue=existeFichaY2EnEnd(Tablero);
+    int fichaY3EnEndTrue=existeFichaY3EnEnd(Tablero);
+    int fichaY4EnEndTrue=existeFichaY4EnEnd(Tablero);
+
+    if(fichaR1EnEndTrue==1 && fichaR2EnEndTrue==1 && fichaR3EnEndTrue==1 && fichaR4EnEndTrue==1)
+        return 1;
+    if(fichaG1EnEndTrue==1 && fichaG2EnEndTrue==1 && fichaG3EnEndTrue==1 && fichaG4EnEndTrue==1)
+        return 2;
+    if(fichaB1EnEndTrue==1 && fichaB2EnEndTrue==1 && fichaB3EnEndTrue==1 && fichaB4EnEndTrue==1)
+        return 3;
+    if(fichaY1EnEndTrue==1 && fichaY2EnEndTrue==1 && fichaY3EnEndTrue==1 && fichaY4EnEndTrue==1)
+        return 4;
+
+    return 0;
+}
+int existeFichaR1EnEnd(Board*Tablero)
+{
+    if(Tablero->winR->end->ficha1!=NULL)
+        return 1;
+    else
+        return 0;
+}
+int existeFichaR2EnEnd(Board*Tablero)
+{
+    if(Tablero->winR->end->ficha2!=NULL)
+        return 1;
+    else
+        return 0;
+}
+int existeFichaR3EnEnd(Board*Tablero)
+{
+    if(Tablero->winR->end->ficha3!=NULL)
+        return 1;
+    else
+        return 0;
+}
+int existeFichaR4EnEnd(Board*Tablero)
+{
+    if(Tablero->winR->end->ficha4!=NULL)
+        return 1;
+    else
+        return 0;
+}
+int existeFichaG1EnEnd(Board*Tablero)
+{
+    if(Tablero->winG->end->ficha1!=NULL)
+        return 1;
+    else
+        return 0;
+}
+int existeFichaG2EnEnd(Board*Tablero)
+{
+    if(Tablero->winG->end->ficha2!=NULL)
+        return 1;
+    else
+        return 0;
+}
+int existeFichaG3EnEnd(Board*Tablero)
+{
+    if(Tablero->winG->end->ficha3!=NULL)
+        return 1;
+    else
+        return 0;
+}
+int existeFichaG4EnEnd(Board*Tablero)
+{
+    if(Tablero->winG->end->ficha4!=NULL)
+        return 1;
+    else
+        return 0;
+}
+int existeFichaB1EnEnd(Board*Tablero)
+{
+    if(Tablero->winB->end->ficha1!=NULL)
+        return 1;
+    else
+        return 0;
+}
+int existeFichaB2EnEnd(Board*Tablero)
+{
+    if(Tablero->winB->end->ficha2!=NULL)
+        return 1;
+    else
+        return 0;
+}
+int existeFichaB3EnEnd(Board*Tablero)
+{
+    if(Tablero->winB->end->ficha3!=NULL)
+        return 1;
+    else
+        return 0;
+}
+int existeFichaB4EnEnd(Board*Tablero)
+{
+    if(Tablero->winB->end->ficha4!=NULL)
+        return 1;
+    else
+        return 0;
+}
+int existeFichaY1EnEnd(Board*Tablero)
+{
+    if(Tablero->winY->end->ficha1!=NULL)
+        return 1;
+    else
+        return 0;
+}
+int existeFichaY2EnEnd(Board*Tablero)
+{
+    if(Tablero->winY->end->ficha2!=NULL)
+        return 1;
+    else
+        return 0;
+}
+int existeFichaY3EnEnd(Board*Tablero)
+{
+    if(Tablero->winY->end->ficha3!=NULL)
+        return 1;
+    else
+        return 0;
+}
+int existeFichaY4EnEnd(Board*Tablero)
+{
+    if(Tablero->winY->end->ficha4!=NULL)
+        return 1;
+    else
+        return 0;
 }
