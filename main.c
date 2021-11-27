@@ -42,9 +42,9 @@ int main(void)
     SetTargetFPS(30);
 
     //Iniciar tablero y fichas
-    Image fondo = LoadImage("..\\tablero.png");
+    Image fondo = LoadImage("..\\fondos\\tablero.png");
         Texture2D textureBg = LoadTextureFromImage(fondo);
-        Image fondoinicio = LoadImage("..\\fondoinicio.png");
+        Image fondoinicio = LoadImage("..\\fondos\\fondoinicio.png");
         Texture2D textureInitBg = LoadTextureFromImage(fondoinicio);
 
         //Fichas rojas y su textura
