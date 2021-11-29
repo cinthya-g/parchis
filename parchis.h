@@ -4,7 +4,6 @@
 
 #ifndef PARCHIS_PARCHIS_H
 #define PARCHIS_PARCHIS_H
-
 typedef struct board Board;
 
 typedef struct casilla Casilla;
@@ -13,7 +12,6 @@ typedef struct casInicio Base;
 typedef struct casEnd Final;
 typedef struct casVicLap CasVicLap;
 
-int numPlayers();
 
 Board* newBoard();
 void emptyEnding(Board *juego, char Player);

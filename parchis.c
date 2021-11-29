@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <raylib.h>
 #include "parchis.h"
+#include "turnos.h"
 
 struct ficha{
     char Player;//Determina el color del jugador (b, y, r, g)
@@ -64,19 +64,6 @@ struct board{
     struct casInicio *baseG;
 };
 
-//----------------------------------------------------------------------------
-int numPlayers(){
-    int p;
-    do{
-        p = GetKeyPressed();
-    }while(p<0 || p>4);
-    return p;
-}
-
-
-//----------------------------------------------------------------------------
-
-
 
 //Crea un tablero con la casilla 1 implementada
 Board *newBoard(){
@@ -110,8 +97,8 @@ void finishBoard(Board* juego, int contador)
 
     //Asignamos las casillas en donde se puede comer (0) y donde no (1)
     if(focusNode->NumCasilla==1||focusNode->NumCasilla==8||focusNode->NumCasilla==13||focusNode->NumCasilla==18
-    ||focusNode->NumCasilla==25||focusNode->NumCasilla==30||focusNode->NumCasilla==35||focusNode->NumCasilla==42
-    ||focusNode->NumCasilla==47||focusNode->NumCasilla==52||focusNode->NumCasilla==59||focusNode->NumCasilla==64)
+       ||focusNode->NumCasilla==25||focusNode->NumCasilla==30||focusNode->NumCasilla==35||focusNode->NumCasilla==42
+       ||focusNode->NumCasilla==47||focusNode->NumCasilla==52||focusNode->NumCasilla==59||focusNode->NumCasilla==64)
     {
         focusNode->BanSafe = 1;
     }
@@ -170,6 +157,10 @@ void beginning(Board* juego)
     juego->baseR->ficha2->Id=2;
     juego->baseR->ficha3->Id=3;
     juego->baseR->ficha4->Id=4;
+    juego->baseR->ficha1->PaGanar = 0;
+    juego->baseR->ficha2->PaGanar = 0;
+    juego->baseR->ficha3->PaGanar = 0;
+    juego->baseR->ficha4->PaGanar = 0;
 
     //---------------------------Posiciones iniciales BLUE-----------------------
     juego->baseB=malloc(sizeof(Base));
@@ -191,6 +182,10 @@ void beginning(Board* juego)
     juego->baseB->ficha2->Id=2;
     juego->baseB->ficha3->Id=3;
     juego->baseB->ficha4->Id=4;
+    juego->baseB->ficha1->PaGanar = 0;
+    juego->baseB->ficha2->PaGanar = 0;
+    juego->baseB->ficha3->PaGanar = 0;
+    juego->baseB->ficha4->PaGanar = 0;
 
     //---------------------------Posiciones iniciales GREEN-------------------
     juego->baseG=malloc(sizeof(Base));
@@ -212,6 +207,10 @@ void beginning(Board* juego)
     juego->baseG->ficha2->Id=2;
     juego->baseG->ficha3->Id=3;
     juego->baseG->ficha4->Id=4;
+    juego->baseG->ficha1->PaGanar = 0;
+    juego->baseG->ficha2->PaGanar = 0;
+    juego->baseG->ficha3->PaGanar = 0;
+    juego->baseG->ficha4->PaGanar = 0;
 
     //---------------------------Posiciones iniciales YELLOW-------------------
     juego->baseY=malloc(sizeof(Base));
@@ -233,6 +232,10 @@ void beginning(Board* juego)
     juego->baseY->ficha2->Id=2;
     juego->baseY->ficha3->Id=3;
     juego->baseY->ficha4->Id=4;
+    juego->baseY->ficha1->PaGanar = 0;
+    juego->baseY->ficha2->PaGanar = 0;
+    juego->baseY->ficha3->PaGanar = 0;
+    juego->baseY->ficha4->PaGanar = 0;
 
 }
 
@@ -446,7 +449,7 @@ void displayBoard(Board *juego){
 
     //-----------------RED-------------------------------------------------
     CasVicLap *focusLapR=juego->winR;
-    while(focusLapR != NULL)
+    while(focusLapR!=NULL)
     {
         printf("R Numero de casillaVL: %d\t Color del player: %c\n",focusLapR->NumCasilla,focusLapR->Player);
         focusLapR=focusLapR->next;
@@ -457,7 +460,7 @@ void displayBoard(Board *juego){
 
     //--------------GREEN------------------------------------------------------
     CasVicLap *focusLapG=juego->winG;
-    while(focusLapG != NULL){
+    while(focusLapG!=NULL){
         printf("G Numero de casillaVL: %d\t Color del player: %c\n",focusLapG->NumCasilla,focusLapG->Player);
         focusLapG=focusLapG->next;
     }
@@ -468,7 +471,7 @@ void displayBoard(Board *juego){
 
     //-------------BLUE------------------------------------------------------
     CasVicLap *focusLapB=juego->winB;
-    while(focusLapB != NULL){
+    while(focusLapB!=NULL){
         printf("B Numero de casillaVL: %d\t Color del player: %c\n",focusLapB->NumCasilla,focusLapB->Player);
         focusLapB=focusLapB->next;
     }
@@ -478,7 +481,7 @@ void displayBoard(Board *juego){
 
     //------------YELLOW----------------------------------------------------------
     CasVicLap *focusLapY=juego->winY;
-    while(focusLapY != NULL){
+    while(focusLapY!=NULL){
         printf("Y Numero de casillaVL: %d\t Color del player: %c\n",focusLapY->NumCasilla,focusLapY->Player);
         focusLapY=focusLapY->next;
     }

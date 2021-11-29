@@ -11,25 +11,27 @@ int VICTORIA=0;
 
 int main(void)
 {
-
-    Board *juego = newBoard();
-    creacionMaestra(juego);
-    char playerInicial=quienInicia();
-    do{
-        displayBoard(juego);
-        char player = cambiarJugador(playerInicial);
-        Turno(player, juego);
-        displayBoard(juego);
-        VICTORIA=revisarVictoria(juego);
-        if(VICTORIA==1)
-            printf("FELICIDADES GANO EL JUGADOR ROJO");
-        else if(VICTORIA==2)
-            printf("FELICIDADES GANO EL JUGADOR VERDE");
-        else if(VICTORIA==3)
-            printf("FELICIDADES GANO EL JUGADOR AZUL");
-        else if(VICTORIA==4)
-            printf("FELICIDADES GANO EL JUGADOR AMARILLO");
-    }while(VICTORIA==0);
+	int VICTORIA=0;
+  Board *juego = newBoard();
+  creacionMaestra(juego);
+  char playerInicial=quienInicia();
+	char player = playerInicial;
+  do{
+  //displayBoard(juego);
+	Turno(player, juego);
+  hacerTiempo();
+//	displayBoard(juego);
+	player=cambiarJugador(player);
+	VICTORIA=revisarVictoria(juego);
+	if(VICTORIA==1)
+	printf("FELICIDADES GANO EL JUGADOR ROJO");
+	else if(VICTORIA==2)
+	printf("FELICIDADES GANO EL JUGADOR VERDE");
+	else if(VICTORIA==3)
+	printf("FELICIDADES GANO EL JUGADOR AZUL");
+	else if(VICTORIA==4)
+	printf("FELICIDADES GANO EL JUGADOR AMARILLo");
+  }while(VICTORIA==0);
 
 
 /*

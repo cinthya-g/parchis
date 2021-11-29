@@ -386,7 +386,6 @@ char quienInicia()
 }
 
 char cambiarJugador(char Player){
-    char jugadorEnTurno[4]={'R','G','Y','B'};
     if(Player == 'R')
         Player = 'G';
     else if (Player == 'G')
@@ -570,458 +569,468 @@ int hayFichasEnInicio(Board* Tablero, char Player)
 }
 void Turno(char Player,Board *Tablero)
 {
-    printf("Es el turno del jugador: %c\n",Player );
+    printf("Es el turno del jugador: %c\n\n",Player );
     Dados tiro = tiroDados();
     int Dado1=valorDado1(tiro);
     int Dado2=valorDado2(tiro);
     //Dado1=5;
     //Dado2=4;
-    printf("Tiro:\nDado1= %d Dado2= %d",Dado1,Dado2);
+    printf("Tiro:Dado1= %d Dado2= %d\n\n",Dado1,Dado2);
     int numeroDeMovimientosPorTurno=0;
     int dadoUsado=0;
     int dadoAUsar;
     int sumaDados=Dado1+Dado2;
     int banderaDeBarrera=0;
+    int casillaDeSalidaLlena=0;
+
+
     while(numeroDeMovimientosPorTurno<2)
     {
+        casillaDeSalidaLlena=estaraLlenaLaCasillaDeSalida(Tablero,Player);
         int numeroDeFichasEnInicio=hayFichasEnInicio(Tablero,Player);
         //----------------PARA SACAR DE LA CASILLA INICIAL SI EXISTE UN 5-------------
-        if(Dado1==5 && numeroDeFichasEnInicio>0)
+        if(casillaDeSalidaLlena==0)
         {
-            printf("\nDado 1  = 5, sacando ficha de inicio automaticamente.\n");
-            printf("Se ha usado el dado 1 para este movimiento.\n");
-            dadoUsado=1;
-            if(Player=='R')
+            if(Dado1==5 && numeroDeFichasEnInicio>0)
             {
-                int fichaR1EnInicioTrue=existeFichaR1EnInicio(Tablero,Player);
-                int fichaR2EnInicioTrue=existeFichaR2EnInicio(Tablero,Player);
-                int fichaR3EnInicioTrue=existeFichaR3EnInicio(Tablero,Player);
-                int fichaR4EnInicioTrue=existeFichaR4EnInicio(Tablero,Player);
+                printf("\nDado 1  = 5, sacando ficha de inicio automaticamente.\n");
+                printf("Se ha usado el dado 1 para este movimiento.\n");
+                dadoUsado=1;
+                if(Player=='R')
+                {
+                    int fichaR1EnInicioTrue=existeFichaR1EnInicio(Tablero,Player);
+                    int fichaR2EnInicioTrue=existeFichaR2EnInicio(Tablero,Player);
+                    int fichaR3EnInicioTrue=existeFichaR3EnInicio(Tablero,Player);
+                    int fichaR4EnInicioTrue=existeFichaR4EnInicio(Tablero,Player);
 
 
-                if(fichaR1EnInicioTrue==1)
-                {
-                    int fichaDeInicioR1=1;
-                    Ficha *fichaR1SaleDeInicio=fichaElecta(fichaDeInicioR1, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
-                    movimientoFichaDelInicio(Dado1, fichaR1SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaR2EnInicioTrue==1)
-                {
+                    if(fichaR1EnInicioTrue==1)
+                    {
+                        int fichaDeInicioR1=1;
+                        Ficha *fichaR1SaleDeInicio=fichaElecta(fichaDeInicioR1, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
+                        movimientoFichaDelInicio(Dado1, fichaR1SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaR2EnInicioTrue==1)
+                    {
 
-                    int fichaDeInicioR2=2;
-                    Ficha *fichaR2SaleDeInicio=fichaElecta(fichaDeInicioR2, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
-                    movimientoFichaDelInicio(Dado1, fichaR2SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaR3EnInicioTrue==1)
-                {
-                    int fichaDeInicioR3=3;
-                    Ficha *fichaR3SaleDeInicio=fichaElecta(fichaDeInicioR3, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
-                    movimientoFichaDelInicio(Dado1, fichaR3SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaR4EnInicioTrue==1)
-                {
+                        int fichaDeInicioR2=2;
+                        Ficha *fichaR2SaleDeInicio=fichaElecta(fichaDeInicioR2, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
+                        movimientoFichaDelInicio(Dado1, fichaR2SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaR3EnInicioTrue==1)
+                    {
+                        int fichaDeInicioR3=3;
+                        Ficha *fichaR3SaleDeInicio=fichaElecta(fichaDeInicioR3, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
+                        movimientoFichaDelInicio(Dado1, fichaR3SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaR4EnInicioTrue==1)
+                    {
 
-                    int fichaDeInicioR4=4;
-                    Ficha *fichaR4SaleDeInicio=fichaElecta(fichaDeInicioR4, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
-                    movimientoFichaDelInicio(Dado1, fichaR4SaleDeInicio, Tablero, Player);
+                        int fichaDeInicioR4=4;
+                        Ficha *fichaR4SaleDeInicio=fichaElecta(fichaDeInicioR4, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
+                        movimientoFichaDelInicio(Dado1, fichaR4SaleDeInicio, Tablero, Player);
+                    }
                 }
+                if(Player=='G')
+                {
+                    int fichaG1EnInicioTrue=existeFichaG1EnInicio(Tablero,Player);
+                    int fichaG2EnInicioTrue=existeFichaG2EnInicio(Tablero,Player);
+                    int fichaG3EnInicioTrue=existeFichaG3EnInicio(Tablero,Player);
+                    int fichaG4EnInicioTrue=existeFichaG4EnInicio(Tablero,Player);
+
+
+                    if(fichaG1EnInicioTrue==1)
+                    {
+
+                        int fichaDeInicioG1=1;
+                        Ficha *fichaG1SaleDeInicio=fichaElecta(fichaDeInicioG1, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
+                        movimientoFichaDelInicio(Dado1, fichaG1SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaG2EnInicioTrue==1)
+                    {
+                        int fichaDeInicioG2=2;
+                        Ficha *fichaG2SaleDeInicio=fichaElecta(fichaDeInicioG2, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
+                        movimientoFichaDelInicio(Dado1, fichaG2SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaG3EnInicioTrue==1)
+                    {
+                        int fichaDeInicioG3=3;
+                        Ficha *fichaG3SaleDeInicio=fichaElecta(fichaDeInicioG3, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
+                        movimientoFichaDelInicio(Dado1, fichaG3SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaG4EnInicioTrue==1)
+                    {
+                        int fichaDeInicioG4=4;
+                        Ficha *fichaG4SaleDeInicio=fichaElecta(fichaDeInicioG4, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
+                        movimientoFichaDelInicio(Dado1, fichaG4SaleDeInicio, Tablero, Player);
+                    }
+                }
+                if(Player=='B')
+                {
+                    int fichaB1EnInicioTrue=existeFichaB1EnInicio(Tablero,Player);
+                    int fichaB2EnInicioTrue=existeFichaB2EnInicio(Tablero,Player);
+                    int fichaB3EnInicioTrue=existeFichaB3EnInicio(Tablero,Player);
+                    int fichaB4EnInicioTrue=existeFichaB4EnInicio(Tablero,Player);
+
+
+                    if(fichaB1EnInicioTrue==1)
+                    {
+                        int fichaDeInicioB1=1;
+                        Ficha *fichaB1SaleDeInicio=fichaElecta(fichaDeInicioB1, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
+                        movimientoFichaDelInicio(Dado1, fichaB1SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaB2EnInicioTrue==1)
+                    {
+                        int fichaDeInicioB2=2;
+                        Ficha *fichaB2SaleDeInicio=fichaElecta(fichaDeInicioB2, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
+                        movimientoFichaDelInicio(Dado1, fichaB2SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaB3EnInicioTrue==1)
+                    {
+                        int fichaDeInicioB3=3;
+                        Ficha *fichaB3SaleDeInicio=fichaElecta(fichaDeInicioB3, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
+                        movimientoFichaDelInicio(Dado1, fichaB3SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaB4EnInicioTrue==1)
+                    {
+                        int fichaDeInicioB4=4;
+                        Ficha *fichaB4SaleDeInicio=fichaElecta(fichaDeInicioB4, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
+                        movimientoFichaDelInicio(Dado1, fichaB4SaleDeInicio, Tablero, Player);
+                    }
+                }
+                if(Player=='Y')
+                {
+                    int fichaY1EnInicioTrue=existeFichaY1EnInicio(Tablero,Player);
+                    int fichaY2EnInicioTrue=existeFichaY2EnInicio(Tablero,Player);
+                    int fichaY3EnInicioTrue=existeFichaY3EnInicio(Tablero,Player);
+                    int fichaY4EnInicioTrue=existeFichaY4EnInicio(Tablero,Player);
+
+
+                    if(fichaY1EnInicioTrue==1)
+                    {
+                        int fichaDeInicioY1=1;
+                        Ficha *fichaY1SaleDeInicio=fichaElecta(fichaDeInicioY1, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
+                        movimientoFichaDelInicio(Dado1, fichaY1SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaY2EnInicioTrue==1)
+                    {
+                        int fichaDeInicioY2=2;
+                        Ficha *fichaY2SaleDeInicio=fichaElecta(fichaDeInicioY2, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
+                        movimientoFichaDelInicio(Dado1, fichaY2SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaY3EnInicioTrue==1)
+                    {
+                        int fichaDeInicioY3=3;
+                        Ficha *fichaY3SaleDeInicio=fichaElecta(fichaDeInicioY3, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
+                        movimientoFichaDelInicio(Dado1, fichaY3SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaY4EnInicioTrue==1)
+                    {
+                        int fichaDeInicioY4=4;
+                        Ficha *fichaY4SaleDeInicio=fichaElecta(fichaDeInicioY4, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
+                        movimientoFichaDelInicio(Dado1, fichaY4SaleDeInicio, Tablero, Player);
+                    }
+                }
+                Dado1=0;
+                numeroDeMovimientosPorTurno++;
             }
-            if(Player=='G')
+            //_________Puede existir un bug aqui por como estan puestos los ifs________
+            if(Dado2==5 && numeroDeFichasEnInicio>0)
             {
-                int fichaG1EnInicioTrue=existeFichaG1EnInicio(Tablero,Player);
-                int fichaG2EnInicioTrue=existeFichaG2EnInicio(Tablero,Player);
-                int fichaG3EnInicioTrue=existeFichaG3EnInicio(Tablero,Player);
-                int fichaG4EnInicioTrue=existeFichaG4EnInicio(Tablero,Player);
+                printf("\nDado 2  = 5, sacando ficha de inicio automaticamente.");
+                printf("Se ha usado el dado 2 para este movimiento.\n");
+                dadoUsado=2;
+                if(Player=='R')
+                {
+                    int fichaR1EnInicioTrue=existeFichaR1EnInicio(Tablero,Player);
+                    int fichaR2EnInicioTrue=existeFichaR2EnInicio(Tablero,Player);
+                    int fichaR3EnInicioTrue=existeFichaR3EnInicio(Tablero,Player);
+                    int fichaR4EnInicioTrue=existeFichaR4EnInicio(Tablero,Player);
 
 
-                if(fichaG1EnInicioTrue==1)
+                    if(fichaR1EnInicioTrue==1)
+                    {
+                        printf("Se cumplen las condiciones para que saques una ficha del inicio");
+                        int fichaDeInicioR1=1;
+                        Ficha *fichaR1SaleDeInicio=fichaElecta(fichaDeInicioR1, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
+                        movimientoFichaDelInicio(Dado1, fichaR1SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaR2EnInicioTrue==1)
+                    {
+                        printf("Se cumplen las condiciones para que saques una ficha del inicio");
+                        int fichaDeInicioR2=2;
+                        Ficha *fichaR2SaleDeInicio=fichaElecta(fichaDeInicioR2, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
+                        movimientoFichaDelInicio(Dado1, fichaR2SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaR3EnInicioTrue==1)
+                    {
+                        printf("Se cumplen las condiciones para que saques una ficha del inicio");
+                        int fichaDeInicioR3=3;
+                        Ficha *fichaR3SaleDeInicio=fichaElecta(fichaDeInicioR3, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
+                        movimientoFichaDelInicio(Dado1, fichaR3SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaR4EnInicioTrue==1)
+                    {
+                        printf("Se cumplen las condiciones para que saques una ficha del inicio");
+                        int fichaDeInicioR4=4;
+                        Ficha *fichaR4SaleDeInicio=fichaElecta(fichaDeInicioR4, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
+                        movimientoFichaDelInicio(Dado1, fichaR4SaleDeInicio, Tablero, Player);
+                    }
+                }
+                if(Player=='G')
                 {
+                    int fichaG1EnInicioTrue=existeFichaG1EnInicio(Tablero,Player);
+                    int fichaG2EnInicioTrue=existeFichaG2EnInicio(Tablero,Player);
+                    int fichaG3EnInicioTrue=existeFichaG3EnInicio(Tablero,Player);
+                    int fichaG4EnInicioTrue=existeFichaG4EnInicio(Tablero,Player);
 
-                    int fichaDeInicioG1=1;
-                    Ficha *fichaG1SaleDeInicio=fichaElecta(fichaDeInicioG1, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
-                    movimientoFichaDelInicio(Dado1, fichaG1SaleDeInicio, Tablero, Player);
+
+                    if(fichaG1EnInicioTrue==1)
+                    {
+                        int fichaDeInicioG1=1;
+                        Ficha *fichaG1SaleDeInicio=fichaElecta(fichaDeInicioG1, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
+                        movimientoFichaDelInicio(Dado1, fichaG1SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaG2EnInicioTrue==1)
+                    {
+                        int fichaDeInicioG2=2;
+                        Ficha *fichaG2SaleDeInicio=fichaElecta(fichaDeInicioG2, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
+                        movimientoFichaDelInicio(Dado1, fichaG2SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaG3EnInicioTrue==1)
+                    {
+                        int fichaDeInicioG3=3;
+                        Ficha *fichaG3SaleDeInicio=fichaElecta(fichaDeInicioG3, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
+                        movimientoFichaDelInicio(Dado1, fichaG3SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaG4EnInicioTrue==1)
+                    {
+                        int fichaDeInicioG4=4;
+                        Ficha *fichaG4SaleDeInicio=fichaElecta(fichaDeInicioG4, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
+                        movimientoFichaDelInicio(Dado1, fichaG4SaleDeInicio, Tablero, Player);
+                    }
                 }
-                else if(fichaG2EnInicioTrue==1)
+                if(Player=='B')
                 {
-                    int fichaDeInicioG2=2;
-                    Ficha *fichaG2SaleDeInicio=fichaElecta(fichaDeInicioG2, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
-                    movimientoFichaDelInicio(Dado1, fichaG2SaleDeInicio, Tablero, Player);
+                    int fichaB1EnInicioTrue=existeFichaB1EnInicio(Tablero,Player);
+                    int fichaB2EnInicioTrue=existeFichaB2EnInicio(Tablero,Player);
+                    int fichaB3EnInicioTrue=existeFichaB3EnInicio(Tablero,Player);
+                    int fichaB4EnInicioTrue=existeFichaB4EnInicio(Tablero,Player);
+
+
+                    if(fichaB1EnInicioTrue==1)
+                    {
+                        int fichaDeInicioB1=1;
+                        Ficha *fichaB1SaleDeInicio=fichaElecta(fichaDeInicioB1, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
+                        movimientoFichaDelInicio(Dado1, fichaB1SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaB2EnInicioTrue==1)
+                    {
+                        int fichaDeInicioB2=2;
+                        Ficha *fichaB2SaleDeInicio=fichaElecta(fichaDeInicioB2, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
+                        movimientoFichaDelInicio(Dado1, fichaB2SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaB3EnInicioTrue==1)
+                    {
+                        int fichaDeInicioB3=3;
+                        Ficha *fichaB3SaleDeInicio=fichaElecta(fichaDeInicioB3, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
+                        movimientoFichaDelInicio(Dado1, fichaB3SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaB4EnInicioTrue==1)
+                    {
+                        int fichaDeInicioB4=4;
+                        Ficha *fichaB4SaleDeInicio=fichaElecta(fichaDeInicioB4, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
+                        movimientoFichaDelInicio(Dado1, fichaB4SaleDeInicio, Tablero, Player);
+                    }
                 }
-                else if(fichaG3EnInicioTrue==1)
+                if(Player=='Y')
                 {
-                    int fichaDeInicioG3=3;
-                    Ficha *fichaG3SaleDeInicio=fichaElecta(fichaDeInicioG3, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
-                    movimientoFichaDelInicio(Dado1, fichaG3SaleDeInicio, Tablero, Player);
+                    int fichaY1EnInicioTrue=existeFichaY1EnInicio(Tablero,Player);
+                    int fichaY2EnInicioTrue=existeFichaY2EnInicio(Tablero,Player);
+                    int fichaY3EnInicioTrue=existeFichaY3EnInicio(Tablero,Player);
+                    int fichaY4EnInicioTrue=existeFichaY4EnInicio(Tablero,Player);
+
+
+                    if(fichaY1EnInicioTrue==1)
+                    {
+                        int fichaDeInicioY1=1;
+                        Ficha *fichaY1SaleDeInicio=fichaElecta(fichaDeInicioY1, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
+                        movimientoFichaDelInicio(Dado1, fichaY1SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaY2EnInicioTrue==1)
+                    {
+                        int fichaDeInicioY2=2;
+                        Ficha *fichaY2SaleDeInicio=fichaElecta(fichaDeInicioY2, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
+                        movimientoFichaDelInicio(Dado1, fichaY2SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaY3EnInicioTrue==1)
+                    {
+                        int fichaDeInicioY3=3;
+                        Ficha *fichaY3SaleDeInicio=fichaElecta(fichaDeInicioY3, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
+                        movimientoFichaDelInicio(Dado1, fichaY3SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaY4EnInicioTrue==1)
+                    {
+                        int fichaDeInicioY4=4;
+                        Ficha *fichaY4SaleDeInicio=fichaElecta(fichaDeInicioY4, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
+                        movimientoFichaDelInicio(Dado1, fichaY4SaleDeInicio, Tablero, Player);
+                    }
                 }
-                else if(fichaG4EnInicioTrue==1)
-                {
-                    int fichaDeInicioG4=4;
-                    Ficha *fichaG4SaleDeInicio=fichaElecta(fichaDeInicioG4, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
-                    movimientoFichaDelInicio(Dado1, fichaG4SaleDeInicio, Tablero, Player);
-                }
+                Dado2=0;
+                numeroDeMovimientosPorTurno++;
             }
-            if(Player=='B')
+            if(sumaDados==5 && numeroDeFichasEnInicio>0)
             {
-                int fichaB1EnInicioTrue=existeFichaB1EnInicio(Tablero,Player);
-                int fichaB2EnInicioTrue=existeFichaB2EnInicio(Tablero,Player);
-                int fichaB3EnInicioTrue=existeFichaB3EnInicio(Tablero,Player);
-                int fichaB4EnInicioTrue=existeFichaB4EnInicio(Tablero,Player);
+                printf("\nSuma de dados = 5, sacando ficha de inicio automaticamente.\n");
+                printf("Se han usado ambos dados para este movimiento.\n");
+                dadoUsado=3;
+                if(Player=='R')
+                {
+                    int fichaR1EnInicioTrue=existeFichaR1EnInicio(Tablero,Player);
+                    int fichaR2EnInicioTrue=existeFichaR2EnInicio(Tablero,Player);
+                    int fichaR3EnInicioTrue=existeFichaR3EnInicio(Tablero,Player);
+                    int fichaR4EnInicioTrue=existeFichaR4EnInicio(Tablero,Player);
 
 
-                if(fichaB1EnInicioTrue==1)
-                {
-                    int fichaDeInicioB1=1;
-                    Ficha *fichaB1SaleDeInicio=fichaElecta(fichaDeInicioB1, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
-                    movimientoFichaDelInicio(Dado1, fichaB1SaleDeInicio, Tablero, Player);
+                    if(fichaR1EnInicioTrue==1)
+                    {
+                        int fichaDeInicioR1=1;
+                        Ficha *fichaR1SaleDeInicio=fichaElecta(fichaDeInicioR1, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
+                        movimientoFichaDelInicio(Dado1, fichaR1SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaR2EnInicioTrue==1)
+                    {
+                        int fichaDeInicioR2=2;
+                        Ficha *fichaR2SaleDeInicio=fichaElecta(fichaDeInicioR2, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
+                        movimientoFichaDelInicio(Dado1, fichaR2SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaR3EnInicioTrue==1)
+                    {
+                        int fichaDeInicioR3=3;
+                        Ficha *fichaR3SaleDeInicio=fichaElecta(fichaDeInicioR3, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
+                        movimientoFichaDelInicio(Dado1, fichaR3SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaR4EnInicioTrue==1)
+                    {
+                        int fichaDeInicioR4=4;
+                        Ficha *fichaR4SaleDeInicio=fichaElecta(fichaDeInicioR4, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
+                        movimientoFichaDelInicio(Dado1, fichaR4SaleDeInicio, Tablero, Player);
+                    }
                 }
-                else if(fichaB2EnInicioTrue==1)
+                if(Player=='G')
                 {
-                    int fichaDeInicioB2=2;
-                    Ficha *fichaB2SaleDeInicio=fichaElecta(fichaDeInicioB2, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
-                    movimientoFichaDelInicio(Dado1, fichaB2SaleDeInicio, Tablero, Player);
+                    int fichaG1EnInicioTrue=existeFichaG1EnInicio(Tablero,Player);
+                    int fichaG2EnInicioTrue=existeFichaG2EnInicio(Tablero,Player);
+                    int fichaG3EnInicioTrue=existeFichaG3EnInicio(Tablero,Player);
+                    int fichaG4EnInicioTrue=existeFichaG4EnInicio(Tablero,Player);
+
+
+                    if(fichaG1EnInicioTrue==1)
+                    {
+                        int fichaDeInicioG1=1;
+                        Ficha *fichaG1SaleDeInicio=fichaElecta(fichaDeInicioG1, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
+                        movimientoFichaDelInicio(Dado1, fichaG1SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaG2EnInicioTrue==1)
+                    {
+                        int fichaDeInicioG2=2;
+                        Ficha *fichaG2SaleDeInicio=fichaElecta(fichaDeInicioG2, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
+                        movimientoFichaDelInicio(Dado1, fichaG2SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaG3EnInicioTrue==1)
+                    {
+                        int fichaDeInicioG3=3;
+                        Ficha *fichaG3SaleDeInicio=fichaElecta(fichaDeInicioG3, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
+                        movimientoFichaDelInicio(Dado1, fichaG3SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaG4EnInicioTrue==1)
+                    {
+                        int fichaDeInicioG4=4;
+                        Ficha *fichaG4SaleDeInicio=fichaElecta(fichaDeInicioG4, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
+                        movimientoFichaDelInicio(Dado1, fichaG4SaleDeInicio, Tablero, Player);
+                    }
                 }
-                else if(fichaB3EnInicioTrue==1)
+                if(Player=='B')
                 {
-                    int fichaDeInicioB3=3;
-                    Ficha *fichaB3SaleDeInicio=fichaElecta(fichaDeInicioB3, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
-                    movimientoFichaDelInicio(Dado1, fichaB3SaleDeInicio, Tablero, Player);
+                    int fichaB1EnInicioTrue=existeFichaB1EnInicio(Tablero,Player);
+                    int fichaB2EnInicioTrue=existeFichaB2EnInicio(Tablero,Player);
+                    int fichaB3EnInicioTrue=existeFichaB3EnInicio(Tablero,Player);
+                    int fichaB4EnInicioTrue=existeFichaB4EnInicio(Tablero,Player);
+
+
+                    if(fichaB1EnInicioTrue==1)
+                    {
+                        int fichaDeInicioB1=1;
+                        Ficha *fichaB1SaleDeInicio=fichaElecta(fichaDeInicioB1, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
+                        movimientoFichaDelInicio(Dado1, fichaB1SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaB2EnInicioTrue==1)
+                    {
+                        int fichaDeInicioB2=2;
+                        Ficha *fichaB2SaleDeInicio=fichaElecta(fichaDeInicioB2, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
+                        movimientoFichaDelInicio(Dado1, fichaB2SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaB3EnInicioTrue==1)
+                    {
+                        int fichaDeInicioB3=3;
+                        Ficha *fichaB3SaleDeInicio=fichaElecta(fichaDeInicioB3, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
+                        movimientoFichaDelInicio(Dado1, fichaB3SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaB4EnInicioTrue==1)
+                    {
+                        int fichaDeInicioB4=4;
+                        Ficha *fichaB4SaleDeInicio=fichaElecta(fichaDeInicioB4, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
+                        movimientoFichaDelInicio(Dado1, fichaB4SaleDeInicio, Tablero, Player);
+                    }
                 }
-                else if(fichaB4EnInicioTrue==1)
+                if(Player=='Y')
                 {
-                    int fichaDeInicioB4=4;
-                    Ficha *fichaB4SaleDeInicio=fichaElecta(fichaDeInicioB4, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
-                    movimientoFichaDelInicio(Dado1, fichaB4SaleDeInicio, Tablero, Player);
+                    int fichaY1EnInicioTrue=existeFichaY1EnInicio(Tablero,Player);
+                    int fichaY2EnInicioTrue=existeFichaY2EnInicio(Tablero,Player);
+                    int fichaY3EnInicioTrue=existeFichaY3EnInicio(Tablero,Player);
+                    int fichaY4EnInicioTrue=existeFichaY4EnInicio(Tablero,Player);
+
+
+                    if(fichaY1EnInicioTrue==1)
+                    {
+                        int fichaDeInicioY1=1;
+                        Ficha *fichaY1SaleDeInicio=fichaElecta(fichaDeInicioY1, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
+                        movimientoFichaDelInicio(Dado1, fichaY1SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaY2EnInicioTrue==1)
+                    {
+                        int fichaDeInicioY2=2;
+                        Ficha *fichaY2SaleDeInicio=fichaElecta(fichaDeInicioY2, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
+                        movimientoFichaDelInicio(Dado1, fichaY2SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaY3EnInicioTrue==1)
+                    {
+                        int fichaDeInicioY3=3;
+                        Ficha *fichaY3SaleDeInicio=fichaElecta(fichaDeInicioY3, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
+                        movimientoFichaDelInicio(Dado1, fichaY3SaleDeInicio, Tablero, Player);
+                    }
+                    else if(fichaY4EnInicioTrue==1)
+                    {
+                        int fichaDeInicioY4=4;
+                        Ficha *fichaY4SaleDeInicio=fichaElecta(fichaDeInicioY4, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
+                        movimientoFichaDelInicio(Dado1, fichaY4SaleDeInicio, Tablero, Player);
+                    }
                 }
+                numeroDeMovimientosPorTurno=2;
             }
-            if(Player=='Y')
-            {
-                int fichaY1EnInicioTrue=existeFichaY1EnInicio(Tablero,Player);
-                int fichaY2EnInicioTrue=existeFichaY2EnInicio(Tablero,Player);
-                int fichaY3EnInicioTrue=existeFichaY3EnInicio(Tablero,Player);
-                int fichaY4EnInicioTrue=existeFichaY4EnInicio(Tablero,Player);
-
-
-                if(fichaY1EnInicioTrue==1)
-                {
-                    int fichaDeInicioY1=1;
-                    Ficha *fichaY1SaleDeInicio=fichaElecta(fichaDeInicioY1, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
-                    movimientoFichaDelInicio(Dado1, fichaY1SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaY2EnInicioTrue==1)
-                {
-                    int fichaDeInicioY2=2;
-                    Ficha *fichaY2SaleDeInicio=fichaElecta(fichaDeInicioY2, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
-                    movimientoFichaDelInicio(Dado1, fichaY2SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaY3EnInicioTrue==1)
-                {
-                    int fichaDeInicioY3=3;
-                    Ficha *fichaY3SaleDeInicio=fichaElecta(fichaDeInicioY3, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
-                    movimientoFichaDelInicio(Dado1, fichaY3SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaY4EnInicioTrue==1)
-                {
-                    int fichaDeInicioY4=4;
-                    Ficha *fichaY4SaleDeInicio=fichaElecta(fichaDeInicioY4, Player, Player,Tablero,numeroDeFichasEnInicio,Dado1);
-                    movimientoFichaDelInicio(Dado1, fichaY4SaleDeInicio, Tablero, Player);
-                }
-            }
-            Dado1=0;
-            numeroDeMovimientosPorTurno++;
         }
-        //____________________________________Puede existir un bug aqui por como estan puestos los ifs__________________________________________________
-        if(Dado2==5 && numeroDeFichasEnInicio>0)
-        {
-            printf("\nDado 2  = 5, sacando ficha de inicio automaticamente.");
-            printf("Se ha usado el dado 2 para este movimiento.\n");
-            dadoUsado=2;
-            if(Player=='R')
-            {
-                int fichaR1EnInicioTrue=existeFichaR1EnInicio(Tablero,Player);
-                int fichaR2EnInicioTrue=existeFichaR2EnInicio(Tablero,Player);
-                int fichaR3EnInicioTrue=existeFichaR3EnInicio(Tablero,Player);
-                int fichaR4EnInicioTrue=existeFichaR4EnInicio(Tablero,Player);
-
-
-                if(fichaR1EnInicioTrue==1)
-                {
-                    printf("Se cumplen las condiciones para que saques una ficha del inicio");
-                    int fichaDeInicioR1=1;
-                    Ficha *fichaR1SaleDeInicio=fichaElecta(fichaDeInicioR1, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
-                    movimientoFichaDelInicio(Dado1, fichaR1SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaR2EnInicioTrue==1)
-                {
-                    printf("Se cumplen las condiciones para que saques una ficha del inicio");
-                    int fichaDeInicioR2=2;
-                    Ficha *fichaR2SaleDeInicio=fichaElecta(fichaDeInicioR2, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
-                    movimientoFichaDelInicio(Dado1, fichaR2SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaR3EnInicioTrue==1)
-                {
-                    printf("Se cumplen las condiciones para que saques una ficha del inicio");
-                    int fichaDeInicioR3=3;
-                    Ficha *fichaR3SaleDeInicio=fichaElecta(fichaDeInicioR3, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
-                    movimientoFichaDelInicio(Dado1, fichaR3SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaR4EnInicioTrue==1)
-                {
-                    printf("Se cumplen las condiciones para que saques una ficha del inicio");
-                    int fichaDeInicioR4=4;
-                    Ficha *fichaR4SaleDeInicio=fichaElecta(fichaDeInicioR4, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
-                    movimientoFichaDelInicio(Dado1, fichaR4SaleDeInicio, Tablero, Player);
-                }
-            }
-            if(Player=='G')
-            {
-                int fichaG1EnInicioTrue=existeFichaG1EnInicio(Tablero,Player);
-                int fichaG2EnInicioTrue=existeFichaG2EnInicio(Tablero,Player);
-                int fichaG3EnInicioTrue=existeFichaG3EnInicio(Tablero,Player);
-                int fichaG4EnInicioTrue=existeFichaG4EnInicio(Tablero,Player);
-
-
-                if(fichaG1EnInicioTrue==1)
-                {
-                    int fichaDeInicioG1=1;
-                    Ficha *fichaG1SaleDeInicio=fichaElecta(fichaDeInicioG1, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
-                    movimientoFichaDelInicio(Dado1, fichaG1SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaG2EnInicioTrue==1)
-                {
-                    int fichaDeInicioG2=2;
-                    Ficha *fichaG2SaleDeInicio=fichaElecta(fichaDeInicioG2, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
-                    movimientoFichaDelInicio(Dado1, fichaG2SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaG3EnInicioTrue==1)
-                {
-                    int fichaDeInicioG3=3;
-                    Ficha *fichaG3SaleDeInicio=fichaElecta(fichaDeInicioG3, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
-                    movimientoFichaDelInicio(Dado1, fichaG3SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaG4EnInicioTrue==1)
-                {
-                    int fichaDeInicioG4=4;
-                    Ficha *fichaG4SaleDeInicio=fichaElecta(fichaDeInicioG4, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
-                    movimientoFichaDelInicio(Dado1, fichaG4SaleDeInicio, Tablero, Player);
-                }
-            }
-            if(Player=='B')
-            {
-                int fichaB1EnInicioTrue=existeFichaB1EnInicio(Tablero,Player);
-                int fichaB2EnInicioTrue=existeFichaB2EnInicio(Tablero,Player);
-                int fichaB3EnInicioTrue=existeFichaB3EnInicio(Tablero,Player);
-                int fichaB4EnInicioTrue=existeFichaB4EnInicio(Tablero,Player);
-
-
-                if(fichaB1EnInicioTrue==1)
-                {
-                    int fichaDeInicioB1=1;
-                    Ficha *fichaB1SaleDeInicio=fichaElecta(fichaDeInicioB1, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
-                    movimientoFichaDelInicio(Dado1, fichaB1SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaB2EnInicioTrue==1)
-                {
-                    int fichaDeInicioB2=2;
-                    Ficha *fichaB2SaleDeInicio=fichaElecta(fichaDeInicioB2, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
-                    movimientoFichaDelInicio(Dado1, fichaB2SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaB3EnInicioTrue==1)
-                {
-                    int fichaDeInicioB3=3;
-                    Ficha *fichaB3SaleDeInicio=fichaElecta(fichaDeInicioB3, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
-                    movimientoFichaDelInicio(Dado1, fichaB3SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaB4EnInicioTrue==1)
-                {
-                    int fichaDeInicioB4=4;
-                    Ficha *fichaB4SaleDeInicio=fichaElecta(fichaDeInicioB4, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
-                    movimientoFichaDelInicio(Dado1, fichaB4SaleDeInicio, Tablero, Player);
-                }
-            }
-            if(Player=='Y')
-            {
-                int fichaY1EnInicioTrue=existeFichaY1EnInicio(Tablero,Player);
-                int fichaY2EnInicioTrue=existeFichaY2EnInicio(Tablero,Player);
-                int fichaY3EnInicioTrue=existeFichaY3EnInicio(Tablero,Player);
-                int fichaY4EnInicioTrue=existeFichaY4EnInicio(Tablero,Player);
-
-
-                if(fichaY1EnInicioTrue==1)
-                {
-                    int fichaDeInicioY1=1;
-                    Ficha *fichaY1SaleDeInicio=fichaElecta(fichaDeInicioY1, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
-                    movimientoFichaDelInicio(Dado1, fichaY1SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaY2EnInicioTrue==1)
-                {
-                    int fichaDeInicioY2=2;
-                    Ficha *fichaY2SaleDeInicio=fichaElecta(fichaDeInicioY2, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
-                    movimientoFichaDelInicio(Dado1, fichaY2SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaY3EnInicioTrue==1)
-                {
-                    int fichaDeInicioY3=3;
-                    Ficha *fichaY3SaleDeInicio=fichaElecta(fichaDeInicioY3, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
-                    movimientoFichaDelInicio(Dado1, fichaY3SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaY4EnInicioTrue==1)
-                {
-                    int fichaDeInicioY4=4;
-                    Ficha *fichaY4SaleDeInicio=fichaElecta(fichaDeInicioY4, Player, Player,Tablero,numeroDeFichasEnInicio,Dado2);
-                    movimientoFichaDelInicio(Dado1, fichaY4SaleDeInicio, Tablero, Player);
-                }
-            }
-            Dado2=0;
-            numeroDeMovimientosPorTurno++;
-        }
-        if(sumaDados==5 && numeroDeFichasEnInicio>0)
-        {
-            printf("\nSuma de dados = 5, sacando ficha de inicio automaticamente.\n");
-            printf("Se han usado ambos dados para este movimiento.\n");
-            dadoUsado=3;
-            if(Player=='R')
-            {
-                int fichaR1EnInicioTrue=existeFichaR1EnInicio(Tablero,Player);
-                int fichaR2EnInicioTrue=existeFichaR2EnInicio(Tablero,Player);
-                int fichaR3EnInicioTrue=existeFichaR3EnInicio(Tablero,Player);
-                int fichaR4EnInicioTrue=existeFichaR4EnInicio(Tablero,Player);
-
-
-                if(fichaR1EnInicioTrue==1)
-                {
-                    int fichaDeInicioR1=1;
-                    Ficha *fichaR1SaleDeInicio=fichaElecta(fichaDeInicioR1, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                    movimientoFichaDelInicio(Dado1, fichaR1SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaR2EnInicioTrue==1)
-                {
-                    int fichaDeInicioR2=2;
-                    Ficha *fichaR2SaleDeInicio=fichaElecta(fichaDeInicioR2, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                    movimientoFichaDelInicio(Dado1, fichaR2SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaR3EnInicioTrue==1)
-                {
-                    int fichaDeInicioR3=3;
-                    Ficha *fichaR3SaleDeInicio=fichaElecta(fichaDeInicioR3, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                    movimientoFichaDelInicio(Dado1, fichaR3SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaR4EnInicioTrue==1)
-                {
-                    int fichaDeInicioR4=4;
-                    Ficha *fichaR4SaleDeInicio=fichaElecta(fichaDeInicioR4, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                    movimientoFichaDelInicio(Dado1, fichaR4SaleDeInicio, Tablero, Player);
-                }
-            }
-            if(Player=='G')
-            {
-                int fichaG1EnInicioTrue=existeFichaG1EnInicio(Tablero,Player);
-                int fichaG2EnInicioTrue=existeFichaG2EnInicio(Tablero,Player);
-                int fichaG3EnInicioTrue=existeFichaG3EnInicio(Tablero,Player);
-                int fichaG4EnInicioTrue=existeFichaG4EnInicio(Tablero,Player);
-
-
-                if(fichaG1EnInicioTrue==1)
-                {
-                    int fichaDeInicioG1=1;
-                    Ficha *fichaG1SaleDeInicio=fichaElecta(fichaDeInicioG1, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                    movimientoFichaDelInicio(Dado1, fichaG1SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaG2EnInicioTrue==1)
-                {
-                    int fichaDeInicioG2=2;
-                    Ficha *fichaG2SaleDeInicio=fichaElecta(fichaDeInicioG2, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                    movimientoFichaDelInicio(Dado1, fichaG2SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaG3EnInicioTrue==1)
-                {
-                    int fichaDeInicioG3=3;
-                    Ficha *fichaG3SaleDeInicio=fichaElecta(fichaDeInicioG3, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                    movimientoFichaDelInicio(Dado1, fichaG3SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaG4EnInicioTrue==1)
-                {
-                    int fichaDeInicioG4=4;
-                    Ficha *fichaG4SaleDeInicio=fichaElecta(fichaDeInicioG4, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                    movimientoFichaDelInicio(Dado1, fichaG4SaleDeInicio, Tablero, Player);
-                }
-            }
-            if(Player=='B')
-            {
-                int fichaB1EnInicioTrue=existeFichaB1EnInicio(Tablero,Player);
-                int fichaB2EnInicioTrue=existeFichaB2EnInicio(Tablero,Player);
-                int fichaB3EnInicioTrue=existeFichaB3EnInicio(Tablero,Player);
-                int fichaB4EnInicioTrue=existeFichaB4EnInicio(Tablero,Player);
-
-
-                if(fichaB1EnInicioTrue==1)
-                {
-                    int fichaDeInicioB1=1;
-                    Ficha *fichaB1SaleDeInicio=fichaElecta(fichaDeInicioB1, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                    movimientoFichaDelInicio(Dado1, fichaB1SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaB2EnInicioTrue==1)
-                {
-                    int fichaDeInicioB2=2;
-                    Ficha *fichaB2SaleDeInicio=fichaElecta(fichaDeInicioB2, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                    movimientoFichaDelInicio(Dado1, fichaB2SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaB3EnInicioTrue==1)
-                {
-                    int fichaDeInicioB3=3;
-                    Ficha *fichaB3SaleDeInicio=fichaElecta(fichaDeInicioB3, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                    movimientoFichaDelInicio(Dado1, fichaB3SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaB4EnInicioTrue==1)
-                {
-                    int fichaDeInicioB4=4;
-                    Ficha *fichaB4SaleDeInicio=fichaElecta(fichaDeInicioB4, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                    movimientoFichaDelInicio(Dado1, fichaB4SaleDeInicio, Tablero, Player);
-                }
-            }
-            if(Player=='Y')
-            {
-                int fichaY1EnInicioTrue=existeFichaY1EnInicio(Tablero,Player);
-                int fichaY2EnInicioTrue=existeFichaY2EnInicio(Tablero,Player);
-                int fichaY3EnInicioTrue=existeFichaY3EnInicio(Tablero,Player);
-                int fichaY4EnInicioTrue=existeFichaY4EnInicio(Tablero,Player);
-
-
-                if(fichaY1EnInicioTrue==1)
-                {
-                    int fichaDeInicioY1=1;
-                    Ficha *fichaY1SaleDeInicio=fichaElecta(fichaDeInicioY1, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                    movimientoFichaDelInicio(Dado1, fichaY1SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaY2EnInicioTrue==1)
-                {
-                    int fichaDeInicioY2=2;
-                    Ficha *fichaY2SaleDeInicio=fichaElecta(fichaDeInicioY2, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                    movimientoFichaDelInicio(Dado1, fichaY2SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaY3EnInicioTrue==1)
-                {
-                    int fichaDeInicioY3=3;
-                    Ficha *fichaY3SaleDeInicio=fichaElecta(fichaDeInicioY3, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                    movimientoFichaDelInicio(Dado1, fichaY3SaleDeInicio, Tablero, Player);
-                }
-                else if(fichaY4EnInicioTrue==1)
-                {
-                    int fichaDeInicioY4=4;
-                    Ficha *fichaY4SaleDeInicio=fichaElecta(fichaDeInicioY4, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                    movimientoFichaDelInicio(Dado1, fichaY4SaleDeInicio, Tablero, Player);
-                }
-            }
-            numeroDeMovimientosPorTurno=2;
-        }
+        if(numeroDeMovimientosPorTurno>=2)
+            return;
         //-------------------LOGICA PARA ELEGIR DADOS--------------
         numeroDeFichasEnInicio=hayFichasEnInicio(Tablero,Player);
         if(numeroDeFichasEnInicio!=4)
         {
-
-
+            //displayOpcionesDeFichaInicio(Player,Tablero);
             if(dadoUsado==0)
             {
                 do{
+                    displayOpcionesDeFichaInicio(Player,Tablero);//Desplieg al usuario las fichas que puede mover
+                    printf("Referencia para que veas donde estan tus fichas, checa tu dado ;\n");
                     printf("\nCual dado quieres usar para mover la ficha : \nDado 1: %d\nDado 2: %d\n",Dado1,Dado2);
                     printf("Input:");
                     scanf("%d",&dadoAUsar);
@@ -1044,10 +1053,9 @@ void Turno(char Player,Board *Tablero)
             }
 
 
-            displayOpcionesDeFichaInicio(Player,Tablero);//Desplieg al usuario las fichas que puede mover
-
             int FichaAMover=0;
             do{
+                displayOpcionesDeFichaInicio(Player,Tablero);
                 printf("\nSelecciona una ficha que quieras mover\n");
                 printf("Input:");
                 scanf("%d",&FichaAMover);
@@ -1068,9 +1076,11 @@ void Turno(char Player,Board *Tablero)
                         printf("Selecciona una ficha valida, entre 1 y 4\n");
                 }while(FichaAMover < 0 || FichaAMover > 4);
 
+                regresarFichaInvalidaAInicio(Tablero,fichaAManipular,Player);
+
                 fichaAManipular=fichaElecta(FichaAMover,Player, Player,Tablero,numeroDeFichasEnInicio,dadoAUsar);
             }
-            printf("Esta deberia de ser la impresion de la ficha que vas a mover: %c%d\n",fichaAManipular->Player,fichaAManipular->Id);
+            //printf("Esta deberia de ser la impresion de la ficha que vas a mover: %c%d\n",fichaAManipular->Player,fichaAManipular->Id);
             if(dadoAUsar==1)
             {
                 banderaDeBarrera=Revisarbarreras(Tablero,fichaAManipular,Dado1);
@@ -1113,7 +1123,7 @@ void Turno(char Player,Board *Tablero)
         }
         else
         {
-            printf("Lo siento, no sacaste un 5 para sacar una ficha de el tablero, de modo que no puedes hacer movimientos, intenta en la siguiente ronda :)");
+            printf("\nLo siento, no sacaste un 5 para sacar una ficha de el tablero, de modo que no puedes hacer movimientos, intenta en la siguiente ronda :)\n");
             numeroDeMovimientosPorTurno=2;
         }
         numeroDeMovimientosPorTurno++;
@@ -1308,11 +1318,60 @@ void displayOpcionesDeFichaInicio(char Player,Board *Tablero)//Imprime las ficha
     printf("\n");
 
 }
+
+void regresarFichaInvalidaAInicio(Board*Tablero,Ficha*ficha,char Player)
+{
+    if(Player=='R')
+    {
+        if(Tablero->baseR->ficha4==NULL)
+            Tablero->baseR->ficha4=ficha;
+        else if(Tablero->baseR->ficha3==NULL)
+            Tablero->baseR->ficha3=ficha;
+        else if(Tablero->baseR->ficha2==NULL)
+            Tablero->baseR->ficha2=ficha;
+        else if(Tablero->baseR->ficha1==NULL)
+            Tablero->baseR->ficha1=ficha;
+    }
+    if(Player=='G')
+    {
+        if(Tablero->baseG->ficha4==NULL)
+            Tablero->baseG->ficha4=ficha;
+        else if(Tablero->baseG->ficha3==NULL)
+            Tablero->baseG->ficha3=ficha;
+        else if(Tablero->baseG->ficha2==NULL)
+            Tablero->baseG->ficha2=ficha;
+        else if(Tablero->baseG->ficha1==NULL)
+            Tablero->baseG->ficha1=ficha;
+    }
+    if(Player=='Y')
+    {
+        if(Tablero->baseY->ficha4==NULL)
+            Tablero->baseY->ficha4=ficha;
+        else if(Tablero->baseY->ficha3==NULL)
+            Tablero->baseY->ficha3=ficha;
+        else if(Tablero->baseY->ficha2==NULL)
+            Tablero->baseY->ficha2=ficha;
+        else if(Tablero->baseY->ficha1==NULL)
+            Tablero->baseY->ficha1=ficha;
+    }
+    if(Player=='B')
+    {
+        if(Tablero->baseB->ficha4==NULL)
+            Tablero->baseB->ficha4=ficha;
+        else if(Tablero->baseB->ficha3==NULL)
+            Tablero->baseB->ficha3=ficha;
+        else if(Tablero->baseB->ficha2==NULL)
+            Tablero->baseB->ficha2=ficha;
+        else if(Tablero->baseB->ficha1==NULL)
+            Tablero->baseB->ficha1=ficha;
+    }
+}
+
 Ficha *fichaElecta(int IDfichaInputUsuario,char playerFichaUsuario,char Player,Board *Tablero,int hayFichasEnInicio,int Tiro)//Recibe el input de la ficha que quiere mover el usuario y te regresa la estructura de la ficha para que la podamos manipular
 {
 
     Ficha *fichaderetorno;
-    if(hayFichasEnInicio!=0 && Tiro==5)
+    if(hayFichasEnInicio!=0)
     {
         if(Player=='R')
         {
@@ -1325,7 +1384,7 @@ Ficha *fichaElecta(int IDfichaInputUsuario,char playerFichaUsuario,char Player,B
                     return fichaderetorno;
                 }
             }
-            else if(Tablero->baseR->ficha2!=NULL)
+            if(Tablero->baseR->ficha2!=NULL)
             {
                 if(IDfichaInputUsuario==Tablero->baseR->ficha2->Id && playerFichaUsuario==Tablero->baseR->ficha2->Player)
                 {
@@ -1334,7 +1393,7 @@ Ficha *fichaElecta(int IDfichaInputUsuario,char playerFichaUsuario,char Player,B
                     return fichaderetorno;
                 }
             }
-            else if(Tablero->baseR->ficha3!=NULL)
+            if(Tablero->baseR->ficha3!=NULL)
             {
                 if(IDfichaInputUsuario==Tablero->baseR->ficha3->Id && playerFichaUsuario==Tablero->baseR->ficha3->Player)
                 {
@@ -1343,7 +1402,7 @@ Ficha *fichaElecta(int IDfichaInputUsuario,char playerFichaUsuario,char Player,B
                     return fichaderetorno;
                 }
             }
-            else if(Tablero->baseR->ficha4!=NULL)
+            if(Tablero->baseR->ficha4!=NULL)
             {
                 if(IDfichaInputUsuario==Tablero->baseR->ficha4->Id && playerFichaUsuario==Tablero->baseR->ficha4->Player)
                 {
@@ -1364,7 +1423,7 @@ Ficha *fichaElecta(int IDfichaInputUsuario,char playerFichaUsuario,char Player,B
                     return fichaderetorno;
                 }
             }
-            else if(Tablero->baseG->ficha2!=NULL)
+            if(Tablero->baseG->ficha2!=NULL)
             {
                 if(IDfichaInputUsuario==Tablero->baseG->ficha2->Id && playerFichaUsuario==Tablero->baseG->ficha2->Player)
                 {
@@ -1373,7 +1432,7 @@ Ficha *fichaElecta(int IDfichaInputUsuario,char playerFichaUsuario,char Player,B
                     return fichaderetorno;
                 }
             }
-            else if(Tablero->baseG->ficha3!=NULL)
+            if(Tablero->baseG->ficha3!=NULL)
             {
                 if(IDfichaInputUsuario==Tablero->baseG->ficha3->Id && playerFichaUsuario==Tablero->baseG->ficha3->Player)
                 {
@@ -1382,7 +1441,7 @@ Ficha *fichaElecta(int IDfichaInputUsuario,char playerFichaUsuario,char Player,B
                     return fichaderetorno;
                 }
             }
-            else if(Tablero->baseG->ficha4!=NULL)
+            if(Tablero->baseG->ficha4!=NULL)
             {
                 if(IDfichaInputUsuario==Tablero->baseG->ficha4->Id && playerFichaUsuario==Tablero->baseG->ficha4->Player)
                 {
@@ -1403,7 +1462,7 @@ Ficha *fichaElecta(int IDfichaInputUsuario,char playerFichaUsuario,char Player,B
                     return fichaderetorno;
                 }
             }
-            else if(Tablero->baseB->ficha2!=NULL)
+            if(Tablero->baseB->ficha2!=NULL)
             {
                 if(IDfichaInputUsuario==Tablero->baseB->ficha2->Id && playerFichaUsuario==Tablero->baseB->ficha2->Player)
                 {
@@ -1412,7 +1471,7 @@ Ficha *fichaElecta(int IDfichaInputUsuario,char playerFichaUsuario,char Player,B
                     return fichaderetorno;
                 }
             }
-            else if(Tablero->baseB->ficha3!=NULL)
+            if(Tablero->baseB->ficha3!=NULL)
             {
                 if(IDfichaInputUsuario==Tablero->baseB->ficha3->Id && playerFichaUsuario==Tablero->baseB->ficha3->Player)
                 {
@@ -1421,7 +1480,7 @@ Ficha *fichaElecta(int IDfichaInputUsuario,char playerFichaUsuario,char Player,B
                     return fichaderetorno;
                 }
             }
-            else if(Tablero->baseB->ficha4!=NULL)
+            if(Tablero->baseB->ficha4!=NULL)
             {
                 if(IDfichaInputUsuario==Tablero->baseB->ficha4->Id && playerFichaUsuario==Tablero->baseB->ficha4->Player)
                 {
@@ -1442,7 +1501,7 @@ Ficha *fichaElecta(int IDfichaInputUsuario,char playerFichaUsuario,char Player,B
                     return fichaderetorno;
                 }
             }
-            else if(Tablero->baseY->ficha2!=NULL)
+            if(Tablero->baseY->ficha2!=NULL)
             {
                 if(IDfichaInputUsuario==Tablero->baseY->ficha2->Id && playerFichaUsuario==Tablero->baseY->ficha2->Player)
                 {
@@ -1451,7 +1510,7 @@ Ficha *fichaElecta(int IDfichaInputUsuario,char playerFichaUsuario,char Player,B
                     return fichaderetorno;
                 }
             }
-            else if(Tablero->baseY->ficha3!=NULL)
+            if(Tablero->baseY->ficha3!=NULL)
             {
                 if(IDfichaInputUsuario==Tablero->baseY->ficha3->Id && playerFichaUsuario==Tablero->baseY->ficha3->Player)
                 {
@@ -1460,7 +1519,7 @@ Ficha *fichaElecta(int IDfichaInputUsuario,char playerFichaUsuario,char Player,B
                     return fichaderetorno;
                 }
             }
-            else if(Tablero->baseY->ficha4!=NULL)
+            if(Tablero->baseY->ficha4!=NULL)
             {
                 if(IDfichaInputUsuario==Tablero->baseY->ficha4->Id && playerFichaUsuario==Tablero->baseY->ficha4->Player)
                 {
@@ -2129,14 +2188,14 @@ int revisarVictoria(Board *Tablero)
 
     if(fichaR1EnEndTrue==1 && fichaR2EnEndTrue==1 && fichaR3EnEndTrue==1 && fichaR4EnEndTrue==1)
         return 1;
-    if(fichaG1EnEndTrue==1 && fichaG2EnEndTrue==1 && fichaG3EnEndTrue==1 && fichaG4EnEndTrue==1)
+    else if(fichaG1EnEndTrue==1 && fichaG2EnEndTrue==1 && fichaG3EnEndTrue==1 && fichaG4EnEndTrue==1)
         return 2;
-    if(fichaB1EnEndTrue==1 && fichaB2EnEndTrue==1 && fichaB3EnEndTrue==1 && fichaB4EnEndTrue==1)
+    else if(fichaB1EnEndTrue==1 && fichaB2EnEndTrue==1 && fichaB3EnEndTrue==1 && fichaB4EnEndTrue==1)
         return 3;
-    if(fichaY1EnEndTrue==1 && fichaY2EnEndTrue==1 && fichaY3EnEndTrue==1 && fichaY4EnEndTrue==1)
+    else if(fichaY1EnEndTrue==1 && fichaY2EnEndTrue==1 && fichaY3EnEndTrue==1 && fichaY4EnEndTrue==1)
         return 4;
-
-    return 0;
+    else
+        return 0;
 }
 int existeFichaR1EnEnd(Board*Tablero)
 {
@@ -2249,4 +2308,79 @@ int existeFichaY4EnEnd(Board*Tablero)
         return 1;
     else
         return 0;
+}
+void hacerTiempo()
+{
+    printf("\nPresiona ENTER para cambiar de turno\n");
+    char enter;
+    scanf("%c",&enter);
+
+    if(enter==10)
+        return;
+
+}
+int estaraLlenaLaCasillaDeSalida(Board*Tablero,char Player)
+{
+    Casilla *focusnode=Tablero->inicio;
+    if(Player=='R')
+    {
+        while(focusnode!=NULL)
+        {
+            if(focusnode->NumCasilla==1)
+            {
+                if(focusnode->ficha1!=NULL && focusnode->ficha2 != NULL)
+                    return 1;
+                else
+                    return 0;
+            }
+            focusnode=focusnode->next;
+        }
+    }
+
+    if(Player=='G')
+    {
+        while(focusnode!=NULL)
+        {
+            if(focusnode->NumCasilla==18)
+            {
+                if(focusnode->ficha1!=NULL && focusnode->ficha2 != NULL)
+                    return 1;
+                else
+                    return 0;
+            }
+            focusnode=focusnode->next;
+        }
+    }
+
+    if(Player=='Y')
+    {
+        while(focusnode!=NULL)
+        {
+            if(focusnode->NumCasilla==35)
+            {
+                if(focusnode->ficha1!=NULL && focusnode->ficha2 != NULL)
+                    return 1;
+                else
+                    return 0;
+            }
+            focusnode=focusnode->next;
+        }
+    }
+
+    if(Player=='B')
+    {
+        while(focusnode!=NULL)
+        {
+            if(focusnode->NumCasilla==52)
+            {
+                if(focusnode->ficha1!=NULL && focusnode->ficha2 != NULL)
+                    return 1;
+                else
+                    return 0;
+            }
+            focusnode=focusnode->next;
+        }
+    }
+
+    return 0;
 }

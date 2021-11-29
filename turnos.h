@@ -69,6 +69,9 @@ void movimientoFichaDelInicio(int dado , Ficha *fichaQueEstamosMoviendo , Board 
 void comer(Casilla *casillaComida,int cualCasilla,Board *Tablero,char Player);
 int Revisarbarreras(Board* Tablero,Ficha *fichaAMover,int tiro);
 int revisarVictoria(Board *Tablero);
+void hacerTiempo();
+int estaraLlenaLaCasillaDeSalida(Board*Tablero,char Player);
+void regresarFichaInvalidaAInicio(Board*Tablero,Ficha*ficha,char Player);
 int existeFichaR1EnInicio(Board*Tablero,char Player);
 int existeFichaR2EnInicio(Board*Tablero,char Player);
 int existeFichaR3EnInicio(Board*Tablero,char Player);
