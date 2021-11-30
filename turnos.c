@@ -1631,49 +1631,92 @@ Ficha *fichaElecta(int IDfichaInputUsuario,char playerFichaUsuario,char Player,B
 void movimientoFicha(int dado , Ficha *fichaQueEstamosMoviendo , Board *Tablero , char Player)
 {
     Casilla *focusnode=Tablero->inicio;
-    Casilla *focusbarrera=Tablero->inicio;
+
 
 
     //-----------------------------JUGADOR ROJO------------------------------------
 
     if(Player== 'R')
     {
+
         int posibilidadDeComer=0;
         fichaQueEstamosMoviendo->Path+=dado;
         fichaQueEstamosMoviendo->PaGanar+=dado;
-        while(focusnode!=NULL)
+        CasVicLap *focusVicLapR=Tablero->winR;
+        if(fichaQueEstamosMoviendo->PaGanar>64)
         {
-            if(focusnode->NumCasilla==fichaQueEstamosMoviendo->Path)
+            if(fichaQueEstamosMoviendo->Path<101)
+                fichaQueEstamosMoviendo->Path+=36;
+            if(fichaQueEstamosMoviendo->PaGanar>=72)
             {
-                if(focusnode->ficha1==NULL && focusnode->ficha2==NULL)
-                {
-                    focusnode->ficha1=fichaQueEstamosMoviendo;
-                    printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
-                    break;
-                }
-                else if(focusnode->ficha1->Player!=Player && focusnode->BanSafe==0)
-                {
-                    posibilidadDeComer=1;
-                    comer(focusnode,posibilidadDeComer,Tablero,Player);
-                    focusnode->ficha1=fichaQueEstamosMoviendo;
-                    break;
-                }
-                else if(focusnode->ficha2==NULL)
-                {
-                    focusnode->ficha2=fichaQueEstamosMoviendo;
-                    printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
-                    break;
-                }
-                else if(focusnode->ficha2->Player!=Player && focusnode->BanSafe==0)
-                {
-                    posibilidadDeComer=2;
-                    comer(focusnode,posibilidadDeComer,Tablero,Player);
-                    focusnode->ficha2=fichaQueEstamosMoviendo;
-                    break;
-                }
-
+                printf("Felicidades una ficha llego al final");
+                if(Tablero->winR->end->ficha1==NULL)
+                    Tablero->winR->end->ficha1=fichaQueEstamosMoviendo;
+                else if(Tablero->winR->end->ficha2==NULL)
+                    Tablero->winR->end->ficha2=fichaQueEstamosMoviendo;
+                else if(Tablero->winR->end->ficha3==NULL)
+                    Tablero->winR->end->ficha3=fichaQueEstamosMoviendo;
+                else if(Tablero->winR->end->ficha4==NULL)
+                    Tablero->winR->end->ficha4=fichaQueEstamosMoviendo;
+                return;
             }
-            focusnode=focusnode->next;
+            while(focusVicLapR!=NULL)
+            {
+                if(focusVicLapR->NumCasilla==fichaQueEstamosMoviendo->Path)
+                {
+                    if(focusVicLapR->ficha1==NULL && focusVicLapR->ficha2==NULL)
+                    {
+                        focusVicLapR->ficha1=fichaQueEstamosMoviendo;
+                        printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
+                        break;
+                    }
+                    else if(focusVicLapR->ficha2==NULL)
+                    {
+                        focusVicLapR->ficha2=fichaQueEstamosMoviendo;
+                        printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
+                        break;
+                    }
+                }
+                focusVicLapR=focusVicLapR->next;
+            }
+
+
+        }
+        else{
+            while(focusnode!=NULL)
+            {
+                if(focusnode->NumCasilla==fichaQueEstamosMoviendo->Path)
+                {
+                    if(focusnode->ficha1==NULL && focusnode->ficha2==NULL)
+                    {
+                        focusnode->ficha1=fichaQueEstamosMoviendo;
+                        printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
+                        break;
+                    }
+                    else if(focusnode->ficha1->Player!=Player && focusnode->BanSafe==0)
+                    {
+                        posibilidadDeComer=1;
+                        comer(focusnode,posibilidadDeComer,Tablero,Player);
+                        focusnode->ficha1=fichaQueEstamosMoviendo;
+                        break;
+                    }
+                    else if(focusnode->ficha2==NULL)
+                    {
+                        focusnode->ficha2=fichaQueEstamosMoviendo;
+                        printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
+                        break;
+                    }
+                    else if(focusnode->ficha2->Player!=Player && focusnode->BanSafe==0)
+                    {
+                        posibilidadDeComer=2;
+                        comer(focusnode,posibilidadDeComer,Tablero,Player);
+                        focusnode->ficha2=fichaQueEstamosMoviendo;
+                        break;
+                    }
+
+                }
+                focusnode=focusnode->next;
+            }
         }
     }
     //-----------------------------JUGADOR VERDE------------------------------------
@@ -1690,40 +1733,81 @@ void movimientoFicha(int dado , Ficha *fichaQueEstamosMoviendo , Board *Tablero 
         {
             fichaQueEstamosMoviendo->Path-=68;
         }
-
-        while(focusnode!=NULL)
+        CasVicLap *focusVicLapG=Tablero->winG;
+        if(fichaQueEstamosMoviendo->PaGanar>64)
         {
-            if(focusnode->NumCasilla==fichaQueEstamosMoviendo->Path)
+            if(fichaQueEstamosMoviendo->Path<101)
+                fichaQueEstamosMoviendo->Path+=53;
+            if(fichaQueEstamosMoviendo->PaGanar>=72)
             {
-                if(focusnode->ficha1==NULL && focusnode->ficha2==NULL)
-                {
-                    focusnode->ficha1=fichaQueEstamosMoviendo;
-                    printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
-                    break;
-                }
-                else if(focusnode->ficha1->Player!=Player && focusnode->BanSafe==0)
-                {
-                    posibilidadDeComer=1;
-                    comer(focusnode,posibilidadDeComer,Tablero,Player);
-                    focusnode->ficha1=fichaQueEstamosMoviendo;
-                    break;
-                }
-                else if(focusnode->ficha2==NULL)
-                {
-                    focusnode->ficha2=fichaQueEstamosMoviendo;
-                    printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
-                    break;
-                }
-                else if(focusnode->ficha2->Player!=Player && focusnode->BanSafe==0)
-                {
-                    posibilidadDeComer=2;
-                    comer(focusnode,posibilidadDeComer,Tablero,Player);
-                    focusnode->ficha2=fichaQueEstamosMoviendo;
-                    break;
-                }
-
+                printf("Felicidades una ficha llego al final\n");
+                if(Tablero->winG->end->ficha1==NULL)
+                    Tablero->winG->end->ficha1=fichaQueEstamosMoviendo;
+                else if(Tablero->winG->end->ficha2==NULL)
+                    Tablero->winG->end->ficha2=fichaQueEstamosMoviendo;
+                else if(Tablero->winG->end->ficha3==NULL)
+                    Tablero->winG->end->ficha3=fichaQueEstamosMoviendo;
+                else if(Tablero->winG->end->ficha4==NULL)
+                    Tablero->winG->end->ficha4=fichaQueEstamosMoviendo;
+                return;
             }
-            focusnode=focusnode->next;
+            while(focusVicLapG!=NULL)
+            {
+                if(focusVicLapG->NumCasilla==fichaQueEstamosMoviendo->Path)
+                {
+                    if(focusVicLapG->ficha1==NULL && focusVicLapG->ficha2==NULL)
+                    {
+                        focusVicLapG->ficha1=fichaQueEstamosMoviendo;
+                        printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
+                        break;
+                    }
+                    else if(focusVicLapG->ficha2==NULL)
+                    {
+                        focusVicLapG->ficha2=fichaQueEstamosMoviendo;
+                        printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
+                        break;
+                    }
+                }
+                focusVicLapG=focusVicLapG->next;
+            }
+
+
+        }
+        else{
+            while(focusnode!=NULL)
+            {
+                if(focusnode->NumCasilla==fichaQueEstamosMoviendo->Path)
+                {
+                    if(focusnode->ficha1==NULL && focusnode->ficha2==NULL)
+                    {
+                        focusnode->ficha1=fichaQueEstamosMoviendo;
+                        printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
+                        break;
+                    }
+                    else if(focusnode->ficha1->Player!=Player && focusnode->BanSafe==0)
+                    {
+                        posibilidadDeComer=1;
+                        comer(focusnode,posibilidadDeComer,Tablero,Player);
+                        focusnode->ficha1=fichaQueEstamosMoviendo;
+                        break;
+                    }
+                    else if(focusnode->ficha2==NULL)
+                    {
+                        focusnode->ficha2=fichaQueEstamosMoviendo;
+                        printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
+                        break;
+                    }
+                    else if(focusnode->ficha2->Player!=Player && focusnode->BanSafe==0)
+                    {
+                        posibilidadDeComer=2;
+                        comer(focusnode,posibilidadDeComer,Tablero,Player);
+                        focusnode->ficha2=fichaQueEstamosMoviendo;
+                        break;
+                    }
+
+                }
+                focusnode=focusnode->next;
+            }
         }
 
     }
@@ -1741,39 +1825,81 @@ void movimientoFicha(int dado , Ficha *fichaQueEstamosMoviendo , Board *Tablero 
         {
             fichaQueEstamosMoviendo->Path-=68;
         }
-        while(focusnode!=NULL)
+        CasVicLap *focusVicLapY=Tablero->winY;
+        if(fichaQueEstamosMoviendo->PaGanar>64)
         {
-            if(focusnode->NumCasilla==fichaQueEstamosMoviendo->Path)
+            if(fichaQueEstamosMoviendo->Path<101)
+                fichaQueEstamosMoviendo->Path+=70;
+            if(fichaQueEstamosMoviendo->PaGanar>=72)
             {
-                if(focusnode->ficha1==NULL && focusnode->ficha2==NULL)
-                {
-                    focusnode->ficha1=fichaQueEstamosMoviendo;
-                    printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
-                    break;
-                }
-                else if(focusnode->ficha1->Player!=Player && focusnode->BanSafe==0)
-                {
-                    posibilidadDeComer=1;
-                    comer(focusnode,posibilidadDeComer,Tablero,Player);
-                    focusnode->ficha1=fichaQueEstamosMoviendo;
-                    break;
-                }
-                else if(focusnode->ficha2==NULL)
-                {
-                    focusnode->ficha2=fichaQueEstamosMoviendo;
-                    printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
-                    break;
-                }
-                else if(focusnode->ficha2->Player!=Player && focusnode->BanSafe==0)
-                {
-                    posibilidadDeComer=2;
-                    comer(focusnode,posibilidadDeComer,Tablero,Player);
-                    focusnode->ficha2=fichaQueEstamosMoviendo;
-                    break;
-                }
-
+                printf("Felicidades una ficha llego al final\n");
+                if(Tablero->winY->end->ficha1==NULL)
+                    Tablero->winY->end->ficha1=fichaQueEstamosMoviendo;
+                else if(Tablero->winY->end->ficha2==NULL)
+                    Tablero->winY->end->ficha2=fichaQueEstamosMoviendo;
+                else if(Tablero->winY->end->ficha3==NULL)
+                    Tablero->winY->end->ficha3=fichaQueEstamosMoviendo;
+                else if(Tablero->winY->end->ficha4==NULL)
+                    Tablero->winY->end->ficha4=fichaQueEstamosMoviendo;
+                return;
             }
-            focusnode=focusnode->next;
+            while(focusVicLapY!=NULL)
+            {
+                if(focusVicLapY->NumCasilla==fichaQueEstamosMoviendo->Path)
+                {
+                    if(focusVicLapY->ficha1==NULL && focusVicLapY->ficha2==NULL)
+                    {
+                        focusVicLapY->ficha1=fichaQueEstamosMoviendo;
+                        printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
+                        break;
+                    }
+                    else if(focusVicLapY->ficha2==NULL)
+                    {
+                        focusVicLapY->ficha2=fichaQueEstamosMoviendo;
+                        printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
+                        break;
+                    }
+                }
+                focusVicLapY=focusVicLapY->next;
+            }
+
+
+        }
+        else{
+            while(focusnode!=NULL)
+            {
+                if(focusnode->NumCasilla==fichaQueEstamosMoviendo->Path)
+                {
+                    if(focusnode->ficha1==NULL && focusnode->ficha2==NULL)
+                    {
+                        focusnode->ficha1=fichaQueEstamosMoviendo;
+                        printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
+                        break;
+                    }
+                    else if(focusnode->ficha1->Player!=Player && focusnode->BanSafe==0)
+                    {
+                        posibilidadDeComer=1;
+                        comer(focusnode,posibilidadDeComer,Tablero,Player);
+                        focusnode->ficha1=fichaQueEstamosMoviendo;
+                        break;
+                    }
+                    else if(focusnode->ficha2==NULL)
+                    {
+                        focusnode->ficha2=fichaQueEstamosMoviendo;
+                        printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
+                        break;
+                    }
+                    else if(focusnode->ficha2->Player!=Player && focusnode->BanSafe==0)
+                    {
+                        posibilidadDeComer=2;
+                        comer(focusnode,posibilidadDeComer,Tablero,Player);
+                        focusnode->ficha2=fichaQueEstamosMoviendo;
+                        break;
+                    }
+
+                }
+                focusnode=focusnode->next;
+            }
         }
     }
     //-----------------------------JUGADOR AZUL------------------------------------
@@ -1789,38 +1915,80 @@ void movimientoFicha(int dado , Ficha *fichaQueEstamosMoviendo , Board *Tablero 
         {
             fichaQueEstamosMoviendo->Path-=68;
         }
-        while(focusnode!=NULL)
+        CasVicLap *focusVicLapB=Tablero->winB;
+        if(fichaQueEstamosMoviendo->PaGanar>64)
         {
-            if(focusnode->NumCasilla==fichaQueEstamosMoviendo->Path)
+            if(fichaQueEstamosMoviendo->Path<101)
+                fichaQueEstamosMoviendo->Path+=87;
+            if(fichaQueEstamosMoviendo->PaGanar>=72)
             {
-                if(focusnode->ficha1==NULL && focusnode->ficha2==NULL)
-                {
-                    focusnode->ficha1=fichaQueEstamosMoviendo;
-                    printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
-                    break;
-                }
-                else if(focusnode->ficha1->Player!=Player && focusnode->BanSafe==0)
-                {
-                    posibilidadDeComer=1;
-                    comer(focusnode,posibilidadDeComer,Tablero,Player);
-                    focusnode->ficha1=fichaQueEstamosMoviendo;
-                    break;
-                }
-                else if(focusnode->ficha2==NULL)
-                {
-                    focusnode->ficha2=fichaQueEstamosMoviendo;
-                    printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
-                }
-                else if(focusnode->ficha2->Player!=Player && focusnode->BanSafe==0)
-                {
-                    posibilidadDeComer=2;
-                    comer(focusnode,posibilidadDeComer,Tablero,Player);
-                    focusnode->ficha2=fichaQueEstamosMoviendo;
-                    break;
-                }
-
+                printf("Felicidades una ficha llego al final\n");
+                if(Tablero->winB->end->ficha1==NULL)
+                    Tablero->winB->end->ficha1=fichaQueEstamosMoviendo;
+                else if(Tablero->winB->end->ficha2==NULL)
+                    Tablero->winB->end->ficha2=fichaQueEstamosMoviendo;
+                else if(Tablero->winB->end->ficha3==NULL)
+                    Tablero->winB->end->ficha3=fichaQueEstamosMoviendo;
+                else if(Tablero->winB->end->ficha4==NULL)
+                    Tablero->winB->end->ficha4=fichaQueEstamosMoviendo;
+                return;
             }
-            focusnode=focusnode->next;
+            while(focusVicLapB!=NULL)
+            {
+                if(focusVicLapB->NumCasilla==fichaQueEstamosMoviendo->Path)
+                {
+                    if(focusVicLapB->ficha1==NULL && focusVicLapB->ficha2==NULL)
+                    {
+                        focusVicLapB->ficha1=fichaQueEstamosMoviendo;
+                        printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
+                        break;
+                    }
+                    else if(focusVicLapB->ficha2==NULL)
+                    {
+                        focusVicLapB->ficha2=fichaQueEstamosMoviendo;
+                        printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
+                        break;
+                    }
+                }
+                focusVicLapB=focusVicLapB->next;
+            }
+
+
+        }
+        else{
+            while(focusnode!=NULL)
+            {
+                if(focusnode->NumCasilla==fichaQueEstamosMoviendo->Path)
+                {
+                    if(focusnode->ficha1==NULL && focusnode->ficha2==NULL)
+                    {
+                        focusnode->ficha1=fichaQueEstamosMoviendo;
+                        printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
+                        break;
+                    }
+                    else if(focusnode->ficha1->Player!=Player && focusnode->BanSafe==0)
+                    {
+                        posibilidadDeComer=1;
+                        comer(focusnode,posibilidadDeComer,Tablero,Player);
+                        focusnode->ficha1=fichaQueEstamosMoviendo;
+                        break;
+                    }
+                    else if(focusnode->ficha2==NULL)
+                    {
+                        focusnode->ficha2=fichaQueEstamosMoviendo;
+                        printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
+                    }
+                    else if(focusnode->ficha2->Player!=Player && focusnode->BanSafe==0)
+                    {
+                        posibilidadDeComer=2;
+                        comer(focusnode,posibilidadDeComer,Tablero,Player);
+                        focusnode->ficha2=fichaQueEstamosMoviendo;
+                        break;
+                    }
+
+                }
+                focusnode=focusnode->next;
+            }
         }
     }
 }

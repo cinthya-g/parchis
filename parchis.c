@@ -489,4 +489,3 @@ void displayBoard(Board *juego){
     printf("\n\n");
 
 }
-
