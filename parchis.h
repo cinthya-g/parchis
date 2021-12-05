@@ -20,7 +20,9 @@ void finishBoard(Board* juego, int contador);
 void beginning(Board* juego);
 void ending(Board* juego);
 void finishEnding(Board* juego, int contador,char Player);
-void creacionMaestra(Board* juego);
+void creacionMaestra(Board *juego,int jugadores);
+Board* loadGame(Board *Tablero,int jugadores);
+void Savefile(Board*Tablero);
 
 void displayBoard(Board *juego);
 

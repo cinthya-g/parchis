@@ -5,12 +5,14 @@
 #include "parchis.h"
 #include "turnos.h"
 
+
 struct ficha{
     char Player;//Determina el color del jugador (b, y, r, g)
     char Path;//Path es un acumulador de el progreso de la ficha
     int Id;
     char PaGanar;
 };
+
 struct casilla{
     int NumCasilla;//Indica el numero de la casilla | nuemros siempre entre 1-68
     char BanSafe;//Indica si es una casilla donde se pueda comer
@@ -44,7 +46,7 @@ struct casInicio{
     struct ficha *ficha4;
 };
 struct board{
-    char currentPlayer;
+    int currentPlayers;
 
     struct casilla *inicio;
     struct casVicLap *winR;
@@ -57,279 +59,8 @@ struct board{
     struct casInicio *baseB;
     struct casInicio *baseG;
 };
-void guardarPosicionesIniciales(PixelPos *pos){
-    pos->xR1init = 48; pos->yR1init = 575;
-    pos->xR2init = 88; pos->yR2init = 575;
-    pos->xR3init = 48; pos->yR3init = 615;
-    pos->xR4init = 88; pos->yR4init = 615;
 
-    pos->xG1init = 448; pos->yG1init = 575;
-    pos->xG2init = 488; pos->yG2init = 575;
-    pos->xG3init = 448; pos->yG3init = 615;
-    pos->xG4init = 488; pos->yG4init = 615;
 
-    pos->xY1init = 848; pos->yY1init = 575;
-    pos->xY2init = 888; pos->yY2init = 575;
-    pos->xY3init = 848; pos->yY3init = 615;
-    pos->xY4init = 888; pos->yY4init = 615;
-
-    pos->xB1init = 1240; pos->yB1init = 575;
-    pos->xB2init = 1280; pos->yB2init = 575;
-    pos->xB3init = 1240; pos->yB3init = 615;
-    pos->xB4init = 1280; pos->yB4init = 615;
-
-    pos->xR1up=0; pos->xR2up=0; pos->xR2up=0; pos->xR2up=0;
-    pos->yR1up=0; pos->yR2up=0; pos->yR2up=0; pos->yR2up=0;
-
-    pos->xG1up=0; pos->xG2up=0; pos->xG2up=0; pos->xG2up=0;
-    pos->yG1up=0; pos->yG2up=0; pos->yG2up=0; pos->yG2up=0;
-
-    pos->xY1up=0; pos->xY2up=0; pos->xY2up=0; pos->xY2up=0;
-    pos->yY1up=0; pos->yY2up=0; pos->yY2up=0; pos->yY2up=0;
-
-    pos->xB1up=0; pos->xB2up=0; pos->xB2up=0; pos->xB2up=0;
-    pos->yB1up=0; pos->yB2up=0; pos->yB2up=0; pos->yB2up=0;
-}
-//Coordenadas de R1
-int obtenerXR1(PixelPos *pos){
-    int xR1=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    xR1 = pos->xR1init;
-    return xR1;
-}
-int obtenerYR1(PixelPos *pos){
-    int yR1=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    yR1 = pos->yR1init;
-    return yR1;
-}
-//Coordenadas de R2
-int obtenerXR2(PixelPos *pos){
-    int xR2=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    xR2 = pos->xR2init;
-    return xR2;
-}
-int obtenerYR2(PixelPos *pos){
-    int yR2=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    yR2 = pos->yR2init;
-    return yR2;
-}
-//Coordenadas de R3
-int obtenerXR3(PixelPos *pos){
-    int xR3=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    xR3 = pos->xR3init;
-    return xR3;
-}
-int obtenerYR3(PixelPos *pos){
-    int yR3=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    yR3 = pos->yR3init;
-    return yR3;
-}
-//Coordenadas de R4
-int obtenerXR4(PixelPos *pos){
-    int xR4=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    xR4 = pos->xR4init;
-    return xR4;
-}
-int obtenerYR4(PixelPos *pos){
-    int yR4=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    yR4 = pos->yR4init;
-    return yR4;
-}
-//Coordenadas de B1
-int obtenerXB1(PixelPos *pos){
-    int xB1=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    xB1 = pos->xB1init;
-    return xB1;
-}
-int obtenerYB1(PixelPos *pos){
-    int yB1=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    yB1 = pos->yB1init;
-    return yB1;
-}
-//Coordenadas de B2
-int obtenerXB2(PixelPos *pos){
-    int xB2=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    xB2 = pos->xB2init;
-    return xB2;
-}
-int obtenerYB2(PixelPos *pos){
-    int yB2=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    yB2 = pos->yB2init;
-    return yB2;
-}
-//Coordenadas de B3
-int obtenerXB3(PixelPos *pos){
-    int xB3=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    xB3 = pos->xB3init;
-    return xB3;
-}
-int obtenerYB3(PixelPos *pos){
-    int yB3=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    yB3 = pos->yB3init;
-    return yB3;
-}
-//Coordenadas de B4
-int obtenerXB4(PixelPos *pos){
-    int xB4=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    xB4 = pos->xB4init;
-    return xB4;
-}
-int obtenerYB4(PixelPos *pos){
-    int yB4=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    yB4 = pos->yB4init;
-    return yB4;
-}
-//Coordenadas de G1
-int obtenerXG1(PixelPos *pos){
-    int xG1=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    xG1 = pos->xG1init;
-    return xG1;
-}
-int obtenerYG1(PixelPos *pos){
-    int yG1=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    yG1 = pos->yG1init;
-    return yG1;
-}
-//Coordenadas de G2
-int obtenerXG2(PixelPos *pos){
-    int xG2=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    xG2 = pos->xG2init;
-    return xG2;
-}
-int obtenerYG2(PixelPos *pos){
-    int yG2=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    yG2 = pos->yG2init;
-    return yG2;
-}
-//Coordenadas de G3
-int obtenerXG3(PixelPos *pos){
-    int xG3=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    xG3 = pos->xG3init;
-    return xG3;
-}
-int obtenerYG3(PixelPos *pos){
-    int yG3=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    yG3 = pos->yG3init;
-    return yG3;
-}
-//Coordenadas de G4
-int obtenerXG4(PixelPos *pos){
-    int xG4=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    xG4 = pos->xG4init;
-    return xG4;
-}
-int obtenerYG4(PixelPos *pos){
-    int yG4=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    yG4 = pos->yG4init;
-    return yG4;
-}
-//Coordenadas de Y1
-int obtenerXY1(PixelPos *pos){
-    int xY1=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    xY1 = pos->xY1init;
-    return xY1;
-}
-int obtenerYY1(PixelPos *pos){
-    int yY1=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    yY1 = pos->yY1init;
-    return yY1;
-}
-//Coordenadas de Y2
-int obtenerXY2(PixelPos *pos){
-    int xY2=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    xY2 = pos->xY2init;
-    return xY2;
-}
-int obtenerYY2(PixelPos *pos){
-    int yY2=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    yY2 = pos->yY2init;
-    return yY2;
-}
-//Coordenadas de Y3
-int obtenerXY3(PixelPos *pos){
-    int xY3=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    xY3 = pos->xY3init;
-    return xY3;
-}
-int obtenerYY3(PixelPos *pos){
-    int yY3=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    yY3 = pos->yY3init;
-    return yY3;
-}
-//Coordenadas de Y4
-int obtenerXY4(PixelPos *pos){
-    int xY4=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    xY4 = pos->xY4init;
-    return xY4;
-}
-int obtenerYY4(PixelPos *pos){
-    int yY4=0;
-    //Poner condicion por si se encuentra en salida, mantener en xR1init
-    //si no, cambiar a la que se modificó por los dados
-    yY4 = pos->yY4init;
-    return yY4;
-}
 //------------------------------------------------------------------------
 Dados tiroDados()
 {
@@ -342,38 +73,66 @@ Dados tiroDados()
     //rintf("%d,%d",Dice.die1,Dice.die2);
 
     return Dice;
-}
+}//Asigna aleatoriamente un valor a cada uno de los dados|Regresa la estructura de los dos dados.
 
-char quienInicia()
+char quienInicia(Board *juego)
 {
+    int jugadores = juego->currentPlayers;
+
     //Se tiran los dados para cada jugador
     Dados tiroR = tiroDados();
     Dados tiroB = tiroDados();
     Dados tiroG = tiroDados();
     Dados tiroY = tiroDados();
 
-    //Se suman los dados para poder calcular el mas grande
-    int SDR= tiroR.die1+tiroR.die2;
-    int SDB= tiroB.die1+tiroB.die2;
-    int SDG= tiroG.die1+tiroG.die2;
-    int SDY= tiroY.die1+tiroY.die2;
+    //Variables para sumas
+    int SDR = tiroR.die1+tiroR.die2;
+    int SDG = tiroG.die1+tiroG.die2;
+    int SDY = tiroY.die1+tiroY.die2;
+    int SDB = tiroB.die1+tiroB.die2;
 
-    //Valida cual es el dado con el numero mas grande y si son iguales hace reroll
-    while(SDR==SDB||SDR==SDG||SDR==SDY||SDB==SDG||SDB==SDY||SDG==SDY)
-    {
-        if(SDR==SDB||SDR==SDG||SDR==SDY){
-            tiroR=tiroDados();
+    //Se suman los dados para poder calcular el mas grande dependiendo de los que juegan
+    if(jugadores == 2){
+        SDG = 0;
+        SDB = 0;
+        while(SDR==SDY){
+            tiroR = tiroDados();
+            tiroY = tiroDados();
             SDR= tiroR.die1+tiroR.die2;
-        }
-        if(SDB==SDG||SDB==SDY){
-            tiroB=tiroDados();
-            SDB=tiroB.die1+tiroB.die2;
-        }
-        if(SDG==SDY){
-            tiroG=tiroDados();
-            SDG=tiroG.die1+tiroG.die2;
+            SDY= tiroY.die1+tiroY.die2;
         }
     }
+    if(jugadores == 3){
+        SDB = 0;
+        while(SDR==SDY || SDR==SDG || SDG==SDY){
+            if(SDR==SDY || SDR==SDG){
+                tiroR = tiroDados();
+                SDR= tiroR.die1+tiroR.die2;
+            }
+            if(SDG==SDY){
+                tiroG=tiroDados();
+                SDG=tiroG.die1+tiroG.die2;
+            }
+        }
+    }
+    if(jugadores == 4){
+        while(SDR==SDB||SDR==SDG||SDR==SDY||SDB==SDG||SDB==SDY||SDG==SDY)
+        {
+            if(SDR==SDB||SDR==SDG||SDR==SDY){
+                tiroR=tiroDados();
+                SDR= tiroR.die1+tiroR.die2;
+            }
+            if(SDB==SDG||SDB==SDY){
+                tiroB=tiroDados();
+                SDB=tiroB.die1+tiroB.die2;
+            }
+            if(SDG==SDY){
+                tiroG=tiroDados();
+                SDG=tiroG.die1+tiroG.die2;
+            }
+        }
+    }
+
     //Regresa el Jugador que tuvo la tirada mas grande
     if(SDR>SDB && SDR>SDG && SDR>SDY)
         return 'R';
@@ -383,20 +142,40 @@ char quienInicia()
         return 'G';
     if(SDY>SDB && SDY>SDG && SDY>SDR)
         return 'Y';
-}
 
-char cambiarJugador(char Player){
-    if(Player == 'R')
-        Player = 'G';
-    else if (Player == 'G')
-        Player = 'Y';
-    else if(Player == 'Y')
-        Player = 'B';
-    else if(Player == 'B')
-        Player = 'R';
+    return 0;
+}//Determina mediante comparaciones entre tiros aleatorios de los usuarios, cual saco el tiro mas grande, y regresa el jugador que iniciara la partida.
 
+char cambiarJugador(char Player, Board *juego){
+    int jugadores = juego->currentPlayers;
+    if(jugadores == 2){
+        if(Player == 'R')
+            Player = 'Y';
+        else if(Player == 'Y')
+            Player = 'R';
+    }
+    if(jugadores == 3){
+        if(Player == 'R')
+            Player = 'G';
+        else if (Player == 'G')
+            Player = 'Y';
+        else if(Player == 'Y')
+            Player = 'R';
+    }
+    if(jugadores == 4){
+        if(Player == 'R')
+            Player = 'G';
+        else if (Player == 'G')
+            Player = 'Y';
+        else if(Player == 'Y')
+            Player = 'B';
+        else if(Player == 'B')
+            Player = 'R';
+    }
     return Player;
-}
+}//Dependiendo del numero de jugadores, hace los cambios de jugador en turno.
+
+//Este bloque de funciones, determina si existen fichas en cada base de los jugadores, asi como el numero que hay en cada una.
 int existeFichaR1EnInicio(Board*Tablero,char Player)
 {
     if(Tablero->baseR->ficha1!=NULL)
@@ -567,14 +346,19 @@ int hayFichasEnInicio(Board* Tablero, char Player)
 
     return 0;
 }
-void Turno(char Player,Board *Tablero)
+
+void Turno(char Player,Board *Tablero,Dados tiro)
 {
+    //Player='R';
+    //pruebaDeBarreras(Tablero);
+    //pruebaDeComer(Tablero);
+    //pruebaDeVicLap(Tablero);
+    //pruebaDeVictoria(Tablero);
     printf("Es el turno del jugador: %c\n\n",Player );
-    Dados tiro = tiroDados();
     int Dado1=valorDado1(tiro);
     int Dado2=valorDado2(tiro);
-    //Dado1=5;
-    //Dado2=4;
+    //Dado1=2;
+    //Dado2=2;
     printf("Tiro:Dado1= %d Dado2= %d\n\n",Dado1,Dado2);
     int numeroDeMovimientosPorTurno=0;
     int dadoUsado=0;
@@ -896,25 +680,25 @@ void Turno(char Player,Board *Tablero)
                     {
                         int fichaDeInicioR1=1;
                         Ficha *fichaR1SaleDeInicio=fichaElecta(fichaDeInicioR1, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                        movimientoFichaDelInicio(Dado1, fichaR1SaleDeInicio, Tablero, Player);
+                        movimientoFichaDelInicio(sumaDados, fichaR1SaleDeInicio, Tablero, Player);
                     }
                     else if(fichaR2EnInicioTrue==1)
                     {
                         int fichaDeInicioR2=2;
                         Ficha *fichaR2SaleDeInicio=fichaElecta(fichaDeInicioR2, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                        movimientoFichaDelInicio(Dado1, fichaR2SaleDeInicio, Tablero, Player);
+                        movimientoFichaDelInicio(sumaDados, fichaR2SaleDeInicio, Tablero, Player);
                     }
                     else if(fichaR3EnInicioTrue==1)
                     {
                         int fichaDeInicioR3=3;
                         Ficha *fichaR3SaleDeInicio=fichaElecta(fichaDeInicioR3, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                        movimientoFichaDelInicio(Dado1, fichaR3SaleDeInicio, Tablero, Player);
+                        movimientoFichaDelInicio(sumaDados, fichaR3SaleDeInicio, Tablero, Player);
                     }
                     else if(fichaR4EnInicioTrue==1)
                     {
                         int fichaDeInicioR4=4;
                         Ficha *fichaR4SaleDeInicio=fichaElecta(fichaDeInicioR4, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                        movimientoFichaDelInicio(Dado1, fichaR4SaleDeInicio, Tablero, Player);
+                        movimientoFichaDelInicio(sumaDados, fichaR4SaleDeInicio, Tablero, Player);
                     }
                 }
                 if(Player=='G')
@@ -929,25 +713,25 @@ void Turno(char Player,Board *Tablero)
                     {
                         int fichaDeInicioG1=1;
                         Ficha *fichaG1SaleDeInicio=fichaElecta(fichaDeInicioG1, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                        movimientoFichaDelInicio(Dado1, fichaG1SaleDeInicio, Tablero, Player);
+                        movimientoFichaDelInicio(sumaDados, fichaG1SaleDeInicio, Tablero, Player);
                     }
                     else if(fichaG2EnInicioTrue==1)
                     {
                         int fichaDeInicioG2=2;
                         Ficha *fichaG2SaleDeInicio=fichaElecta(fichaDeInicioG2, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                        movimientoFichaDelInicio(Dado1, fichaG2SaleDeInicio, Tablero, Player);
+                        movimientoFichaDelInicio(sumaDados, fichaG2SaleDeInicio, Tablero, Player);
                     }
                     else if(fichaG3EnInicioTrue==1)
                     {
                         int fichaDeInicioG3=3;
                         Ficha *fichaG3SaleDeInicio=fichaElecta(fichaDeInicioG3, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                        movimientoFichaDelInicio(Dado1, fichaG3SaleDeInicio, Tablero, Player);
+                        movimientoFichaDelInicio(sumaDados, fichaG3SaleDeInicio, Tablero, Player);
                     }
                     else if(fichaG4EnInicioTrue==1)
                     {
                         int fichaDeInicioG4=4;
                         Ficha *fichaG4SaleDeInicio=fichaElecta(fichaDeInicioG4, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                        movimientoFichaDelInicio(Dado1, fichaG4SaleDeInicio, Tablero, Player);
+                        movimientoFichaDelInicio(sumaDados, fichaG4SaleDeInicio, Tablero, Player);
                     }
                 }
                 if(Player=='B')
@@ -962,25 +746,25 @@ void Turno(char Player,Board *Tablero)
                     {
                         int fichaDeInicioB1=1;
                         Ficha *fichaB1SaleDeInicio=fichaElecta(fichaDeInicioB1, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                        movimientoFichaDelInicio(Dado1, fichaB1SaleDeInicio, Tablero, Player);
+                        movimientoFichaDelInicio(sumaDados, fichaB1SaleDeInicio, Tablero, Player);
                     }
                     else if(fichaB2EnInicioTrue==1)
                     {
                         int fichaDeInicioB2=2;
                         Ficha *fichaB2SaleDeInicio=fichaElecta(fichaDeInicioB2, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                        movimientoFichaDelInicio(Dado1, fichaB2SaleDeInicio, Tablero, Player);
+                        movimientoFichaDelInicio(sumaDados, fichaB2SaleDeInicio, Tablero, Player);
                     }
                     else if(fichaB3EnInicioTrue==1)
                     {
                         int fichaDeInicioB3=3;
                         Ficha *fichaB3SaleDeInicio=fichaElecta(fichaDeInicioB3, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                        movimientoFichaDelInicio(Dado1, fichaB3SaleDeInicio, Tablero, Player);
+                        movimientoFichaDelInicio(sumaDados, fichaB3SaleDeInicio, Tablero, Player);
                     }
                     else if(fichaB4EnInicioTrue==1)
                     {
                         int fichaDeInicioB4=4;
                         Ficha *fichaB4SaleDeInicio=fichaElecta(fichaDeInicioB4, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                        movimientoFichaDelInicio(Dado1, fichaB4SaleDeInicio, Tablero, Player);
+                        movimientoFichaDelInicio(sumaDados, fichaB4SaleDeInicio, Tablero, Player);
                     }
                 }
                 if(Player=='Y')
@@ -995,25 +779,25 @@ void Turno(char Player,Board *Tablero)
                     {
                         int fichaDeInicioY1=1;
                         Ficha *fichaY1SaleDeInicio=fichaElecta(fichaDeInicioY1, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                        movimientoFichaDelInicio(Dado1, fichaY1SaleDeInicio, Tablero, Player);
+                        movimientoFichaDelInicio(sumaDados, fichaY1SaleDeInicio, Tablero, Player);
                     }
                     else if(fichaY2EnInicioTrue==1)
                     {
                         int fichaDeInicioY2=2;
                         Ficha *fichaY2SaleDeInicio=fichaElecta(fichaDeInicioY2, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                        movimientoFichaDelInicio(Dado1, fichaY2SaleDeInicio, Tablero, Player);
+                        movimientoFichaDelInicio(sumaDados, fichaY2SaleDeInicio, Tablero, Player);
                     }
                     else if(fichaY3EnInicioTrue==1)
                     {
                         int fichaDeInicioY3=3;
                         Ficha *fichaY3SaleDeInicio=fichaElecta(fichaDeInicioY3, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                        movimientoFichaDelInicio(Dado1, fichaY3SaleDeInicio, Tablero, Player);
+                        movimientoFichaDelInicio(sumaDados, fichaY3SaleDeInicio, Tablero, Player);
                     }
                     else if(fichaY4EnInicioTrue==1)
                     {
                         int fichaDeInicioY4=4;
                         Ficha *fichaY4SaleDeInicio=fichaElecta(fichaDeInicioY4, Player, Player,Tablero,numeroDeFichasEnInicio,sumaDados);
-                        movimientoFichaDelInicio(Dado1, fichaY4SaleDeInicio, Tablero, Player);
+                        movimientoFichaDelInicio(sumaDados, fichaY4SaleDeInicio, Tablero, Player);
                     }
                 }
                 numeroDeMovimientosPorTurno=2;
@@ -1052,73 +836,23 @@ void Turno(char Player,Board *Tablero)
                 }
             }
 
-
-            int FichaAMover=0;
-            do{
-                displayOpcionesDeFichaInicio(Player,Tablero);
-                printf("\nSelecciona una ficha que quieras mover\n");
-                printf("Input:");
-                scanf("%d",&FichaAMover);
-                if(FichaAMover < 0 || FichaAMover > 4)
-                    printf("Selecciona una ficha valida, entre 1 y 4\n");
-            }while(FichaAMover < 0 || FichaAMover > 4);
-
-            Ficha *fichaAManipular=fichaElecta(FichaAMover,Player, Player,Tablero,numeroDeFichasEnInicio,dadoAUsar);//Se le asiga a la variable, la ficha que vamos a usar mediante la funcion que regresa la ficha que eligio el usuario en entrada de texto
-
-            while(fichaAManipular->PaGanar==0)
-            {
-                printf("Esa ficha no puede ser movida del inicio ya que no tienes un 5, selecciona una ficha valida");
-                do{
-                    printf("\nSelecciona una ficha que quieras mover\n");
-                    printf("Input:");
-                    scanf("%d",&FichaAMover);
-                    if(FichaAMover < 0 || FichaAMover > 4)
-                        printf("Selecciona una ficha valida, entre 1 y 4\n");
-                }while(FichaAMover < 0 || FichaAMover > 4);
-
-                regresarFichaInvalidaAInicio(Tablero,fichaAManipular,Player);
-
-                fichaAManipular=fichaElecta(FichaAMover,Player, Player,Tablero,numeroDeFichasEnInicio,dadoAUsar);
-            }
-            //printf("Esta deberia de ser la impresion de la ficha que vas a mover: %c%d\n",fichaAManipular->Player,fichaAManipular->Id);
             if(dadoAUsar==1)
             {
-                banderaDeBarrera=Revisarbarreras(Tablero,fichaAManipular,Dado1);
-                while(banderaDeBarrera==1)
-                {
-                    printf("Movimiento invalido, una barrera bloque atu proceso, selecciona otra ficha para realizar el movimiento\n");
-                    do{
-                        printf("\nSelecciona una ficha que quieras mover\n");
-                        printf("Input:");
-                        scanf("%d",&FichaAMover);
-                        if(FichaAMover < 0 || FichaAMover > 4)
-                            printf("Selecciona una ficha valida, entre 1 y 4\n");
-                    }while(FichaAMover < 0 || FichaAMover > 4);
-
-                    fichaAManipular=fichaElecta(FichaAMover,Player, Player,Tablero,numeroDeFichasEnInicio,dadoAUsar);
-                    banderaDeBarrera=Revisarbarreras(Tablero,fichaAManipular,Dado1);
-                }
+                Ficha *fichaAManipular=validacionDeFichaElecta(Tablero,Dado1,Player);
+                if(fichaAManipular==NULL)
+                    return;
                 movimientoFicha(Dado1, fichaAManipular, Tablero, Player);
+                Dado1 = 0;
+                sumaDados=Dado1+Dado2;
             }
-            else if(dadoAUsar==2)
+            if(dadoAUsar==2)
             {
-                banderaDeBarrera=Revisarbarreras(Tablero,fichaAManipular,Dado2);
-                while(banderaDeBarrera==1)
-                {
-                    printf("Movimiento invalido, una barrera bloque atu proceso, selecciona otra ficha para realizar el movimiento\n");
-                    do{
-                        printf("\nSelecciona una ficha que quieras mover\n");
-                        printf("Input:");
-                        scanf("%d",&FichaAMover);
-                        if(FichaAMover < 0 || FichaAMover > 4)
-                            printf("Selecciona una ficha valida, entre 1 y 4\n");
-                    }while(FichaAMover < 0 || FichaAMover > 4);
-
-                    fichaAManipular=fichaElecta(FichaAMover,Player, Player,Tablero,numeroDeFichasEnInicio,dadoAUsar);
-                    banderaDeBarrera=Revisarbarreras(Tablero,fichaAManipular,Dado2);
-                }
-
+                Ficha *fichaAManipular=validacionDeFichaElecta(Tablero,Dado2,Player);
+                if(fichaAManipular==NULL)
+                    return;
                 movimientoFicha(Dado2, fichaAManipular, Tablero, Player);
+                Dado2 = 0;
+                sumaDados=Dado1+Dado2;
             }
         }
         else
@@ -1129,18 +863,18 @@ void Turno(char Player,Board *Tablero)
         numeroDeMovimientosPorTurno++;
     }
 
-}
+}//Funcion con la logica del turno, recibe el jugador en turno, el tablero y el tiro de dados. En funcion de los dados, saca una ficha del inicio si el tiro es 5, en caso de que no lo sea, permite al usuario elegir el dado que quiere mover y realiza el movimiento pertinente en la ficha que selecciono el usuario.
 int valorDado1(Dados dados)
 {
     return dados.die1;
-}
+}//Regresa el valor del primer dado de la estructura de dados.
 int valorDado2(Dados dados)
 {
     return dados.die2;
-}
+}//Regresa el valor del segundo dado de la estructura de dados.
 
 //------------------------------- ARREGLAR DISPLAY --------------------------------
-void displayOpcionesDeFichaInicio(char Player,Board *Tablero)//Imprime las fichas en la casilla de inicio
+void displayOpcionesDeFichaInicio(char Player,Board *Tablero)//Imprime las fichas en el tablero, esta funcion es un referencia para el usuario en la terminal
 {
     printf("\nFichas en INICIO:");
     if(Player == 'R'){
@@ -1365,9 +1099,9 @@ void regresarFichaInvalidaAInicio(Board*Tablero,Ficha*ficha,char Player)
         else if(Tablero->baseB->ficha1==NULL)
             Tablero->baseB->ficha1=ficha;
     }
-}
+}//Esta funcion, regresa una ficha que no se pudo mover de manera valida al inicio, para no perder la referencia
 
-Ficha *fichaElecta(int IDfichaInputUsuario,char playerFichaUsuario,char Player,Board *Tablero,int hayFichasEnInicio,int Tiro)//Recibe el input de la ficha que quiere mover el usuario y te regresa la estructura de la ficha para que la podamos manipular
+Ficha *fichaElecta(int IDfichaInputUsuario,char playerFichaUsuario,char Player,Board *Tablero,int hayFichasEnInicio,int Tiro)
 {
 
     Ficha *fichaderetorno;
@@ -1626,20 +1360,17 @@ Ficha *fichaElecta(int IDfichaInputUsuario,char playerFichaUsuario,char Player,B
             focusnode=focusnode->next;
         }
     }
-}
+}//Recibe el input de la ficha que quiere mover el usuario y te regresa la estructura de la ficha para que la podamos manipular
 
 void movimientoFicha(int dado , Ficha *fichaQueEstamosMoviendo , Board *Tablero , char Player)
 {
     Casilla *focusnode=Tablero->inicio;
-
-
-
+    int posibilidadDeComer=0;
     //-----------------------------JUGADOR ROJO------------------------------------
 
     if(Player== 'R')
     {
 
-        int posibilidadDeComer=0;
         fichaQueEstamosMoviendo->Path+=dado;
         fichaQueEstamosMoviendo->PaGanar+=dado;
         CasVicLap *focusVicLapR=Tablero->winR;
@@ -1667,13 +1398,11 @@ void movimientoFicha(int dado , Ficha *fichaQueEstamosMoviendo , Board *Tablero 
                     if(focusVicLapR->ficha1==NULL && focusVicLapR->ficha2==NULL)
                     {
                         focusVicLapR->ficha1=fichaQueEstamosMoviendo;
-                        printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
                         break;
                     }
                     else if(focusVicLapR->ficha2==NULL)
                     {
                         focusVicLapR->ficha2=fichaQueEstamosMoviendo;
-                        printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
                         break;
                     }
                 }
@@ -1696,8 +1425,7 @@ void movimientoFicha(int dado , Ficha *fichaQueEstamosMoviendo , Board *Tablero 
                     else if(focusnode->ficha1->Player!=Player && focusnode->BanSafe==0)
                     {
                         posibilidadDeComer=1;
-                        comer(focusnode,posibilidadDeComer,Tablero,Player);
-                        focusnode->ficha1=fichaQueEstamosMoviendo;
+                        comer(focusnode,posibilidadDeComer,Tablero,Player,fichaQueEstamosMoviendo);
                         break;
                     }
                     else if(focusnode->ficha2==NULL)
@@ -1709,8 +1437,8 @@ void movimientoFicha(int dado , Ficha *fichaQueEstamosMoviendo , Board *Tablero 
                     else if(focusnode->ficha2->Player!=Player && focusnode->BanSafe==0)
                     {
                         posibilidadDeComer=2;
-                        comer(focusnode,posibilidadDeComer,Tablero,Player);
-                        focusnode->ficha2=fichaQueEstamosMoviendo;
+                        comer(focusnode,posibilidadDeComer,Tablero,Player,fichaQueEstamosMoviendo);
+
                         break;
                     }
 
@@ -1722,7 +1450,7 @@ void movimientoFicha(int dado , Ficha *fichaQueEstamosMoviendo , Board *Tablero 
     //-----------------------------JUGADOR VERDE------------------------------------
     if(Player== 'G')
     {
-        int posibilidadDeComer=0;
+        posibilidadDeComer=0;
         if(fichaQueEstamosMoviendo->Path==0)
             fichaQueEstamosMoviendo->Path=17;
 
@@ -1787,8 +1515,8 @@ void movimientoFicha(int dado , Ficha *fichaQueEstamosMoviendo , Board *Tablero 
                     else if(focusnode->ficha1->Player!=Player && focusnode->BanSafe==0)
                     {
                         posibilidadDeComer=1;
-                        comer(focusnode,posibilidadDeComer,Tablero,Player);
-                        focusnode->ficha1=fichaQueEstamosMoviendo;
+                        comer(focusnode,posibilidadDeComer,Tablero,Player,fichaQueEstamosMoviendo);
+
                         break;
                     }
                     else if(focusnode->ficha2==NULL)
@@ -1800,8 +1528,8 @@ void movimientoFicha(int dado , Ficha *fichaQueEstamosMoviendo , Board *Tablero 
                     else if(focusnode->ficha2->Player!=Player && focusnode->BanSafe==0)
                     {
                         posibilidadDeComer=2;
-                        comer(focusnode,posibilidadDeComer,Tablero,Player);
-                        focusnode->ficha2=fichaQueEstamosMoviendo;
+                        comer(focusnode,posibilidadDeComer,Tablero,Player,fichaQueEstamosMoviendo);
+
                         break;
                     }
 
@@ -1815,7 +1543,7 @@ void movimientoFicha(int dado , Ficha *fichaQueEstamosMoviendo , Board *Tablero 
     //-----------------------------JUGADOR AMARILLO------------------------------------
     if(Player== 'Y')
     {
-        int posibilidadDeComer=0;
+        posibilidadDeComer=0;
         if(fichaQueEstamosMoviendo->Path==0)
             fichaQueEstamosMoviendo->Path=34;
 
@@ -1879,8 +1607,8 @@ void movimientoFicha(int dado , Ficha *fichaQueEstamosMoviendo , Board *Tablero 
                     else if(focusnode->ficha1->Player!=Player && focusnode->BanSafe==0)
                     {
                         posibilidadDeComer=1;
-                        comer(focusnode,posibilidadDeComer,Tablero,Player);
-                        focusnode->ficha1=fichaQueEstamosMoviendo;
+                        comer(focusnode,posibilidadDeComer,Tablero,Player,fichaQueEstamosMoviendo);
+
                         break;
                     }
                     else if(focusnode->ficha2==NULL)
@@ -1892,8 +1620,8 @@ void movimientoFicha(int dado , Ficha *fichaQueEstamosMoviendo , Board *Tablero 
                     else if(focusnode->ficha2->Player!=Player && focusnode->BanSafe==0)
                     {
                         posibilidadDeComer=2;
-                        comer(focusnode,posibilidadDeComer,Tablero,Player);
-                        focusnode->ficha2=fichaQueEstamosMoviendo;
+                        comer(focusnode,posibilidadDeComer,Tablero,Player,fichaQueEstamosMoviendo);
+
                         break;
                     }
 
@@ -1905,7 +1633,7 @@ void movimientoFicha(int dado , Ficha *fichaQueEstamosMoviendo , Board *Tablero 
     //-----------------------------JUGADOR AZUL------------------------------------
     if(Player== 'B')
     {
-        int posibilidadDeComer=0;
+        posibilidadDeComer=0;
         if(fichaQueEstamosMoviendo->Path==0)
             fichaQueEstamosMoviendo->Path=51;
 
@@ -1969,8 +1697,8 @@ void movimientoFicha(int dado , Ficha *fichaQueEstamosMoviendo , Board *Tablero 
                     else if(focusnode->ficha1->Player!=Player && focusnode->BanSafe==0)
                     {
                         posibilidadDeComer=1;
-                        comer(focusnode,posibilidadDeComer,Tablero,Player);
-                        focusnode->ficha1=fichaQueEstamosMoviendo;
+                        comer(focusnode,posibilidadDeComer,Tablero,Player,fichaQueEstamosMoviendo);
+
                         break;
                     }
                     else if(focusnode->ficha2==NULL)
@@ -1981,8 +1709,8 @@ void movimientoFicha(int dado , Ficha *fichaQueEstamosMoviendo , Board *Tablero 
                     else if(focusnode->ficha2->Player!=Player && focusnode->BanSafe==0)
                     {
                         posibilidadDeComer=2;
-                        comer(focusnode,posibilidadDeComer,Tablero,Player);
-                        focusnode->ficha2=fichaQueEstamosMoviendo;
+                        comer(focusnode,posibilidadDeComer,Tablero,Player,fichaQueEstamosMoviendo);
+
                         break;
                     }
 
@@ -1991,216 +1719,68 @@ void movimientoFicha(int dado , Ficha *fichaQueEstamosMoviendo , Board *Tablero 
             }
         }
     }
-}
+}//Realiza los movimientos de la ficha dentro del tablero , la victory lap y la casilla del final.|Dentro de esta funcion se realiza la funcion de comer.
 
 void movimientoFichaDelInicio(int dado , Ficha *fichaQueEstamosMoviendo , Board *Tablero , char Player)
 {
     Casilla *focusnode=Tablero->inicio;
-
-
-    //-----------------------------JUGADOR ROJO------------------------------------
+    int posibilidadDeComer=0;
 
     if(Player== 'R')
-    {
-        int posibilidadDeComer=0;
         fichaQueEstamosMoviendo->Path=1;
-        fichaQueEstamosMoviendo->PaGanar=1;
-        while(focusnode!=NULL)
-        {
-            if(focusnode->NumCasilla==fichaQueEstamosMoviendo->Path)
-            {
-                if(focusnode->ficha1==NULL)
-                {
-                    focusnode->ficha1=fichaQueEstamosMoviendo;
-                    printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
-                    break;
-                }
-                else if(focusnode->ficha2==NULL)
-                {
-                    focusnode->ficha2=fichaQueEstamosMoviendo;
-                    printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
-                    break;
-                }
-                else
-                {
-                    if(focusnode->ficha1->Player!=Player)
-                    {
-                        posibilidadDeComer=1;
-                        comer(focusnode,posibilidadDeComer,Tablero,Player);
-                        focusnode->ficha1=fichaQueEstamosMoviendo;
-                        break;
-                    }
-                    else if(focusnode->ficha2->Player!=Player)
-                    {
-                        posibilidadDeComer=2;
-                        comer(focusnode,posibilidadDeComer,Tablero,Player);
-                        focusnode->ficha2=fichaQueEstamosMoviendo;
-                        break;
-                    }
-                    else
-                    {
-                        printf("Movimiento invalido, no puedes sacar de la casilla de inicio, mueve otra ficha");
-                        //VER AQUI COMO LE HACEMOS PARA QUE SE PERMITA OTRO MOVIMIENTO QUE VAYA A SER VALIDO
-                    }
-                }
-            }
-            focusnode=focusnode->next;
-        }
-    }
-    //-----------------------------JUGADOR VERDE------------------------------------
     if(Player== 'G')
-    {	int posibilidadDeComer=0;
         fichaQueEstamosMoviendo->Path=18;
-        fichaQueEstamosMoviendo->PaGanar=1;
-
-        while(focusnode!=NULL)
-        {
-            if(focusnode->NumCasilla==fichaQueEstamosMoviendo->Path)
-            {
-                if(focusnode->ficha1==NULL)
-                {
-                    focusnode->ficha1=fichaQueEstamosMoviendo;
-                    printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
-                    break;
-                }
-                else if(focusnode->ficha2==NULL)
-                {
-                    focusnode->ficha2=fichaQueEstamosMoviendo;
-                    printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
-                    break;
-                }
-                else
-                {
-                    if(focusnode->ficha1->Player!=Player)
-                    {
-                        posibilidadDeComer=1;
-                        comer(focusnode,posibilidadDeComer,Tablero,Player);
-                        focusnode->ficha1=fichaQueEstamosMoviendo;
-                        break;
-                    }
-                    else if(focusnode->ficha2->Player!=Player)
-                    {
-                        posibilidadDeComer=2;
-                        comer(focusnode,posibilidadDeComer,Tablero,Player);
-                        focusnode->ficha2=fichaQueEstamosMoviendo;
-                        break;
-                    }
-                    else
-                    {
-                        printf("Movimiento invalido, no puedes sacar de la casilla de inicio, mueve otra ficha");
-                        //VER AQUI COMO LE HACEMOS PARA QUE SE PERMITA OTRO MOVIMIENTO QUE VAYA A SER VALIDO
-                    }
-                }
-            }
-            focusnode=focusnode->next;
-        }
-
-    }
-
-    //-----------------------------JUGADOR AMARILLO------------------------------------
     if(Player== 'Y')
-    {
-        int posibilidadDeComer=0;
         fichaQueEstamosMoviendo->Path=35;
-        fichaQueEstamosMoviendo->PaGanar=1;
-
-        while(focusnode!=NULL)
-        {
-            if(focusnode->NumCasilla==fichaQueEstamosMoviendo->Path)
-            {
-                if(focusnode->ficha1==NULL)
-                {
-                    focusnode->ficha1=fichaQueEstamosMoviendo;
-                    printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
-                    break;
-                }
-                else if(focusnode->ficha2==NULL)
-                {
-                    focusnode->ficha2=fichaQueEstamosMoviendo;
-                    printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
-                    break;
-                }
-                else
-                {
-                    if(focusnode->ficha1->Player!=Player)
-                    {
-                        posibilidadDeComer=1;
-                        comer(focusnode,posibilidadDeComer,Tablero,Player);
-                        focusnode->ficha1=fichaQueEstamosMoviendo;
-                        break;
-                    }
-                    else if(focusnode->ficha2->Player!=Player)
-                    {
-                        posibilidadDeComer=2;
-                        comer(focusnode,posibilidadDeComer,Tablero,Player);
-                        focusnode->ficha2=fichaQueEstamosMoviendo;
-                        break;
-                    }
-                    else
-                    {
-                        printf("Movimiento invalido, no puedes sacar de la casilla de inicio, mueve otra ficha");
-                        //VER AQUI COMO LE HACEMOS PARA QUE SE PERMITA OTRO MOVIMIENTO QUE VAYA A SER VALIDO
-                    }
-                }
-            }
-            focusnode=focusnode->next;
-        }
-    }
-    //-----------------------------JUGADOR AZUL------------------------------------
     if(Player== 'B')
-    {
-        int posibilidadDeComer=0;
         fichaQueEstamosMoviendo->Path =52;
-        fichaQueEstamosMoviendo->PaGanar =1;
 
-        while(focusnode != NULL)
+    fichaQueEstamosMoviendo->PaGanar=1;
+    while(focusnode!=NULL)
+    {
+        if(focusnode->NumCasilla==fichaQueEstamosMoviendo->Path)
         {
-            if(focusnode->NumCasilla == fichaQueEstamosMoviendo->Path)
+            if(focusnode->ficha1==NULL)
             {
-                if(focusnode->ficha1==NULL)
-                {
-                    focusnode->ficha1=fichaQueEstamosMoviendo;
-                    printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
-                    break;
-                }
-                else if(focusnode->ficha2 == NULL)
-                {
-                    focusnode->ficha2=fichaQueEstamosMoviendo;
-                    printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
-                    break;
-                }
-                else
-                {
-                    if(focusnode->ficha1->Player!=Player)
-                    {
-                        posibilidadDeComer=1;
-                        comer(focusnode,posibilidadDeComer,Tablero,Player);
-                        focusnode->ficha1=fichaQueEstamosMoviendo;
-                        break;
-                    }
-                    else if(focusnode->ficha2->Player!=Player)
-                    {
-                        posibilidadDeComer=2;
-                        comer(focusnode,posibilidadDeComer,Tablero,Player);
-                        focusnode->ficha2=fichaQueEstamosMoviendo;
-                        break;
-                    }
-                    else
-                    {
-                        printf("Movimiento invalido, no puedes sacar de la casilla de inicio, mueve otra ficha");
-                        //VER AQUI COMO LE HACEMOS PARA QUE SE PERMITA OTRO MOVIMIENTO QUE VAYA A SER VALIDO
-                    }
-                }
-
+                focusnode->ficha1=fichaQueEstamosMoviendo;
+                printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
+                return;
             }
-            focusnode = focusnode->next;
-        }
-    }
-}
+            else if(focusnode->ficha1->Player!=Player && focusnode->BanSafe!=1)
+            {
+                posibilidadDeComer=1;
+                comer(focusnode,posibilidadDeComer,Tablero,Player,fichaQueEstamosMoviendo);
 
-void comer(Casilla *casillaComida,int cualCasilla,Board *Tablero,char Player)
+                return;
+            }
+            else if(focusnode->ficha2==NULL)
+            {
+                focusnode->ficha2=fichaQueEstamosMoviendo;
+                printf("La casilla queda como: \nNumero: %d\n Ficha: %c%d",focusnode->NumCasilla,fichaQueEstamosMoviendo->Player,fichaQueEstamosMoviendo->Id);
+                return;
+            }
+            else if(focusnode->ficha2->Player!=Player && focusnode->BanSafe!=1)
+            {
+                posibilidadDeComer=2;
+                comer(focusnode,posibilidadDeComer,Tablero,Player,fichaQueEstamosMoviendo);
+
+                return;
+            }
+            else
+            {
+                regresarFichaInvalidaAInicio(Tablero,fichaQueEstamosMoviendo,Player);
+                printf("Lo siento, tu casilla de salida esta llena, por lo que tu dado se pierde :(\n");
+                return;
+            }
+        }
+        focusnode=focusnode->next;
+    }
+
+}//Realiza los movimientos del usuario, UNICAMENTE cuando se trata de movimientos desde la casilla de inicio.|Dentro de esta funcion se realiza la funcion de comer.
+
+void comer(Casilla *casillaComida,int cualFicha,Board *Tablero,char Player,Ficha* fichaQueComio)
 {
-    if(cualCasilla==1)
+    if(cualFicha==1)
     {
         casillaComida->ficha1->Path=0;
         casillaComida->ficha1->PaGanar=0;
@@ -2208,48 +1788,49 @@ void comer(Casilla *casillaComida,int cualCasilla,Board *Tablero,char Player)
         {
             if(Tablero->baseR->ficha1==NULL)
                 Tablero->baseR->ficha1=casillaComida->ficha1;
-            if(Tablero->baseR->ficha2==NULL)
+            else if(Tablero->baseR->ficha2==NULL)
                 Tablero->baseR->ficha2=casillaComida->ficha1;
-            if(Tablero->baseR->ficha3==NULL)
+            else if(Tablero->baseR->ficha3==NULL)
                 Tablero->baseR->ficha3=casillaComida->ficha1;
-            if(Tablero->baseR->ficha4==NULL)
+            else if(Tablero->baseR->ficha4==NULL)
                 Tablero->baseR->ficha4=casillaComida->ficha1;
         }
         if(casillaComida->ficha1->Player=='G')
         {
             if(Tablero->baseG->ficha1==NULL)
                 Tablero->baseG->ficha1=casillaComida->ficha1;
-            if(Tablero->baseG->ficha2==NULL)
+            else if(Tablero->baseG->ficha2==NULL)
                 Tablero->baseG->ficha2=casillaComida->ficha1;
-            if(Tablero->baseG->ficha3==NULL)
+            else if(Tablero->baseG->ficha3==NULL)
                 Tablero->baseG->ficha3=casillaComida->ficha1;
-            if(Tablero->baseG->ficha4==NULL)
+            else if(Tablero->baseG->ficha4==NULL)
                 Tablero->baseG->ficha4=casillaComida->ficha1;
         }
         if(casillaComida->ficha1->Player=='B')
         {
             if(Tablero->baseB->ficha1==NULL)
                 Tablero->baseB->ficha1=casillaComida->ficha1;
-            if(Tablero->baseB->ficha2==NULL)
+            else if(Tablero->baseB->ficha2==NULL)
                 Tablero->baseB->ficha2=casillaComida->ficha1;
-            if(Tablero->baseB->ficha3==NULL)
+            else if(Tablero->baseB->ficha3==NULL)
                 Tablero->baseB->ficha3=casillaComida->ficha1;
-            if(Tablero->baseB->ficha4==NULL)
+            else if(Tablero->baseB->ficha4==NULL)
                 Tablero->baseB->ficha4=casillaComida->ficha1;
         }
         if(casillaComida->ficha1->Player=='Y')
         {
             if(Tablero->baseY->ficha1==NULL)
                 Tablero->baseY->ficha1=casillaComida->ficha1;
-            if(Tablero->baseY->ficha2==NULL)
+            else if(Tablero->baseY->ficha2==NULL)
                 Tablero->baseY->ficha2=casillaComida->ficha1;
-            if(Tablero->baseY->ficha3==NULL)
+            else if(Tablero->baseY->ficha3==NULL)
                 Tablero->baseY->ficha3=casillaComida->ficha1;
-            if(Tablero->baseY->ficha4==NULL)
+            else if(Tablero->baseY->ficha4==NULL)
                 Tablero->baseY->ficha4=casillaComida->ficha1;
         }
+        casillaComida->ficha1=fichaQueComio;
     }
-    else if(cualCasilla==2)
+    else if(cualFicha==2)
     {
         casillaComida->ficha2->Path=0;
         casillaComida->ficha2->PaGanar=0;
@@ -2297,44 +1878,52 @@ void comer(Casilla *casillaComida,int cualCasilla,Board *Tablero,char Player)
             if(Tablero->baseY->ficha4==NULL)
                 Tablero->baseY->ficha4=casillaComida->ficha2;
         }
+        casillaComida->ficha2=fichaQueComio;
     }
-    displayOpcionesDeFichaInicio(Player,Tablero);
-    int FichaAMover=0;
-    do{
-        printf("Input:");
-        scanf("%d",&FichaAMover);
-        if(FichaAMover < 0 || FichaAMover > 4)
-            printf("Selecciona una ficha valida, entre 1 y 4\n");
-    }while(FichaAMover < 0 || FichaAMover > 4);
 
-    Ficha *fichaAManipular=fichaElecta(FichaAMover, Player, Player,Tablero,0,20);//Se le asiga a la variable, la ficha que vamos a usar mediante la funcion que regresa la ficha que eligio el usuario en entrada de texto
-
-    printf("Esta deberia de ser la impresion de la ficha que vas a mover: %c%d\n",fichaAManipular->Player,fichaAManipular->Id);
+    Ficha *fichaAManipular=validacionDeFichaElecta(Tablero,20,Player);
+    if(fichaAManipular==NULL)
+        return;
     movimientoFicha(20,fichaAManipular,Tablero,Player);
-}
+}//Funcion que regresa la ficha comida a su slot de inicio, asigna el valor de la ficha que comio a la casilla y le otorga al jugador la oportunidad de avanzar 20 casillas.
 int Revisarbarreras(Board* Tablero,Ficha *fichaAMover,int tiro)
 {
     Casilla *focusnode=Tablero->inicio;
-    Casilla *focusnodeBarreraInicio=Tablero->inicio;
+    Casilla *casillaBandera=NULL;
+    int banderaDeBarrera=0;
+    int banderaparaquepuedasmoverelinicio=0;
 
     while(focusnode!=NULL)
     {
+        if(casillaBandera==focusnode)
+            break;
         if(focusnode->NumCasilla==fichaAMover->Path)
         {
-            for(int i=0;i<tiro;i++)
+            casillaBandera=focusnode;
+            for(int i=0;i<tiro+1;i++)
             {	if(focusnode->NumCasilla==68)
                 {
                     focusnode=Tablero->inicio;
                 }
                 if(focusnode->ficha1!=NULL&&focusnode->ficha2!=NULL)
-                    return 1;
+                {
+                    if(focusnode->ficha1 == fichaAMover || focusnode->ficha2 == fichaAMover)
+                        banderaparaquepuedasmoverelinicio=1;
+
+                    else if(focusnode->ficha1 != fichaAMover || focusnode->ficha2 != fichaAMover)
+                        banderaDeBarrera=1;
+                }
                 focusnode=focusnode->next;
             }
+            if(banderaparaquepuedasmoverelinicio==1 && banderaDeBarrera==1)
+                return 1;
+            else if(banderaDeBarrera==1)
+                return 1;
         }
         focusnode=focusnode->next;
     }
     return 0;
-}
+}//Revisa el tablero para igualar a la ficha que pretende hacer un movimiento, si apartir de esta existe una barrera, regresa 1 , lo que evita que el jugador pueda hacer ese movimiento.
 int revisarVictoria(Board *Tablero)
 {
     int fichaR1EnEndTrue=existeFichaR1EnEnd(Tablero);
@@ -2364,7 +1953,8 @@ int revisarVictoria(Board *Tablero)
         return 4;
     else
         return 0;
-}
+}//Revisa si algun jugador ha ganado el juego.
+//Este bloque de funciones, revisan si en la casilla de victoria existen fichas.
 int existeFichaR1EnEnd(Board*Tablero)
 {
     if(Tablero->winR->end->ficha1!=NULL)
@@ -2477,6 +2067,7 @@ int existeFichaY4EnEnd(Board*Tablero)
     else
         return 0;
 }
+
 void hacerTiempo()
 {
     printf("\nPresiona ENTER para cambiar de turno\n");
@@ -2486,7 +2077,7 @@ void hacerTiempo()
     if(enter==10)
         return;
 
-}
+}//Funcion que pide un enter al usuario entre turno
 int estaraLlenaLaCasillaDeSalida(Board*Tablero,char Player)
 {
     Casilla *focusnode=Tablero->inicio;
@@ -2551,4 +2142,223 @@ int estaraLlenaLaCasillaDeSalida(Board*Tablero,char Player)
     }
 
     return 0;
-}
+}//Funcion que revisa si la casilla a donde salen las fichas desde su base esta llena.
+void pruebaDeBarreras(Board*Tablero)
+{
+    Casilla* focusnode=Tablero->inicio;
+
+    while(focusnode!=NULL)
+    {
+        if(focusnode->NumCasilla==2)
+        {
+            focusnode->ficha1=Tablero->baseB->ficha1;
+            focusnode->ficha2=Tablero->baseB->ficha2;
+            Tablero->baseB->ficha1=NULL;
+            Tablero->baseB->ficha2=NULL;
+
+        }
+        focusnode=focusnode->next;
+    }
+}//Funcion para crear una prueba de barreras.
+Ficha* validacionDeFichaElecta(Board*tablero,int tiro,char Player)
+{
+    Ficha *fichaderetorno=NULL;
+    int slotdefichausado=0;
+    Casilla * focusnode=NULL;
+    int banderaQueNoEncontroLaFicha=1;
+    int existenFichasEnVicLap=0;
+    int teQuedasteTrabado=0;
+
+    int existenBarreras=0;
+
+    do{
+        do{
+            do {
+                int FichaAMover = 0;
+                do {
+                    displayOpcionesDeFichaInicio(Player, tablero);
+                    printf("\nSelecciona la ficha que quieras mover,que no este en el inicio\n");
+                    printf("Input:");
+                    scanf("%d", &FichaAMover);
+                    if (FichaAMover < 0 || FichaAMover > 4)
+                        printf("\nSelecciona una ficha valida, entre 1 y 4\n");
+                } while (FichaAMover < 0 || FichaAMover > 4);
+                teQuedasteTrabado++;
+                if(teQuedasteTrabado==6)
+                {
+                    printf("Parece que te quedaste trabado, sorry ahi se fue tu turno\n");
+                    return NULL;
+                }
+                existenFichasEnVicLap = hayFichasEnVicLap(tablero, Player);
+                if (existenFichasEnVicLap > 0) {
+                    fichaderetorno = revisarVicLap(tablero, tiro, Player, FichaAMover);
+                    if(fichaderetorno!=NULL)
+                        banderaQueNoEncontroLaFicha=0;
+                }
+                if (fichaderetorno == NULL) {
+                    focusnode = tablero->inicio;
+                    while (focusnode != NULL) {
+                        if (focusnode->ficha1 != NULL) {
+                            if (FichaAMover == focusnode->ficha1->Id && Player == focusnode->ficha1->Player) {
+                                banderaQueNoEncontroLaFicha = 0;
+                                fichaderetorno = focusnode->ficha1;
+                                slotdefichausado = 1;
+                                break;
+                            }
+                        }
+                        if (focusnode->ficha2 != NULL) {
+                            if (FichaAMover == focusnode->ficha2->Id && Player == focusnode->ficha2->Player) {
+                                banderaQueNoEncontroLaFicha = 0;
+                                fichaderetorno = focusnode->ficha2;
+                                slotdefichausado = 2;
+                                break;
+                            }
+                        }
+                        focusnode = focusnode->next;
+
+                    }
+                }
+            }while(banderaQueNoEncontroLaFicha!=0);
+        }while(fichaderetorno->PaGanar==0);
+
+        existenBarreras=Revisarbarreras(tablero,fichaderetorno,tiro);
+
+        if(existenBarreras==1)
+            printf("\nExiste una barrera, selecciona otra ficha\n");
+    }while(existenBarreras==1);
+
+    if(slotdefichausado==1)
+    {
+        focusnode->ficha1=NULL;
+    }
+    else if(slotdefichausado==2)
+    {
+        focusnode->ficha2=NULL;
+    }
+    return fichaderetorno;
+}//Funcion que revisa que la ficha que se eligio no tiene barreras enfrente, que sea valida asi como busca la ficha en el tablero, y la regresa al usuario.
+void pruebaDeComer(Board*Tablero)
+{
+    Casilla* focusnode=Tablero->inicio;
+
+    while(focusnode!=NULL)
+    {
+        if(focusnode->NumCasilla==2)
+        {
+            focusnode->ficha1=Tablero->baseB->ficha1;
+            //focusnode->ficha2=Tablero->baseB->ficha2;
+            Tablero->baseB->ficha1=NULL;
+            //Tablero->baseB->ficha2=NULL;
+
+        }
+        focusnode=focusnode->next;
+    }
+}//Funcion para crear un escenario para comer.
+Ficha *revisarVicLap(Board*tablero,int tiro,char Player,int FichaAMover)
+{
+    CasVicLap *focuslap=NULL;
+    Ficha *fichaderetorno=NULL;
+
+    if(Player=='R')
+        focuslap=tablero->winR;
+    if(Player=='G')
+        focuslap=tablero->winG;
+    if(Player=='Y')
+        focuslap=tablero->winY;
+    if(Player=='B')
+        focuslap=tablero->winB;
+
+    while(focuslap!=NULL)
+    {
+        if (focuslap->ficha1 != NULL) {
+            if (FichaAMover == focuslap->ficha1->Id && Player == focuslap->ficha1->Player) {
+
+                fichaderetorno = focuslap->ficha1;
+                focuslap->ficha1=NULL;
+                return fichaderetorno;
+            }
+        }
+        if (focuslap->ficha2 != NULL) {
+            if (FichaAMover == focuslap->ficha2->Id && Player == focuslap->ficha2->Player) {
+
+                fichaderetorno = focuslap->ficha2;
+                focuslap->ficha2=NULL;
+                return fichaderetorno;
+            }
+        }
+        focuslap = focuslap->next;
+    }
+    fichaderetorno=NULL;
+    return fichaderetorno;
+}//Revisa si la ficha que quiere mover el usuario existe en victoryLap, esta funcion apoya a la funcion evaluacionFichaElecta.
+void pruebaDeVicLap(Board*Tablero)
+{
+    CasVicLap *focuslap=Tablero->winR;
+
+    while(focuslap!=NULL)
+    {
+        if(focuslap->NumCasilla==102)
+        {
+            focuslap->ficha1=Tablero->baseR->ficha1;
+            //focusnode->ficha2=Tablero->baseB->ficha2;
+            Tablero->baseR->ficha1=NULL;
+            //Tablero->baseB->ficha2=NULL;
+            focuslap->ficha1->Path=102;
+            focuslap->ficha1->PaGanar=66;
+
+        }
+        focuslap=focuslap->next;
+    }
+}//Funcion que crea un escenario para revisar el movimiento en VicLap.
+
+int hayFichasEnVicLap(Board*tablero,char Player)
+{
+    CasVicLap *focuslap=NULL;
+    Ficha *fichaderetorno=NULL;
+    int cont=0;
+
+    if(Player=='R')
+        focuslap=tablero->winR;
+    if(Player=='G')
+        focuslap=tablero->winG;
+    if(Player=='Y')
+        focuslap=tablero->winY;
+    if(Player=='B')
+        focuslap=tablero->winB;
+
+    while(focuslap!=NULL) {
+        if (focuslap->ficha1 != NULL) {
+            cont++;
+        }
+        if (focuslap->ficha2 != NULL) {
+            cont++;
+        }
+        focuslap = focuslap->next;
+    }
+    return cont;
+}//Funcion que revisa cuantas fichas existen en VicLap.
+
+void pruebaDeVictoria(Board*Tablero)
+{
+    CasVicLap *focuslap=Tablero->winR;
+    Tablero->winR->end->ficha1=Tablero->baseR->ficha2;
+    Tablero->winR->end->ficha2=Tablero->baseR->ficha3;
+    Tablero->winR->end->ficha3=Tablero->baseR->ficha4;
+    Tablero->baseR->ficha2=NULL;
+    Tablero->baseR->ficha3=NULL;
+    Tablero->baseR->ficha4=NULL;
+    while(focuslap!=NULL)
+    {
+        if(focuslap->NumCasilla==107)
+        {
+            focuslap->ficha1=Tablero->baseR->ficha1;
+            //focusnode->ficha2=Tablero->baseB->ficha2;
+            Tablero->baseR->ficha1=NULL;
+            //Tablero->baseB->ficha2=NULL;
+            focuslap->ficha1->Path=107;
+            focuslap->ficha1->PaGanar=71;
+
+        }
+        focuslap=focuslap->next;
+    }
+}//Funcion que revisa que el juego termina cuando todas las fichas del usuario llegan al final.

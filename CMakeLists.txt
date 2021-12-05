@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.11) # FetchContent is available in 3.11+
-project(Parchis)
+project(parchisV)
 
 # Set this to the minimal version you want to support
 find_package(raylib 3.0 QUIET) # Let CMake search for a raylib-config.cmake
@@ -31,7 +31,7 @@ endif()
 
 # This is the main part:
 #add_executable(${PROJECT_NAME} main.c)
-add_executable(${PROJECT_NAME} main.c parchis.c parchis.h turnos.c turnos.h)
+add_executable(${PROJECT_NAME} main.c parchis.c parchis.h turnos.c turnos.h graphics.c graphics.h)
 
 
 #set(raylib_VERBOSE 1)

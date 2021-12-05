@@ -49,7 +49,7 @@ struct casInicio{
 };
 
 struct board{
-    char currentPlayer;
+    int currentPlayers;
 
     struct casilla *inicio;
 
@@ -65,7 +65,7 @@ struct board{
 };
 
 
-//Crea un tablero con la casilla 1 implementada
+//Crea un tablero con la casilla 1 implementada.
 Board *newBoard(){
     Board *juego = malloc(sizeof(Board));
     juego->inicio=malloc(sizeof(Casilla));
@@ -80,7 +80,7 @@ Board *newBoard(){
     return juego;
 }
 
-//Añade 67 casillas restantes al tablero
+//Añade 67 casillas restantes al tablero.
 void finishBoard(Board* juego, int contador)
 {
     Casilla *focusNodeFirst = juego->inicio;
@@ -132,7 +132,7 @@ void finishBoard(Board* juego, int contador)
     focusNode->next = NULL;
 }
 
-//Añade los espacios de inicio donde se almacenan las 4 fichas de salida de cada color
+//Añade los espacios de inicio donde se almacenan las 4 fichas de salida de cada color.
 void beginning(Board* juego)
 {
     //-----------------------------Casillas de Inicio-------------------------------------
@@ -277,7 +277,7 @@ void emptyEnding(Board *juego, char Player)
     }
 }
 
-//Añade las otras 6 casillas al recorrido ganador de cada color
+//Añade las otras 6 casillas al recorrido ganador de cada color.
 void finishEnding(Board* juego, int contador,char Player)
 {
     CasVicLap *recorridoFinalFirst;
@@ -306,7 +306,7 @@ void finishEnding(Board* juego, int contador,char Player)
     recorridoFinal->next = NULL;
 }
 
-//Creacion de casillas de gane de cada color
+//Creacion de casillas de gane de cada color.
 void ending(Board* juego)
 {
     Final *finalR = juego->winR->end;
@@ -346,9 +346,10 @@ void ending(Board* juego)
     juego->winY->end=finalY;
 }
 
-//Crea en su totalidad el tablero
-void creacionMaestra(Board *juego)
+//Crea en su totalidad el tablero.
+void creacionMaestra(Board *juego,int jugadores)
 {
+    juego->currentPlayers = jugadores;
     //Se crean las 68 casillas
     for(int i = 2; i < 69; i++){
         finishBoard(juego, i);
@@ -451,41 +452,124 @@ void displayBoard(Board *juego){
     CasVicLap *focusLapR=juego->winR;
     while(focusLapR!=NULL)
     {
-        printf("R Numero de casillaVL: %d\t Color del player: %c\n",focusLapR->NumCasilla,focusLapR->Player);
+        printf("\nR Numero de casillaVL: %d\t",focusLapR->NumCasilla);
+        if(focusLapR->ficha1!=NULL)
+            printf("SLOT1 [%c%d]\n", focusLapR->ficha1->Player, focusLapR->ficha1->Id);
+        if(focusLapR->ficha2!=NULL)
+            printf("SLOT1 [%c%d]\n", focusLapR->ficha1->Player, focusLapR->ficha1->Id);
+        if(focusLapR->ficha1==NULL && focusLapR->ficha2==NULL)
+            printf("Slots vacios");
         focusLapR=focusLapR->next;
     }
-    printf("Jugador: %c\n Numero de Casilla: %d\n",juego->winR->end->Player,juego->winR->end->NumCasilla);
+    printf("\nNumero de Casilla: %d\n", juego->winR->end->NumCasilla);
+    if(juego->winR->end->ficha1 != NULL)
+        printf("[%c%d]", juego->winR->end->ficha1->Player, juego->winR->end->ficha1->Id);
+    if(juego->winR->end->ficha2 != NULL)
+        printf("  [%c%d]", juego->winR->end->ficha2->Player, juego->winR->end->ficha2->Id);
+    if(juego->winR->end->ficha3 != NULL)
+        printf("  [%c%d]", juego->winR->end->ficha3->Player, juego->winR->end->ficha3->Id);
+    if(juego->winR->end->ficha4 != NULL)
+        printf("  [%c%d]", juego->winR->end->ficha4->Player, juego->winR->end->ficha4->Id);
 
     printf("\n\n");
 
     //--------------GREEN------------------------------------------------------
     CasVicLap *focusLapG=juego->winG;
     while(focusLapG!=NULL){
-        printf("G Numero de casillaVL: %d\t Color del player: %c\n",focusLapG->NumCasilla,focusLapG->Player);
+        printf("\nG Numero de casillaVL: %d\t",focusLapG->NumCasilla);
+        if(focusLapG->ficha1!=NULL)
+            printf("SLOT1 [%c%d]\n", focusLapG->ficha1->Player, focusLapG->ficha1->Id);
+        if(focusLapG->ficha2!=NULL)
+            printf("SLOT1 [%c%d]\n", focusLapG->ficha1->Player, focusLapG->ficha1->Id);
+        if(focusLapG->ficha1==NULL && focusLapG->ficha2==NULL)
+            printf("Slots vacios");
         focusLapG=focusLapG->next;
     }
 
-    printf("Jugador: %c\n Numero de Casilla: %d\n",juego->winG->end->Player,juego->winG->end->NumCasilla);
+    printf("\nNumero de Casilla: %d\n",juego->winG->end->NumCasilla);
+    if(juego->winG->end->ficha1 != NULL)
+        printf("[%c%d]", juego->winG->end->ficha1->Player, juego->winG->end->ficha1->Id);
+    if(juego->winG->end->ficha2 != NULL)
+        printf("  [%c%d]", juego->winG->end->ficha2->Player, juego->winG->end->ficha2->Id);
+    if(juego->winG->end->ficha3 != NULL)
+        printf("  [%c%d]", juego->winG->end->ficha3->Player, juego->winG->end->ficha3->Id);
+    if(juego->winG->end->ficha4 != NULL)
+        printf("  [%c%d]", juego->winG->end->ficha4->Player, juego->winG->end->ficha4->Id);
     printf("\n\n");
 
 
     //-------------BLUE------------------------------------------------------
     CasVicLap *focusLapB=juego->winB;
     while(focusLapB!=NULL){
-        printf("B Numero de casillaVL: %d\t Color del player: %c\n",focusLapB->NumCasilla,focusLapB->Player);
+        printf("\nB Numero de casillaVL: %d\t",focusLapB->NumCasilla);
+        if(focusLapB->ficha1!=NULL)
+            printf("SLOT1 [%c%d]\n", focusLapB->ficha1->Player, focusLapB->ficha1->Id);
+        if(focusLapB->ficha2!=NULL)
+            printf("SLOT1 [%c%d]\n", focusLapB->ficha1->Player, focusLapB->ficha1->Id);
+        if(focusLapB->ficha1==NULL && focusLapB->ficha2==NULL)
+            printf("Slots vacios");
         focusLapB=focusLapB->next;
     }
-    printf("Jugador: %c\n Numero de Casilla: %d\n",juego->winB->end->Player,juego->winB->end->NumCasilla);
+
+    printf("\nNumero de Casilla: %d\n",juego->winB->end->NumCasilla);
+    if(juego->winB->end->ficha1 != NULL)
+        printf("[%c%d]", juego->winB->end->ficha1->Player, juego->winB->end->ficha1->Id);
+    if(juego->winB->end->ficha2 != NULL)
+        printf("  [%c%d]", juego->winB->end->ficha2->Player, juego->winB->end->ficha2->Id);
+    if(juego->winB->end->ficha3 != NULL)
+        printf("  [%c%d]", juego->winB->end->ficha3->Player, juego->winB->end->ficha3->Id);
+    if(juego->winB->end->ficha4 != NULL)
+        printf("  [%c%d]", juego->winB->end->ficha4->Player, juego->winB->end->ficha4->Id);
     printf("\n\n");
 
 
     //------------YELLOW----------------------------------------------------------
     CasVicLap *focusLapY=juego->winY;
     while(focusLapY!=NULL){
-        printf("Y Numero de casillaVL: %d\t Color del player: %c\n",focusLapY->NumCasilla,focusLapY->Player);
+        printf("\nY Numero de casillaVL: %d\t",focusLapY->NumCasilla);
+        if(focusLapY->ficha1!=NULL)
+            printf("SLOT1 [%c%d]\n", focusLapY->ficha1->Player, focusLapY->ficha1->Id);
+        if(focusLapY->ficha2!=NULL)
+            printf("SLOT1 [%c%d]\n", focusLapY->ficha1->Player, focusLapY->ficha1->Id);
+        if(focusLapY->ficha1==NULL && focusLapY->ficha2==NULL)
+            printf("Slots vacios");
         focusLapY=focusLapY->next;
     }
-    printf("Jugador: %c\n Numero de Casilla: %d\n",juego->winY->end->Player,juego->winY->end->NumCasilla);
+
+    printf("\nNumero de Casilla: %d\n",juego->winY->end->NumCasilla);
+    if(juego->winY->end->ficha1 != NULL)
+        printf("[%c%d]", juego->winY->end->ficha1->Player, juego->winY->end->ficha1->Id);
+    if(juego->winY->end->ficha2 != NULL)
+        printf("  [%c%d]", juego->winY->end->ficha2->Player, juego->winY->end->ficha2->Id);
+    if(juego->winY->end->ficha3 != NULL)
+        printf("  [%c%d]", juego->winY->end->ficha3->Player, juego->winY->end->ficha3->Id);
+    if(juego->winY->end->ficha4 != NULL)
+        printf("  [%c%d]", juego->winY->end->ficha4->Player, juego->winY->end->ficha4->Id);
     printf("\n\n");
 
-}
+}//Funcion para imprimir el tablero completo, asi como las posiciones de las fichas.
+void Savefile(Board*Tablero)
+{
+    FILE* Save=fopen("A:\\Test Instalations\\Clion\\Sandbox\\parchisV\\JuegosGuardados\\save.dat","wb+");
+    if(Save){
+        fwrite(Tablero,sizeof(Board),1,Save);
+    }
+
+}//Funcion para salvar el juego.
+Board* loadGame(Board *Tablero,int jugadores){
+    FILE *Save = fopen("A:\\Test Instalations\\Clion\\Sandbox\\parchisV\\JuegosGuardados\\save.dat", "r+b");
+    //Si existe, se abre y se recupera el juego
+    if(Save != NULL){
+        printf(" - - Loading Game - - \n");
+        Tablero = malloc(sizeof(Board)); //Crea memoria dinámica
+        //Lee Save
+        fread(Tablero, sizeof(Board), 1, Save);
+        fclose(Save);
+
+    }else{
+        printf(" - - No saved games, creating a new one- - \n");
+        Tablero = newBoard();
+        creacionMaestra(Tablero,jugadores);
+    }
+    return Tablero;
+}//Funcion para cargar el juego.
