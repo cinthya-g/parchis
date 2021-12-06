@@ -1,67 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <string.h>
 #include "parchis.h"
 #include "turnos.h"
 
-
-struct ficha{
-    char Player;//Determina el color del jugador (b, y, r, g)
-    char Path;//Path es un acumulador de el progreso de la ficha
-    int Id;
-    char PaGanar;
-};
-
-struct casilla{
-    int NumCasilla;//Indica el numero de la casilla | nuemros siempre entre 1-68
-    char BanSafe;//Indica si es una casilla donde se pueda comer
-    char BanSalida;//Indica si la casilla es una salida para alguno de los jugadores (R, B, Y, G)
-    struct ficha *ficha1;//Almacena una ficha
-    struct ficha *ficha2;//Almacena una ficha
-    struct casilla *next;//Hace referencia a la siguiente casilla
-};
-struct casVicLap{
-    char Player;
-    int NumCasilla;//Inicia en 101 y termina en 107
-    struct ficha *ficha1;
-    struct ficha *ficha2;
-    struct casVicLap *next;
-    struct casEnd *end;
-};
-struct casEnd{
-    char Player;
-    int NumCasilla;//Numero siempre es 108
-    struct ficha *ficha1;
-    struct ficha *ficha2;
-    struct ficha *ficha3;
-    struct ficha *ficha4;
-};
-struct casInicio{
-    char Player;
-    char NumCasilla;//Numero siempre es 0
-    struct ficha *ficha1;
-    struct ficha *ficha2;
-    struct ficha *ficha3;
-    struct ficha *ficha4;
-};
-struct board{
-    int currentPlayers;
-
-    struct casilla *inicio;
-    struct casVicLap *winR;
-    struct casVicLap *winY;
-    struct casVicLap *winB;
-    struct casVicLap *winG;
-
-    struct casInicio *baseR;
-    struct casInicio *baseY;
-    struct casInicio *baseB;
-    struct casInicio *baseG;
-};
-
-
 //------------------------------------------------------------------------
+int cuantosJugadores(){
+    int jugadores = 0;
+    do{
+        printf("\nSelecciona jugadores (2 a 4): " );
+        scanf("%d", &jugadores);
+    }while(jugadores < 2 || jugadores > 4);
+
+    return jugadores;
+}
+
 Dados tiroDados()
 {
     Dados Dice={0,0};
@@ -347,22 +300,17 @@ int hayFichasEnInicio(Board* Tablero, char Player)
     return 0;
 }
 
-void Turno(char Player,Board *Tablero,Dados tiro)
+void Turno(char Player,Board *Tablero)
 {
-    //Player='R';
-    //pruebaDeBarreras(Tablero);
-    //pruebaDeComer(Tablero);
-    //pruebaDeVicLap(Tablero);
-    //pruebaDeVictoria(Tablero);
+    Dados tiro = tiroDados();
     printf("Es el turno del jugador: %c\n\n",Player );
     int Dado1=valorDado1(tiro);
     int Dado2=valorDado2(tiro);
-    //Dado1=2;
-    //Dado2=2;
+
     printf("Tiro:Dado1= %d Dado2= %d\n\n",Dado1,Dado2);
     int numeroDeMovimientosPorTurno=0;
     int dadoUsado=0;
-    int dadoAUsar;
+    int dadoAUsar=0;
     int sumaDados=Dado1+Dado2;
     int banderaDeBarrera=0;
     int casillaDeSalidaLlena=0;
@@ -817,6 +765,7 @@ void Turno(char Player,Board *Tablero,Dados tiro)
                     printf("Referencia para que veas donde estan tus fichas, checa tu dado ;\n");
                     printf("\nCual dado quieres usar para mover la ficha : \nDado 1: %d\nDado 2: %d\n",Dado1,Dado2);
                     printf("Input:");
+
                     scanf("%d",&dadoAUsar);
                     if(dadoAUsar < 1 || dadoAUsar > 2)
                         printf("Selecciona un dado valida, entre 1 y 2\n");
@@ -2362,3 +2311,152 @@ void pruebaDeVictoria(Board*Tablero)
         focuslap=focuslap->next;
     }
 }//Funcion que revisa que el juego termina cuando todas las fichas del usuario llegan al final.
+
+void editorDeJuego(Board*Tablero)
+{
+    int fichaR1=0;int fichaR2=0;int fichaR3=0;int fichaR4=0;
+    int fichaG1=0;int fichaG2=0;int fichaG3=0;int fichaG4=0;
+    int fichaB1=0;int fichaB2=0;int fichaB3=0;int fichaB4=0;
+    int fichaY1=0;int fichaY2=0;int fichaY3=0;int fichaY4=0;
+
+
+    //Inicios
+    printf("Indica cuantos espacios quieres que avance cada ficha desde su salida.\nLos valores aceptables son del 1 al 72\nSpolier: Con 72 la ficha llega al final\n");
+    printf("Jugador ROJO\n");
+    do {
+        printf("Ficha1\nINPUT:");
+        scanf("%d",&fichaR1);
+        if (fichaR1 < 0 || fichaR1 > 73)
+            printf("\nSelecciona una valor valido, entre 1 y 72\n");
+    } while (fichaR1 < 0 || fichaR1 > 73);
+    do {
+        printf("Ficha2\nINPUT:");
+        scanf("%d",&fichaR2);
+        if (fichaR2 < 0 || fichaR2 > 73)
+            printf("\nSelecciona una valor valido, entre 1 y 72\n");
+    } while (fichaR2 < 0 || fichaR2 > 73);
+    do {
+        printf("Ficha3\nINPUT:");
+        scanf("%d",&fichaR3);
+        if (fichaR3 < 0 || fichaR3 > 73)
+            printf("\nSelecciona una valor valido, entre 1 y 72\n");
+    } while (fichaR3 < 0 || fichaR3 > 73);
+    do {
+        printf("Ficha4\nINPUT:");
+        scanf("%d",&fichaR4);
+        if (fichaR4 < 0 || fichaR4 > 73)
+            printf("\nSelecciona una valor valido, entre 1 y 72\n");
+    } while (fichaR4 < 0 || fichaR4 > 73);
+
+    printf("Jugador VERDE\n");
+    do {
+        printf("Ficha1\nINPUT:");
+        scanf("%d",&fichaG1);
+        if (fichaG1 < 0 || fichaG1 > 73)
+            printf("\nSelecciona una valor valido, entre 1 y 72\n");
+    } while (fichaG1 < 0 || fichaG1 > 73);
+    do {
+        printf("Ficha2\nINPUT:");
+        scanf("%d",&fichaG2);
+        if (fichaG2 < 0 || fichaG2 > 73)
+            printf("\nSelecciona una valor valido, entre 1 y 72\n");
+    } while (fichaG2 < 0 || fichaG2 > 73);
+    do {
+        printf("Ficha3\nINPUT:");
+        scanf("%d",&fichaG3);
+        if (fichaG3 < 0 || fichaG3 > 73)
+            printf("\nSelecciona una valor valido, entre 1 y 72\n");
+    } while (fichaG3 < 0 || fichaG3 > 73);
+    do {
+        printf("Ficha4\nINPUT:");
+        scanf("%d",&fichaG4);
+        if (fichaG4 < 0 || fichaG4 > 73)
+            printf("\nSelecciona una valor valido, entre 1 y 72\n");
+    } while (fichaG4 < 0 || fichaG4 > 73);
+    printf("Jugador AMARILLO\n");
+    do {
+        printf("Ficha1\nINPUT:");
+        scanf("%d",&fichaY1);
+        if (fichaY1 < 0 || fichaY1 > 73)
+            printf("\nSelecciona una valor valido, entre 1 y 72\n");
+    } while (fichaY1 < 0 || fichaY1 > 73);
+    do {
+        printf("Ficha2\nINPUT:");
+        scanf("%d",&fichaY2);
+        if (fichaY2 < 0 || fichaY2 > 73)
+            printf("\nSelecciona una valor valido, entre 1 y 72\n");
+    } while (fichaY2 < 0 || fichaY2 > 73);
+    do {
+        printf("Ficha3\nINPUT:");
+        scanf("%d",&fichaY3);
+        if (fichaY3 < 0 || fichaY3 > 73)
+            printf("\nSelecciona una valor valido, entre 1 y 72\n");
+    } while (fichaY3 < 0 || fichaY3 > 73);
+    do {
+        printf("Ficha4\nINPUT:");
+        scanf("%d",&fichaY4);
+        if (fichaY4 < 0 || fichaY4 > 73)
+            printf("\nSelecciona una valor valido, entre 1 y 72\n");
+    } while (fichaY4 < 0 || fichaY4 > 73);
+    printf("Jugador AZUL\n");
+    do {
+        printf("Ficha1\nINPUT:");
+        scanf("%d",&fichaB1);
+        if (fichaB1 < 0 || fichaB1 > 73)
+            printf("\nSelecciona una valor valido, entre 1 y 72\n");
+    } while (fichaB1 < 0 || fichaB1 > 73);
+    do {
+        printf("Ficha2\nINPUT:");
+        scanf("%d",&fichaB2);
+        if (fichaB2 < 0 || fichaB2 > 73)
+            printf("\nSelecciona una valor valido, entre 1 y 72\n");
+    } while (fichaB2 < 0 || fichaB2 > 73);
+    do {
+        printf("Ficha3\nINPUT:");
+        scanf("%d",&fichaB3);
+        if (fichaB3 < 0 || fichaB3 > 73)
+            printf("\nSelecciona una valor valido, entre 1 y 72\n");
+    } while (fichaB3 < 0 || fichaB3 > 73);
+    do {
+        printf("Ficha4\nINPUT:");
+        scanf("%d",&fichaB4);
+        if (fichaB4 < 0 || fichaB4 > 73)
+            printf("\nSelecciona una valor valido, entre 1 y 72\n");
+    } while (fichaB4 < 0 || fichaB4 > 73);
+
+    Ficha*FichaR1=fichaElecta(1,'R','R',Tablero,1,fichaR1);
+    movimientoFicha(fichaR1, FichaR1,Tablero,'R');
+    Ficha*FichaR2=fichaElecta(2,'R','R',Tablero,1,fichaR2);
+    movimientoFicha(fichaR2, FichaR2,Tablero,'R');
+    Ficha*FichaR3=fichaElecta(3,'R','R',Tablero,1,fichaR3);
+    movimientoFicha(fichaR3, FichaR3,Tablero,'R');
+    Ficha*FichaR4=fichaElecta(4,'R','R',Tablero,1,fichaR3);
+    movimientoFicha(fichaR4, FichaR4,Tablero,'R');
+
+    Ficha*FichaG1=fichaElecta(1,'G','G',Tablero,1,fichaG1);
+    movimientoFicha(fichaG1, FichaG1,Tablero,'G');
+    Ficha*FichaG2=fichaElecta(2,'G','G',Tablero,1,fichaG2);
+    movimientoFicha(fichaG2, FichaG2,Tablero,'G');
+    Ficha*FichaG3=fichaElecta(3,'G','G',Tablero,1,fichaG3);
+    movimientoFicha(fichaG3, FichaG3,Tablero,'G');
+    Ficha*FichaG4=fichaElecta(4,'G','G',Tablero,1,fichaG4);
+    movimientoFicha(fichaG4, FichaG4,Tablero,'G');
+
+    Ficha*FichaB1=fichaElecta(1,'B','B',Tablero,1,fichaB1);
+    movimientoFicha(fichaB1, FichaB1,Tablero,'B');
+    Ficha*FichaB2=fichaElecta(2,'B','B',Tablero,1,fichaB2);
+    movimientoFicha(fichaB2, FichaB2,Tablero,'B');
+    Ficha*FichaB3=fichaElecta(3,'B','B',Tablero,1,fichaB3);
+    movimientoFicha(fichaB3, FichaB3,Tablero,'B');
+    Ficha*FichaB4=fichaElecta(4,'B','B',Tablero,1,fichaB4);
+    movimientoFicha(fichaB4, FichaB4,Tablero,'B');
+
+    Ficha*FichaY1=fichaElecta(1,'Y','Y',Tablero,1,fichaY1);
+    movimientoFicha(fichaY1, FichaY1,Tablero,'Y');
+    Ficha*FichaY2=fichaElecta(2,'Y','Y',Tablero,1,fichaY2);
+    movimientoFicha(fichaY2, FichaY2,Tablero,'Y');
+    Ficha*FichaY3=fichaElecta(3,'Y','Y',Tablero,1,fichaY3);
+    movimientoFicha(fichaY3, FichaY3,Tablero,'Y');
+    Ficha*FichaY4=fichaElecta(4,'Y','Y',Tablero,1,fichaY4);
+    movimientoFicha(fichaY4, FichaY4,Tablero,'Y');
+}

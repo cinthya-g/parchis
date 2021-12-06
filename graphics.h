@@ -8,60 +8,28 @@
 #include "turnos.h"
 #include "parchis.h"
 
-//---------DISPLAY GRAFICO--------------------------------------------
-void mainScreen();
-void displayPlayerInTurn(char playerInTurn, Board *juego);
-void displayMainDice();
-//-------------------------------------------------------------------
+//Enumeracion con variedad de colores de la libreria de Windows.h
+enum Colors { BLACK = 0, BLUE = 1, GREEN = 2, CYAN = 3, RED = 4, MAGENTA = 5,
+            BROWN = 6, LGREY = 7, DGREY = 8, LBLUE = 9, LGREEN = 10, LCYAN = 11,
+            LRED = 12, LMAGENTA = 13, YELLOW = 14, WHITE = 15};
 
-//---------POSICIONES CON PIXELES------------------------------------
+//Permite inicializar los colores en la consola
+void Color(int Background, int Text);
 
-typedef struct pixelesPosiciones PixelPos;
-typedef struct arreglosPosiciones Positions;
+//Le da un color caracteristico al resto de la consola que no sea el tablero
+void consoleColor();
 
-//Obtener dados para tablero grafico
-PixelPos guardarDadosIniciales(Dados *mainDice);
+/*
+ * Despliega el tablero a partir de funciones que se dedican a imprimir aspectos especificos
+ * de este.
+ */
+void displayColorBoard(Board *juego);
 
-//Posiciones en pixeles
-Positions *initialPositions();
+//Segun el jugador en turno, cambia el color de la ficha que se mueve en el tablero.
+void validarColor(char Player);
 
-PixelPos *guardarPosicionesIniciales(PixelPos *pos);
+//Muestra el título de la pantalla principal.
+void titleScreen();
 
-//-----------------ROJO-------------------
-int obtenerXR1(Positions *pix, Board *juego, char Player);
-int obtenerYR1(Positions *pix, Board *juego, char Player);
-int obtenerXR2(Positions *pix, Board *juego, char Player);
-int obtenerYR2(Positions *pix, Board *juego, char Player);
-int obtenerXR3(Positions *pix, Board *juego, char Player);
-int obtenerYR3(Positions *pix, Board *juego, char Player);
-int obtenerXR4(Positions *pix, Board *juego, char Player);
-int obtenerYR4(Positions *pix, Board *juego, char Player);
-//---------------AZUL-----------------------
-int obtenerXB1(Positions *pix, Board *juego, char Player);
-int obtenerYB1(Positions *pix, Board *juego, char Player);
-int obtenerXB2(Positions *pix, Board *juego, char Player);
-int obtenerYB2(Positions *pix, Board *juego, char Player);
-int obtenerXB3(Positions *pix, Board *juego, char Player);
-int obtenerYB3(Positions *pix, Board *juego, char Player);
-int obtenerXB4(Positions *pix, Board *juego, char Player);
-int obtenerYB4(Positions *pix, Board *juego, char Player);
-//---------------VERDE------------------------
-int obtenerXG1(Positions *pix, Board *juego, char Player);
-int obtenerYG1(Positions *pix, Board *juego, char Player);
-int obtenerXG2(Positions *pix, Board *juego, char Player);
-int obtenerYG2(Positions *pix, Board *juego, char Player);
-int obtenerXG3(Positions *pix, Board *juego, char Player);
-int obtenerYG3(Positions *pix, Board *juego, char Player);
-int obtenerXG4(Positions *pix, Board *juego, char Player);
-int obtenerYG4(Positions *pix, Board *juego, char Player);
-//------------AMARILLO-------------------------
-int obtenerXY1(Positions *pix, Board *juego, char Player);
-int obtenerYY1(Positions *pix, Board *juego, char Player);
-int obtenerXY2(Positions *pix, Board *juego, char Player);
-int obtenerYY2(Positions *pix, Board *juego, char Player);
-int obtenerXY3(Positions *pix, Board *juego, char Player);
-int obtenerYY3(Positions *pix, Board *juego, char Player);
-int obtenerXY4(Positions *pix, Board *juego, char Player);
-int obtenerYY4(Positions *pix, Board *juego, char Player);
 
 #endif //PARCHIS_GRAPHICS_H

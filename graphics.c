@@ -2,402 +2,775 @@
 // Created by cinth on 01/12/2021.
 //
 #include <stdio.h>
-#include <raylib.h>
-#include "graphics.h"
-#include "turnos.h"
-#include "parchis.h"
 #include <stdlib.h>
+#include <Windows.h>
 
-//----------TITULOS Y PANTALLAS--------------------------------------------
-void mainScreen()
-{
-    Color fondoInicio = {14, 119, 153, 1};
-    ClearBackground(fondoInicio);
-    DrawText("SUPER", 180, 90, 190, WHITE);
-    DrawText("PERPENDICULAR", 370, 250, 90, WHITE);
-    DrawText("PARCHIS", 480, 325, 190, WHITE);
-    DrawText("Presione el número de jugadores", 350, 610, 50, WHITE);
-}
-void displayPlayerInTurn(char playerInTurn, Board *juego){
-    DrawText(TextFormat("TURNO DE %c", playerInTurn), 1190, 35, 30, WHITE);
+#include "graphics.h"
+#include "parchis.h"
 
-}
-void displayMainDice(int d1, int d2){
-    DrawText(TextFormat("D1 [%d]  D2 [%d]", d1, d2), 1230, 780, 50, WHITE);
+void Color(int Background, int Text){
+
+    HANDLE Console = GetStdHandle(STD_OUTPUT_HANDLE); //Toma consola
+    int    New_Color= Text + (Background * 16);
+
+    SetConsoleTextAttribute(Console, New_Color); // Guardar cambios en consola
 }
 
-//--------------------------------------------------------------------------
-
-
-//--------------------POSICIONES FICHAS-----------------------------------
-
-struct arreglosPosiciones{
-    int yBOARD[3];
-    int xBOARD[69];
-
-    int fijasRED[16];
-    int fijasGREEN[16];
-    int fijasBLUE[16];
-    int fijasYELLOW[16];
-
-};
-
-Positions *initialPositions() {
-    Positions *pixels = malloc(sizeof(Positions));
-
-    //---POSICIONES EJE Y DEL TABLERO---
-    pixels->yBOARD[0] = 0;
-    pixels->yBOARD[1] = 455; //altura slot1
-    pixels->yBOARD[2] = 412; //altura slot2
-
-    //---POSICIONES EJE X DEL TABLERO---
-    pixels->xBOARD[0] = 0; pixels->xBOARD[1] = 10; pixels->xBOARD[2] = 33; pixels->xBOARD[3] = 56;
-    pixels->xBOARD[4] = 79; pixels->xBOARD[5] = 102; pixels->xBOARD[6] = 125; pixels->xBOARD[7] = 148;
-    pixels->xBOARD[8] = 171; pixels->xBOARD[9] = 196; pixels->xBOARD[10] = 219; pixels->xBOARD[11] = 242;
-    pixels->xBOARD[12] = 266; pixels->xBOARD[13] = 288; pixels->xBOARD[14] = 312; pixels->xBOARD[15] = 335;
-    pixels->xBOARD[16] = 359; pixels->xBOARD[17] = 382; pixels->xBOARD[18] = 405; pixels->xBOARD[19] = 428;
-    pixels->xBOARD[20] = 452; pixels->xBOARD[21] = 475; pixels->xBOARD[22] = 498; pixels->xBOARD[23] = 522;
-    pixels->xBOARD[24] = 546; pixels->xBOARD[25] = 569; pixels->xBOARD[26] = 592; pixels->xBOARD[27] = 615;
-    pixels->xBOARD[28] = 638; pixels->xBOARD[29] = 661; pixels->xBOARD[30] = 684; pixels->xBOARD[31] = 707;
-    pixels->xBOARD[32] = 730; pixels->xBOARD[33] = 755; pixels->xBOARD[34] = 778; pixels->xBOARD[35] = 801;
-    pixels->xBOARD[36] = 824; pixels->xBOARD[37] = 848; pixels->xBOARD[38] = 873; pixels->xBOARD[39] = 896;
-    pixels->xBOARD[40] = 919; pixels->xBOARD[41] = 942; pixels->xBOARD[42] = 965; pixels->xBOARD[43] = 988;
-    pixels->xBOARD[44] = 1011; pixels->xBOARD[45] = 1034; pixels->xBOARD[46] = 1057; pixels->xBOARD[47] = 1081;
-    pixels->xBOARD[48] = 1105; pixels->xBOARD[49] = 1128; pixels->xBOARD[50] = 1152; pixels->xBOARD[51] = 1175;
-    pixels->xBOARD[52] = 1198; pixels->xBOARD[53] = 1222; pixels->xBOARD[54] = 1245; pixels->xBOARD[55] = 1268;
-    pixels->xBOARD[56] = 1291; pixels->xBOARD[57] = 1314; pixels->xBOARD[58] = 1337; pixels->xBOARD[59] = 1362;
-    pixels->xBOARD[60] = 1385; pixels->xBOARD[61] = 1409; pixels->xBOARD[62] = 1432; pixels->xBOARD[63] = 1455;
-    pixels->xBOARD[64] = 1478; pixels->xBOARD[65] = 1501; pixels->xBOARD[66] = 1524; pixels->xBOARD[67] = 1547;
-    pixels->xBOARD[68] = 1571;
-
-    //---ROJO BASE---
-    //------------EJE X -------------------EJE Y--------
-    pixels->fijasRED[0] = 48; pixels->fijasRED[1] = 575;
-    pixels->fijasRED[2] = 88; pixels->fijasRED[3] = 575;
-    pixels->fijasRED[4] = 48; pixels->fijasRED[5] = 615;
-    pixels->fijasRED[6] = 88; pixels->fijasRED[7] = 615;
-    //---ROJO FINAL---
-    pixels->fijasRED[8] = 1495; pixels->fijasRED[9] = 160;
-    pixels->fijasRED[10] = 1520; pixels->fijasRED[11] = 160;
-    pixels->fijasRED[12] = 1495; pixels->fijasRED[13] = 185;
-    pixels->fijasRED[14] = 1520; pixels->fijasRED[15] = 185;
-    //---VERDE BASE---
-    pixels->fijasGREEN[0] = 448; pixels->fijasGREEN[1] = 575;
-    pixels->fijasGREEN[2] = 488; pixels->fijasGREEN[3] = 575;
-    pixels->fijasGREEN[4] = 448; pixels->fijasGREEN[5] = 615;
-    pixels->fijasGREEN[6] = 488; pixels->fijasGREEN[7] = 615;
-    //---VERDE FINAL---
-    pixels->fijasGREEN[8] = 305; pixels->fijasGREEN[9] = 160;
-    pixels->fijasGREEN[10] = 333; pixels->fijasGREEN[11] = 160;
-    pixels->fijasGREEN[12] = 305; pixels->fijasGREEN[13] = 185;
-    pixels->fijasGREEN[14] = 333; pixels->fijasGREEN[15] = 185;
-    //---AZUL BASE---
-    pixels->fijasBLUE[0] = 1240; pixels->fijasBLUE[1] = 575;
-    pixels->fijasBLUE[2] = 1280; pixels->fijasBLUE[3] = 575;
-    pixels->fijasBLUE[4] = 1240; pixels->fijasBLUE[5] = 615;
-    pixels->fijasBLUE[6] = 1280; pixels->fijasBLUE[7] = 615;
-    //---AZUL FINAL---
-    pixels->fijasBLUE[8] = 1100; pixels->fijasBLUE[9] = 160;
-    pixels->fijasBLUE[10] = 1125; pixels->fijasBLUE[11] = 160;
-    pixels->fijasBLUE[12] = 1100; pixels->fijasBLUE[13] = 185;
-    pixels->fijasBLUE[14] = 1125; pixels->fijasBLUE[15] = 185;
-    //---AMARILLO BASE---
-    pixels->fijasYELLOW[0] = 848; pixels->fijasYELLOW[1] = 575;
-    pixels->fijasYELLOW[2] = 888; pixels->fijasYELLOW[3] = 575;
-    pixels->fijasYELLOW[4] = 848; pixels->fijasYELLOW[5] = 615;
-    pixels->fijasYELLOW[6] = 888; pixels->fijasYELLOW[7] = 615;
-    //---AMARILLO FINAL---
-    pixels->fijasYELLOW[8] = 702; pixels->fijasYELLOW[9] = 160;
-    pixels->fijasYELLOW[10] = 727; pixels->fijasYELLOW[11] = 160;
-    pixels->fijasYELLOW[12] = 702; pixels->fijasYELLOW[13] = 185;
-    pixels->fijasYELLOW[14] = 727; pixels->fijasYELLOW[15] = 185;
-
-    return pixels;
+void validarColor(char Player){
+    if(Player == 'R')
+        Color(BLACK, RED);
+    if(Player == 'Y')
+        Color(BLACK, YELLOW);
+    if(Player == 'B')
+        Color(BLACK, BLUE);
+    if(Player == 'G')
+        Color(BLACK, GREEN);
 }
 
-//Coordenadas de R1
-int obtenerXR1(Positions *pix, Board *juego, char Player){
-
-    if(existeFichaR1EnInicio(juego, Player) == 1)
-        return pix->fijasRED[0];
-    if(existeFichaR1EnEnd(juego) == 1)
-        return pix->fijasRED[8];
-
-    return 0;
+//Funciones que establecen colores especificos de letra y fondo de letra en consola.
+void consoleColor(){
+    Color(BLACK, LGREEN);
 }
-int obtenerYR1(Positions *pix, Board *juego, char Player){
-
-    if(existeFichaR1EnInicio(juego, Player) == 1)
-        return pix->fijasRED[1];
-    if(existeFichaR1EnEnd(juego) == 1)
-        return pix->fijasRED[9];
-
-    return 0;
+void cmagenta(){
+    Color(BLACK, MAGENTA);
 }
-
-//Coordenadas de R2
-int obtenerXR2(Positions *pix, Board *juego, char Player){
-
-    if(existeFichaR2EnInicio(juego, Player) == 1)
-        return pix->fijasRED[2];
-    if(existeFichaR2EnEnd(juego) == 1)
-        return pix->fijasRED[10];
-
-    return 0;
+void cgreen(){
+    Color(GREEN, BLACK);
 }
-int obtenerYR2(Positions *pix, Board *juego, char Player){
-
-    if(existeFichaR2EnInicio(juego, Player) == 1)
-        return pix->fijasRED[3];
-    if(existeFichaR2EnEnd(juego) == 1)
-        return pix->fijasRED[11];
-
-    return 0;
+void cblue(){
+    Color(BLUE, BLACK);
 }
-//Coordenadas de R3
-int obtenerXR3(Positions *pix, Board *juego, char Player){
-
-    if(existeFichaR3EnInicio(juego, Player) == 1)
-        return pix->fijasRED[4];
-    if(existeFichaR3EnEnd(juego) == 1)
-        return pix->fijasRED[12];
-
-    return 0;
+void cred(){
+    Color(RED, BLACK);
 }
-int obtenerYR3(Positions *pix, Board *juego, char Player){
-
-    if(existeFichaR3EnInicio(juego, Player) == 1)
-        return pix->fijasRED[5];
-    if(existeFichaR3EnEnd(juego) == 1)
-        return pix->fijasRED[13];
-
-    return 0;
+void cyellow(){
+    Color(YELLOW, BLACK);
 }
-//Coordenadas de R4
-int obtenerXR4(Positions *pix, Board *juego, char Player){
-
-    if(existeFichaR4EnInicio(juego, Player) == 1)
-        return pix->fijasRED[6];
-    if(existeFichaR4EnEnd(juego) == 1)
-        return pix->fijasRED[14];
-
-    return 0;
-}
-int obtenerYR4(Positions *pix, Board *juego, char Player){
-    if(existeFichaR4EnInicio(juego, Player) == 1)
-        return pix->fijasRED[7];
-    if(existeFichaR4EnEnd(juego) == 1)
-        return pix->fijasRED[15];
-
-    return 0;
+void cgrey(){
+    Color(LGREY, BLACK);
 }
 
-//Coordenadas de B1
-int obtenerXB1(Positions *pix, Board *juego, char Player){
-
-    if(existeFichaB1EnInicio(juego, Player) == 1)
-        return pix->fijasBLUE[0];
-    if(existeFichaB1EnEnd(juego) == 1)
-        return pix->fijasBLUE[8];
-
-    return 0;
+//Títulos utilizados en el tablero.
+void tBlue(){
+    cblue();
+    printf(" B L U E ");
+    cmagenta();
+    printf("                       ");
 }
-int obtenerYB1(Positions *pix, Board *juego, char Player){
-    if(existeFichaB1EnInicio(juego, Player) == 1)
-        return pix->fijasBLUE[1];
-    if(existeFichaB1EnEnd(juego) == 1)
-        return pix->fijasBLUE[9];
-
-    return 0;
+void tRed(){
+    cred();
+    printf(" R E D ");
+    cmagenta();
+    printf("                         ");
 }
-//Coordenadas de B2
-int obtenerXB2(Positions *pix, Board *juego, char Player){
-    if(existeFichaB2EnInicio(juego, Player) == 1)
-        return pix->fijasBLUE[2];
-    if(existeFichaB2EnEnd(juego) == 1)
-        return pix->fijasBLUE[10];
-
-    return 0;
+void tGreen(){
+    cgreen();
+    printf(" G R E E N ");
+    cmagenta();
+    printf("                     ");
 }
-int obtenerYB2(Positions *pix, Board *juego, char Player){
-    if(existeFichaB2EnInicio(juego, Player) == 1)
-        return pix->fijasBLUE[3];
-    if(existeFichaB2EnEnd(juego) == 1)
-        return pix->fijasBLUE[11];
-
-    return 0;
+void tYellow(){
+    cyellow();
+    printf(" Y E L L O W ");
+    cmagenta();
+    printf("                   ");
 }
-//Coordenadas de B3
-int obtenerXB3(Positions *pix, Board *juego, char Player){
-    if(existeFichaB3EnInicio(juego, Player) == 1)
-        return pix->fijasBLUE[4];
-    if(existeFichaB3EnEnd(juego) == 1)
-        return pix->fijasBLUE[12];
-
-    return 0;
+void tBase(){
+    printf(" Base: ");
 }
-int obtenerYB3(Positions *pix, Board *juego, char Player){
-    if(existeFichaB3EnInicio(juego, Player) == 1)
-        return pix->fijasBLUE[5];
-    if(existeFichaB3EnEnd(juego) == 1)
-        return pix->fijasBLUE[13];
-
-    return 0;
-}
-//Coordenadas de B4
-int obtenerXB4(Positions *pix, Board *juego, char Player){
-    if(existeFichaB4EnInicio(juego, Player) == 1)
-        return pix->fijasBLUE[6];
-    if(existeFichaB4EnEnd(juego) == 1)
-        return pix->fijasBLUE[14];
-
-    return 0;
-}
-int obtenerYB4(Positions *pix, Board *juego, char Player){
-    if(existeFichaB4EnInicio(juego, Player) == 1)
-        return pix->fijasBLUE[7];
-    if(existeFichaB4EnEnd(juego) == 1)
-        return pix->fijasBLUE[15];
-
-    return 0;
+void tWinners(){
+    printf("Final: ");
 }
 
-//Coordenadas de G1
-int obtenerXG1(Positions *pix, Board *juego, char Player){
-    if(existeFichaG1EnInicio(juego, Player) == 1)
-        return pix->fijasGREEN[0];
-    if(existeFichaG1EnEnd(juego) == 1)
-        return pix->fijasGREEN[8];
+/*
+ * Impresiones de tipos de casilla en el tablero.
+ * Slot es para casillas normales.
+ * SafeSlot para casillas donde no se puede comer a otro.
+ * middleSlot sólo rellena la parte de en medio del tablero (asemeja el fin).
+ * exitSlot indica la salida de cada jugador.
+ * viclap imprime las casillas del recorrido ganador de cada jugador.
+ */
+void slot(Board *juego, int num){
 
-    return 0;
+    Casilla *focusnode = juego->inicio;
+    char jugador;
+
+    while(focusnode->NumCasilla != num)
+        focusnode = focusnode->next;
+
+    if(focusnode->ficha1 != NULL && focusnode->ficha2 == NULL){
+        jugador = focusnode->ficha1->Player;
+        validarColor(jugador);
+        printf("%c%d   ", jugador, focusnode->ficha1->Id);
+        cmagenta();
+    }
+    if(focusnode->ficha2 != NULL && focusnode->ficha1 == NULL){
+        jugador = focusnode->ficha2->Player;
+        validarColor(jugador);
+        printf("   %c%d", jugador, focusnode->ficha2->Id);
+        cmagenta();
+    }
+    if(focusnode->ficha1 != NULL && focusnode->ficha2 != NULL){
+        jugador = focusnode->ficha1->Player;
+        validarColor(jugador);
+        printf("%c%d ", jugador, focusnode->ficha1->Id);
+        cmagenta();
+
+        jugador = focusnode->ficha2->Player;
+        validarColor(jugador);
+        printf("%c%d", jugador, focusnode->ficha2->Id);
+        cmagenta();
+    }
+
+    if(focusnode->ficha1 == NULL && focusnode->ficha2 == NULL)
+        printf("     ");
 }
-int obtenerYG1(Positions *pix, Board *juego, char Player){
-    if(existeFichaG1EnInicio(juego, Player) == 1)
-        return pix->fijasGREEN[1];
-    if(existeFichaG1EnEnd(juego) == 1)
-        return pix->fijasGREEN[9];
+void safeSlot(Board *juego, int num){
+    Casilla *focusnode = juego->inicio;
+    char jugador;
 
-    return 0;
+
+    while(focusnode->NumCasilla != num)
+        focusnode = focusnode->next;
+    cgrey();
+
+    if(focusnode->ficha1 != NULL && focusnode->ficha2 == NULL){
+        jugador = focusnode->ficha1->Player;
+        printf("%c%d   ", jugador, focusnode->ficha1->Id);
+        cmagenta();
+    }
+    if(focusnode->ficha2 != NULL && focusnode->ficha1 == NULL){
+        jugador = focusnode->ficha2->Player;
+        printf("   %c%d", jugador, focusnode->ficha2->Id);
+        cmagenta();
+    }
+    if(focusnode->ficha1 != NULL && focusnode->ficha2 != NULL){
+        jugador = focusnode->ficha1->Player;
+        printf("%c%d ", jugador, focusnode->ficha1->Id);
+
+        jugador = focusnode->ficha2->Player;
+        printf("%c%d", jugador, focusnode->ficha2->Id);
+        cmagenta();
+    }
+    if(focusnode->ficha1 == NULL && focusnode->ficha2 == NULL)
+        printf("     ");
+
+    cmagenta();
+
 }
-//Coordenadas de G2
-int obtenerXG2(Positions *pix, Board *juego, char Player){
-    if(existeFichaG2EnInicio(juego, Player) == 1)
-        return pix->fijasGREEN[2];
-    if(existeFichaG2EnEnd(juego) == 1)
-        return pix->fijasGREEN[10];
-
-    return 0;
+void middleSlot(){
+    printf("  X  ");
 }
-int obtenerYG2(Positions *pix, Board *juego, char Player){
-    if(existeFichaG2EnInicio(juego, Player) == 1)
-        return pix->fijasGREEN[3];
-    if(existeFichaG2EnEnd(juego) == 1)
-        return pix->fijasGREEN[11];
+void exitSlot(Board *juego, int num, char player){
+    Casilla *focusnode = juego->inicio;
+    char jugador;
 
-    return 0;
+    while(focusnode->NumCasilla != num)
+        focusnode = focusnode->next;
+
+    if(player == 'R'){
+        cred();
+        if(focusnode->ficha1 != NULL && focusnode->ficha2 == NULL){
+            jugador = focusnode->ficha1->Player;
+            printf("%c%d   ", jugador, focusnode->ficha1->Id);
+        }
+        if(focusnode->ficha2 != NULL && focusnode->ficha1 == NULL){
+            jugador = focusnode->ficha2->Player;
+            printf("   %c%d", jugador, focusnode->ficha2->Id);
+
+        }
+        if(focusnode->ficha1 != NULL && focusnode->ficha2 != NULL){
+            jugador = focusnode->ficha1->Player;
+            printf("%c%d ", jugador, focusnode->ficha1->Id);
+
+            jugador = focusnode->ficha2->Player;
+            printf("%c%d", jugador, focusnode->ficha2->Id);
+        }
+        if(focusnode->ficha1 == NULL && focusnode->ficha2 == NULL)
+            printf("     ");
+
+        cmagenta();
+    }
+
+    if(player == 'G'){
+        cgreen();
+        if(focusnode->ficha1 != NULL && focusnode->ficha2 == NULL){
+            jugador = focusnode->ficha1->Player;
+            printf("%c%d   ", jugador, focusnode->ficha1->Id);
+        }
+        if(focusnode->ficha2 != NULL && focusnode->ficha1 == NULL){
+            jugador = focusnode->ficha2->Player;
+            printf("   %c%d", jugador, focusnode->ficha2->Id);
+
+        }
+        if(focusnode->ficha1 != NULL && focusnode->ficha2 != NULL){
+            jugador = focusnode->ficha1->Player;
+            printf("%c%d ", jugador, focusnode->ficha1->Id);
+
+            jugador = focusnode->ficha2->Player;
+            printf("%c%d", jugador, focusnode->ficha2->Id);
+        }
+        if(focusnode->ficha1 == NULL && focusnode->ficha2 == NULL)
+            printf("     ");
+
+        cmagenta();
+    }
+
+    if(player == 'B'){
+        cblue();
+        if(focusnode->ficha1 != NULL && focusnode->ficha2 == NULL){
+            jugador = focusnode->ficha1->Player;
+            printf("%c%d   ", jugador, focusnode->ficha1->Id);
+        }
+        if(focusnode->ficha2 != NULL && focusnode->ficha1 == NULL){
+            jugador = focusnode->ficha2->Player;
+            printf("   %c%d", jugador, focusnode->ficha2->Id);
+
+        }
+        if(focusnode->ficha1 != NULL && focusnode->ficha2 != NULL){
+            jugador = focusnode->ficha1->Player;
+            printf("%c%d ", jugador, focusnode->ficha1->Id);
+
+            jugador = focusnode->ficha2->Player;
+            printf("%c%d", jugador, focusnode->ficha2->Id);
+        }
+        if(focusnode->ficha1 == NULL && focusnode->ficha2 == NULL)
+            printf("     ");
+
+        cmagenta();
+    }
+
+    if(player == 'Y'){
+        cyellow();
+        if(focusnode->ficha1 != NULL && focusnode->ficha2 == NULL){
+            jugador = focusnode->ficha1->Player;
+            printf("%c%d   ", jugador, focusnode->ficha1->Id);
+        }
+        if(focusnode->ficha2 != NULL && focusnode->ficha1 == NULL){
+            jugador = focusnode->ficha2->Player;
+            printf("   %c%d", jugador, focusnode->ficha2->Id);
+
+        }
+        if(focusnode->ficha1 != NULL && focusnode->ficha2 != NULL){
+            jugador = focusnode->ficha1->Player;
+            printf("%c%d ", jugador, focusnode->ficha1->Id);
+
+            jugador = focusnode->ficha2->Player;
+            printf("%c%d", jugador, focusnode->ficha2->Id);
+        }
+        if(focusnode->ficha1 == NULL && focusnode->ficha2 == NULL)
+            printf("     ");
+
+        cmagenta();
+    }
 }
-//Coordenadas de G3
-int obtenerXG3(Positions *pix, Board *juego, char Player){
-    if(existeFichaG3EnInicio(juego, Player) == 1)
-        return pix->fijasGREEN[4];
-    if(existeFichaG3EnEnd(juego) == 1)
-        return pix->fijasGREEN[12];
+void viclap(Board *juego, char player, int num){
+    CasVicLap *focuslap;
 
-    return 0;
+    if(player == 'R'){
+        focuslap = juego->winR;
+        while(focuslap->NumCasilla != num)
+            focuslap = focuslap->next;
+
+        if(focuslap->ficha1 != NULL){
+            cred();
+            printf("%c%d   ", player, focuslap->ficha1->Id);
+            cmagenta();
+        }
+        if(focuslap->ficha2 != NULL){
+            cred();
+            printf("   %c%d", player, focuslap->ficha2->Id);
+            cmagenta();
+        }
+        if(focuslap->ficha1 != NULL && focuslap->ficha2 != NULL){
+            cred();
+            printf("%c%d ", player, focuslap->ficha1->Id);
+            printf(" %c%d", player, focuslap->ficha2->Id);
+            cmagenta();
+        }
+        if(focuslap->ficha1 == NULL && focuslap->ficha2 == NULL){
+            cred();
+            printf("     ");
+            cmagenta();
+        }
+    }
+
+    if(player == 'G'){
+        focuslap = juego->winG;
+        while(focuslap->NumCasilla != num)
+            focuslap = focuslap->next;
+
+        if(focuslap->ficha1 != NULL){
+            cgreen();
+            printf("%c%d   ", player, focuslap->ficha1->Id);
+            cmagenta();
+        }
+        if(focuslap->ficha2 != NULL){
+            cgreen();
+            printf("   %c%d", player, focuslap->ficha2->Id);
+            cmagenta();
+        }
+        if(focuslap->ficha1 != NULL && focuslap->ficha2 != NULL){
+            cgreen();
+            printf("%c%d ", player, focuslap->ficha1->Id);
+            printf(" %c%d", player, focuslap->ficha2->Id);
+            cmagenta();
+        }
+        if(focuslap->ficha1 == NULL && focuslap->ficha2 == NULL){
+            cgreen();
+            printf("     ");
+            cmagenta();
+        }
+    }
+
+    if(player == 'B'){
+        focuslap = juego->winB;
+        while(focuslap->NumCasilla != num)
+            focuslap = focuslap->next;
+
+        if(focuslap->ficha1 != NULL){
+            cblue();
+            printf("%c%d   ", player, focuslap->ficha1->Id);
+            cmagenta();
+        }
+        if(focuslap->ficha2 != NULL){
+            cblue();
+            printf("   %c%d", player, focuslap->ficha2->Id);
+            cmagenta();
+        }
+        if(focuslap->ficha1 != NULL && focuslap->ficha2 != NULL){
+            cblue();
+            printf("%c%d ", player, focuslap->ficha1->Id);
+            printf(" %c%d", player, focuslap->ficha2->Id);
+            cmagenta();
+        }
+        if(focuslap->ficha1 == NULL && focuslap->ficha2 == NULL){
+            cblue();
+            printf("     ");
+            cmagenta();
+        }
+
+    }
+    if(player == 'Y'){
+        focuslap = juego->winY;
+        while(focuslap->NumCasilla != num)
+            focuslap = focuslap->next;
+
+        if(focuslap->ficha1 != NULL){
+            cyellow();
+            printf("%c%d   ", player, focuslap->ficha1->Id);
+            cmagenta();
+        }
+        if(focuslap->ficha2 != NULL){
+            cyellow();
+            printf("   %c%d", player, focuslap->ficha2->Id);
+            cmagenta();
+        }
+        if(focuslap->ficha1 != NULL && focuslap->ficha2 != NULL){
+            cyellow();
+            printf("%c%d ", player, focuslap->ficha1->Id);
+            printf(" %c%d", player, focuslap->ficha2->Id);
+            cmagenta();
+        }
+        if(focuslap->ficha1 == NULL && focuslap->ficha2 == NULL){
+            cyellow();
+            printf("     ");
+            cmagenta();
+        }
+    }
 }
-int obtenerYG3(Positions *pix, Board *juego, char Player){
-    if(existeFichaG3EnInicio(juego, Player) == 1)
-        return pix->fijasGREEN[5];
-    if(existeFichaG3EnEnd(juego) == 1)
-        return pix->fijasGREEN[13];
 
-    return 0;
+/*
+ * Imprime las fichas disponibles en la base de cada jugador (fichas que no han salido
+ * al tablero).
+ */
+void baseR(Board *juego, char player, int num){
+    validarColor(player);
+        if(juego->baseR->ficha1 != NULL && num == 1)
+            printf("       %c%d       ", player, juego->baseR->ficha1->Id);
+        if(juego->baseR->ficha1 == NULL && num == 1)
+            printf("                ");
+
+        if(juego->baseR->ficha2 != NULL && num == 2)
+            printf("       %c%d       ", player, juego->baseR->ficha2->Id);
+        if(juego->baseR->ficha2 == NULL && num == 2)
+            printf("                ");
+
+        if(juego->baseR->ficha3 != NULL && num == 3)
+            printf("       %c%d       ", player, juego->baseR->ficha3->Id);
+        if(juego->baseR->ficha3 == NULL && num == 3)
+            printf("                ");
+
+        if(juego->baseR->ficha4 != NULL && num == 4)
+            printf("       %c%d       ", player, juego->baseR->ficha4->Id);
+        if(juego->baseR->ficha4 == NULL && num == 4)
+            printf("                ");
+
+        cmagenta();
 }
-//Coordenadas de G4
-int obtenerXG4(Positions *pix, Board *juego, char Player){
-    if(existeFichaG4EnInicio(juego, Player) == 1)
-        return pix->fijasGREEN[6];
-    if(existeFichaG4EnEnd(juego) == 1)
-        return pix->fijasGREEN[14];
+void baseG(Board *juego, char player, int num){
+    validarColor(player);
 
-    return 0;
+        if(juego->baseG->ficha1 != NULL && num == 1)
+            printf("       %c%d       ", player, juego->baseG->ficha1->Id);
+        if(juego->baseG->ficha1 == NULL && num == 1)
+            printf("                ");
+
+        if(juego->baseG->ficha2 != NULL && num == 2)
+            printf("       %c%d       ", player, juego->baseG->ficha2->Id);
+        if(juego->baseG->ficha2 == NULL && num == 2)
+            printf("                ");
+
+        if(juego->baseG->ficha3 != NULL && num == 3)
+            printf("       %c%d       ", player, juego->baseG->ficha3->Id);
+        if(juego->baseG->ficha3 == NULL && num == 3)
+            printf("                ");
+
+        if(juego->baseG->ficha4 != NULL && num == 4)
+            printf("       %c%d       ", player, juego->baseG->ficha4->Id);
+        if(juego->baseG->ficha4 == NULL && num == 4)
+            printf("                ");
+
+
+        cmagenta();
+
 }
-int obtenerYG4(Positions *pix, Board *juego, char Player){
-    if(existeFichaG4EnInicio(juego, Player) == 1)
-        return pix->fijasGREEN[7];
-    if(existeFichaG4EnEnd(juego) == 1)
-        return pix->fijasGREEN[15];
+void baseB(Board *juego, char player, int num){
+    validarColor(player);
+    if(juego->baseB->ficha1 != NULL && num == 1)
+        printf("       %c%d       ", player, juego->baseB->ficha1->Id);
+    if(juego->baseB->ficha1 == NULL && num == 1)
+        printf("                ");
 
-    return 0;
+    if(juego->baseB->ficha2 != NULL && num == 2)
+        printf("       %c%d       ", player, juego->baseB->ficha2->Id);
+    if(juego->baseB->ficha2 == NULL && num == 2)
+        printf("                ");
+
+    if(juego->baseB->ficha3 != NULL && num == 3)
+        printf("       %c%d       ", player, juego->baseB->ficha3->Id);
+    if(juego->baseB->ficha3 == NULL && num == 3)
+        printf("                ");
+
+    if(juego->baseB->ficha4 != NULL && num == 4)
+        printf("       %c%d       ", player, juego->baseB->ficha4->Id);
+    if(juego->baseB->ficha4 == NULL && num == 4)
+        printf("                ");
+
+    cmagenta();
 }
+void baseY(Board *juego, char player, int num){
+    validarColor(player);
+    if(juego->baseY->ficha1 != NULL && num == 1)
+        printf("       %c%d       ", player, juego->baseY->ficha1->Id);
+    if(juego->baseY->ficha1 == NULL && num == 1)
+        printf("                ");
 
-//Coordenadas de Y1
-int obtenerXY1(Positions *pix, Board *juego, char Player){
-    if(existeFichaY1EnInicio(juego, Player) == 1)
-        return pix->fijasYELLOW[0];
-    if(existeFichaY1EnEnd(juego) == 1)
-        return pix->fijasYELLOW[8];
+    if(juego->baseY->ficha2 != NULL && num == 2)
+        printf("       %c%d       ", player, juego->baseY->ficha2->Id);
+    if(juego->baseY->ficha2 == NULL && num == 2)
+        printf("                ");
 
-    return 0;
-}
-int obtenerYY1(Positions *pix, Board *juego, char Player){
-    if(existeFichaY1EnInicio(juego, Player) == 1)
-        return pix->fijasYELLOW[1];
-    if(existeFichaY1EnEnd(juego) == 1)
-        return pix->fijasYELLOW[9];
+    if(juego->baseY->ficha3 != NULL && num == 3)
+        printf("       %c%d       ", player, juego->baseY->ficha3->Id);
+    if(juego->baseY->ficha3 == NULL && num == 3)
+        printf("                ");
 
-    return 0;
-}
-//Coordenadas de Y2
-int obtenerXY2(Positions *pix, Board *juego, char Player){
-    if(existeFichaY2EnInicio(juego, Player) == 1)
-        return pix->fijasYELLOW[2];
-    if(existeFichaY2EnEnd(juego) == 1)
-        return pix->fijasYELLOW[10];
+    if(juego->baseY->ficha4 != NULL && num == 4)
+        printf("       %c%d       ", player, juego->baseY->ficha4->Id);
+    if(juego->baseY->ficha4 == NULL && num == 4)
+        printf("                ");
 
-    return 0;
-}
-int obtenerYY2(Positions *pix, Board *juego, char Player){
-    if(existeFichaY2EnInicio(juego, Player) == 1)
-        return pix->fijasYELLOW[3];
-    if(existeFichaY2EnEnd(juego) == 1)
-        return pix->fijasYELLOW[11];
+    cmagenta();
 
-    return 0;
-}
-//Coordenadas de Y3
-int obtenerXY3(Positions *pix, Board *juego, char Player){
-    if(existeFichaY3EnInicio(juego, Player) == 1)
-        return pix->fijasYELLOW[4];
-    if(existeFichaY3EnEnd(juego) == 1)
-        return pix->fijasYELLOW[12];
-
-    return 0;
-}
-int obtenerYY3(Positions *pix, Board *juego, char Player){
-    if(existeFichaY3EnInicio(juego, Player) == 1)
-        return pix->fijasYELLOW[5];
-    if(existeFichaY3EnEnd(juego) == 1)
-        return pix->fijasYELLOW[13];
-
-    return 0;
-}
-//Coordenadas de Y4
-int obtenerXY4(Positions *pix, Board *juego, char Player){
-    if(existeFichaY4EnInicio(juego, Player) == 1)
-        return pix->fijasYELLOW[6];
-    if(existeFichaY4EnEnd(juego) == 1)
-        return pix->fijasYELLOW[14];
-
-    return 0;
-}
-int obtenerYY4(Positions *pix, Board *juego, char Player){
-    if(existeFichaY4EnInicio(juego, Player) == 1)
-        return pix->fijasYELLOW[7];
-    if(existeFichaY4EnEnd(juego) == 1)
-        return pix->fijasYELLOW[15];
-
-    return 0;
 }
 
 
+//Imprime las fichas que han llegado al final del recorrido de cada jugador.
+void finalR(Board *juego, char player, int num){
+    validarColor(player);
+    if(juego->winR->end->ficha1 != NULL && num == 1)
+        printf("       %c%d                ", player, juego->winR->end->ficha1->Id);
+    if(juego->winR->end->ficha1 == NULL && num == 1)
+        printf("                         ");
+
+    if(juego->winR->end->ficha2 != NULL && num == 2)
+        printf("       %c%d                ", player, juego->winR->end->ficha2->Id);
+    if(juego->winR->end->ficha2 == NULL && num == 2)
+        printf("                         ");
+
+    if(juego->winR->end->ficha3 != NULL && num == 3)
+        printf("       %c%d                ", player, juego->winR->end->ficha3->Id);
+    if(juego->winR->end->ficha3 == NULL && num == 3)
+        printf("                         ");
+
+    if(juego->winR->end->ficha4 != NULL && num == 4)
+        printf("       %c%d                ", player, juego->winR->end->ficha4->Id);
+    if(juego->winR->end->ficha4 == NULL && num == 4)
+        printf("                         ");
+
+
+    cmagenta();
+}
+void finalG(Board *juego, char player, int num){
+    validarColor(player);
+    if(juego->winG->end->ficha1 != NULL && num == 1)
+        printf("       %c%d                ", player, juego->winG->end->ficha1->Id);
+    if(juego->winG->end->ficha1 == NULL && num == 1)
+        printf("                         ");
+
+    if(juego->winG->end->ficha2 != NULL && num == 2)
+        printf("       %c%d                ", player, juego->winG->end->ficha2->Id);
+    if(juego->winG->end->ficha2 == NULL && num == 2)
+        printf("                         ");
+
+    if(juego->winG->end->ficha3 != NULL && num == 3)
+        printf("       %c%d                ", player, juego->winG->end->ficha3->Id);
+    if(juego->winG->end->ficha3 == NULL && num == 3)
+        printf("                         ");
+
+    if(juego->winG->end->ficha4 != NULL && num == 4)
+        printf("       %c%d                ", player, juego->winG->end->ficha4->Id);
+    if(juego->winG->end->ficha4 == NULL && num == 4)
+        printf("                         ");
+
+    cmagenta();
+}
+void finalB(Board *juego, char player, int num){
+    validarColor(player);
+    if(juego->winB->end->ficha1 != NULL && num == 1)
+        printf("       %c%d                ", player, juego->winB->end->ficha1->Id);
+    if(juego->winB->end->ficha1 == NULL && num == 1)
+        printf("                         ");
+
+    if(juego->winB->end->ficha2 != NULL && num == 2)
+        printf("       %c%d                ", player, juego->winB->end->ficha2->Id);
+    if(juego->winB->end->ficha2 == NULL && num == 2)
+        printf("                         ");
+
+    if(juego->winB->end->ficha3 != NULL && num == 3)
+        printf("       %c%d                ", player, juego->winB->end->ficha3->Id);
+    if(juego->winB->end->ficha3 == NULL && num == 3)
+        printf("                         ");
+
+    if(juego->winB->end->ficha4 != NULL && num == 4)
+        printf("       %c%d                ", player, juego->winB->end->ficha4->Id);
+    if(juego->winB->end->ficha4 == NULL && num == 4)
+        printf("                         ");
+
+    cmagenta();
+}
+void finalY(Board *juego, char player, int num){
+    validarColor(player);
+        if(juego->winY->end->ficha1 != NULL && num == 1)
+            printf("       %c%d                ", player, juego->winY->end->ficha1->Id);
+        if(juego->winY->end->ficha1 == NULL && num == 1)
+            printf("                         ");
+
+        if(juego->winY->end->ficha2 != NULL && num == 2)
+            printf("       %c%d                ", player, juego->winY->end->ficha2->Id);
+        if(juego->winY->end->ficha2 == NULL && num == 2)
+            printf("                         ");
+
+        if(juego->winY->end->ficha3 != NULL && num == 3)
+            printf("       %c%d                ", player, juego->winY->end->ficha3->Id);
+        if(juego->winY->end->ficha3 == NULL && num == 3)
+            printf("                         ");
+
+        if(juego->winY->end->ficha4 != NULL && num == 4)
+            printf("       %c%d                ", player, juego->winY->end->ficha4->Id);
+        if(juego->winY->end->ficha4 == NULL && num == 4)
+            printf("                         ");
+
+    cmagenta();
+}
+
+//Imprime caracteres y espacios para desplegar el tablero.
+void bigdiv(){
+    printf("#######################################################################################################");
+}
+void tag(){
+    printf("#");
+}
+void hdiv(){
+    printf("-----");
+}
+void vdiv(){
+    printf("|");
+}
+void space(){
+    printf("                                         ");
+}
+void spacetags(){
+    printf("###########################################");
+}
+void tagsmiddle(){
+    printf("###########################################");
+}
+void lspace(){
+    printf("         ");
+}
+void spacewhenfinal(){
+    printf("                  ");
+}
+void enter(){
+    printf("\n");
+}
+
+//Pantalla de inicio.
+void titleScreen() {
+    cmagenta();
+    bigdiv();
+    enter();
+    space();
+    cred(); printf("S U");
+    cyellow(); printf(" P E R");
+    cmagenta(); printf(" ");
+    cblue(); printf("P A R");
+    cgreen(); printf(" C H I S");
+    cmagenta();
+    space();
+    enter();
+    bigdiv();
+    enter();
+}
+
+//Conjunto de funciones anteriores que imprime el tablero en consola.
+void displayColorBoard(Board *juego){
+
+    //Franja superior
+    Color(BLACK, MAGENTA);
+    bigdiv();
+    enter();
+    //48-46
+    tag(); space(); tag(); slot(juego, 48); vdiv(); safeSlot(juego, 47); vdiv(); slot(juego, 46); tag(); space(); tag();
+    enter();
+    tag(); space(); tag(); hdiv(); tag(); hdiv(); tag(); hdiv(); tag(); space(); tag();
+    enter();
+    //49-45
+    tag(); space(); tag(); slot(juego, 49); tag(); viclap(juego, 'B', 101); tag(); slot(juego, 45); tag(); space(); tag();
+    enter();
+    tag(); space(); tag(); hdiv(); tag(); hdiv(); tag(); hdiv(); tag(); space(); tag();
+    enter();
+    //50-44
+    tag(); lspace(); tBlue(); tag(); slot(juego, 50); tag(); viclap(juego, 'B', 102); tag(); slot(juego, 44); tag(); lspace(); tYellow(); tag();
+    enter();
+    tag(); tBase(); lspace(); tWinners(); spacewhenfinal(); tag(); hdiv(); tag(); hdiv(); tag(); hdiv(); tag();
+    tBase(); lspace(); tWinners(); spacewhenfinal(); tag();
+    enter();
+    //51-43
+    tag(); baseB(juego, 'B', 1); finalB(juego, 'B', 1);
+    tag(); slot(juego, 51); tag(); viclap(juego, 'B', 103); tag(); slot(juego, 43);
+    tag(); baseY(juego, 'Y', 1); finalY(juego, 'Y', 1); tag();
+    enter();
+    tag(); baseB(juego, 'B', 2); finalB(juego, 'B', 2);
+    tag(); hdiv(); tag(); hdiv(); tag(); hdiv(); tag();
+    baseY(juego, 'Y', 2); finalY(juego, 'Y', 2); tag();
+    enter();
+    //52-42
+    tag(); baseB(juego, 'B', 3); finalB(juego, 'B', 3);
+    tag(); exitSlot(juego, 52, 'B'); tag(); viclap(juego, 'B', 104); tag(); safeSlot(juego, 42);
+    tag(); baseY(juego, 'Y', 3); finalY(juego, 'Y', 3); tag();
+    enter();
+    tag(); baseB(juego, 'B', 4); finalB(juego, 'B', 4);
+    tag(); hdiv(); tag(); hdiv(); tag(); hdiv(); tag();
+    baseY(juego, 'Y', 4); finalY(juego, 'Y', 4); tag();
+    enter();
+    //53-41
+    tag(); space(); tag(); slot(juego, 53); tag(); viclap(juego, 'B', 105); tag(); slot(juego, 41); tag(); space(); tag();
+    enter();
+    tag(); space(); tag(); hdiv(); tag(); hdiv(); tag(); hdiv(); tag(); space(); tag();
+    enter();
+    //54-40
+    tag(); space(); tag(); slot(juego, 54); tag(); viclap(juego, 'B', 106); tag(); slot(juego, 40); tag(); space(); tag();
+    enter();
+    tag(); space(); tag(); hdiv(); tag(); hdiv(); tag(); hdiv(); tag(); space(); tag();
+    enter();
+    //55-39
+    tag(); space(); tag(); slot(juego, 55); tag(); viclap(juego, 'B', 107); tag(); slot(juego, 39); tag(); space(); tag();
+    enter();
+    spacetags(); hdiv(); tag(); hdiv(); tag(); hdiv(); spacetags();
+    enter();
+    //63-31
+    tag(); slot(juego, 63); vdiv(); slot(juego, 62); vdiv(); slot(juego, 61); vdiv(); slot(juego, 60); vdiv();
+    safeSlot(juego, 59); vdiv(); slot(juego, 58); vdiv(); slot(juego, 57); vdiv(); slot(juego, 56); tag();
+    middleSlot(); tag();
+    slot(juego, 38); vdiv(); slot(juego, 37); vdiv(); slot(juego, 36); vdiv(); exitSlot(juego, 35, 'Y'); vdiv();
+    slot(juego, 34); vdiv(); slot(juego, 33); vdiv(); slot(juego, 32); vdiv(); slot(juego, 31); tag();
+    enter();
+    tag(); hdiv(); tagsmiddle(); hdiv(); tagsmiddle(); hdiv(); tag();
+    enter();
+    //64-30
+    tag(); safeSlot(juego, 64); vdiv(); viclap(juego, 'R', 101); vdiv(); viclap(juego, 'R', 102); vdiv();
+    viclap(juego, 'R', 103); vdiv(); viclap(juego, 'R', 104); vdiv(); viclap(juego, 'R', 105); vdiv();
+    viclap(juego, 'R', 106); vdiv(); viclap(juego, 'R', 107); vdiv();
+    middleSlot(); vdiv();
+    viclap(juego, 'Y', 107); vdiv(); viclap(juego, 'Y', 106); vdiv(); viclap(juego, 'Y', 105); vdiv();
+    viclap(juego, 'Y', 104); vdiv(); viclap(juego, 'Y', 103); vdiv(); viclap(juego, 'Y', 102); vdiv();
+    viclap(juego, 'Y', 101); vdiv(); safeSlot(juego, 30); tag();
+    enter();
+    tag(); hdiv(); tagsmiddle(); hdiv(); tagsmiddle(); hdiv(); tag();
+    enter();
+    //65-29
+    tag(); slot(juego, 65); vdiv(); slot(juego, 66); vdiv(); slot(juego, 67); vdiv();
+    slot(juego, 68); vdiv(); exitSlot(juego, 1, 'R'); vdiv(); slot(juego, 2); vdiv();
+    slot(juego, 3); vdiv(); slot(juego, 4); vdiv();
+    middleSlot(); vdiv();
+    slot(juego, 22); vdiv(); slot(juego, 23); vdiv(); slot(juego, 24); vdiv();
+    safeSlot(juego, 25); vdiv(); slot(juego, 26); vdiv(); slot(juego, 27); vdiv();
+    slot(juego, 28); vdiv(); slot(juego, 29); tag();
+    enter();
+    spacetags(); hdiv(); tag(); hdiv(); tag(); hdiv(); spacetags();
+    enter();
+    //5-21
+    tag(); space(); tag(); slot(juego, 5); tag(); viclap(juego, 'G', 107); tag(); slot(juego, 21); tag(); space(); tag();
+    enter();
+    tag(); space(); tag(); hdiv(); tag(); hdiv(); tag(); hdiv(); tag(); space(); tag();
+    enter();
+    //6-20
+    tag(); space(); tag(); slot(juego, 6); tag(); viclap(juego, 'G', 106); tag(); slot(juego, 20); tag(); space(); tag();
+    enter();
+    tag(); space(); tag(); hdiv(); tag(); hdiv(); tag(); hdiv(); tag(); space(); tag();
+    enter();
+    //7-19
+    tag(); lspace(); tRed(); tag(); slot(juego, 7); tag(); viclap(juego, 'G', 105); tag(); slot(juego, 19); tag(); lspace(); tGreen(); tag();
+    enter();
+    tag(); tBase(); lspace(); tWinners(); spacewhenfinal(); tag(); hdiv(); tag(); hdiv(); tag(); hdiv(); tag();
+    tBase(); lspace(); tWinners(); spacewhenfinal(); tag();
+    enter();
+    //8-18
+    tag(); baseR(juego, 'R', 1); finalR(juego, 'R', 1);
+    tag(); safeSlot(juego, 8); tag(); viclap(juego, 'G', 104); tag(); exitSlot(juego, 18, 'G');
+    tag(); baseG(juego, 'G', 1); finalG(juego, 'G', 1); tag();
+    enter();
+    tag(); baseR(juego, 'R', 2); finalR(juego, 'R', 2);
+    tag(); hdiv(); tag(); hdiv(); tag(); hdiv();
+    tag(); baseG(juego, 'G', 2); finalG(juego, 'G', 2); tag();
+    enter();
+    //9-17
+    tag(); baseR(juego,'R', 3); finalR(juego, 'R', 3);
+    tag(); slot(juego, 9); tag(); viclap(juego, 'G', 103); tag(); slot(juego, 17);
+    tag(); baseG(juego, 'G', 3); finalG(juego, 'G', 3); tag();
+    enter();
+    tag(); baseR(juego, 'R', 4); finalR(juego, 'R', 4);
+    tag(); hdiv(); tag(); hdiv(); tag(); hdiv();
+    tag(); baseG(juego, 'G', 4); finalG(juego, 'G', 4); tag();
+    enter();
+    //10-16
+    tag(); space(); tag(); slot(juego, 10); tag(); viclap(juego, 'G', 102); tag(); slot(juego, 16); tag(); space(); tag();
+    enter();
+    tag(); space(); tag(); hdiv(); tag(); hdiv(); tag(); hdiv(); tag(); space(); tag();
+    enter();
+    //11-15
+    tag(); space(); tag(); slot(juego, 11); tag(); viclap(juego, 'G', 101); tag(); slot(juego, 15); tag(); space(); tag();
+    enter();
+    tag(); space(); tag(); hdiv(); tag(); hdiv(); tag(); hdiv(); tag(); space(); tag();
+    enter();
+    //12-14
+    tag(); space(); tag(); slot(juego, 12); tag(); safeSlot(juego, 13); tag(); slot(juego, 14); tag(); space(); tag();
+    enter();
+    bigdiv();
+    enter();
+
+    consoleColor();
+}

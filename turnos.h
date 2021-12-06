@@ -12,6 +12,8 @@ struct dados{
 };
 typedef struct dados Dados;
 
+int cuantosJugadores();
+
 Dados tiroDados(); //Asigna aleatoriamente un valor a cada uno de los dados|Regresa la estructura de los dos dados.
 char quienInicia(); //Determina mediante comparaciones entre tiros aleatorios de los usuarios, cual saco el tiro mas grande, y regresa el jugador que iniciara la partida.
 char cambiarJugador(char Player, Board *juego); //Dependiendo del numero de jugadores, hace los cambios de jugador en turno.
@@ -20,7 +22,7 @@ char cambiarJugador(char Player, Board *juego); //Dependiendo del numero de juga
  * saca una ficha del inicio si el tiro es 5, en caso de que no lo sea, permite al usuario elegir el dado que quiere
  * mover y realiza el movimiento pertinente en la ficha que selecciono el usuario.
  */
-void Turno(char Player,Board *Tablero,Dados tiro);
+void Turno(char Player,Board *Tablero);
 
 void displayOpcionesDeFichaInicio(char Player,Board *Tablero); //Imprime las fichas en el tablero, esta funcion es un referencia para el usuario en la terminal
 Ficha *fichaElecta(int fichaInput,char playerFichaUsuario,char Player,Board *Tablero,int hayFichasEnInicio,int Tiro);
