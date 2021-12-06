@@ -389,22 +389,22 @@ void baseR(Board *juego, char player, int num){
         if(juego->baseR->ficha1 != NULL && num == 1)
             printf("       %c%d       ", player, juego->baseR->ficha1->Id);
         if(juego->baseR->ficha1 == NULL && num == 1)
-            printf("                ");
+            printf("         -      ");
 
         if(juego->baseR->ficha2 != NULL && num == 2)
             printf("       %c%d       ", player, juego->baseR->ficha2->Id);
         if(juego->baseR->ficha2 == NULL && num == 2)
-            printf("                ");
+            printf("         -      ");
 
         if(juego->baseR->ficha3 != NULL && num == 3)
             printf("       %c%d       ", player, juego->baseR->ficha3->Id);
         if(juego->baseR->ficha3 == NULL && num == 3)
-            printf("                ");
+            printf("         -      ");
 
         if(juego->baseR->ficha4 != NULL && num == 4)
             printf("       %c%d       ", player, juego->baseR->ficha4->Id);
         if(juego->baseR->ficha4 == NULL && num == 4)
-            printf("                ");
+            printf("         -      ");
 
         cmagenta();
 }
@@ -414,22 +414,22 @@ void baseG(Board *juego, char player, int num){
         if(juego->baseG->ficha1 != NULL && num == 1)
             printf("       %c%d       ", player, juego->baseG->ficha1->Id);
         if(juego->baseG->ficha1 == NULL && num == 1)
-            printf("                ");
+            printf("         -      ");
 
         if(juego->baseG->ficha2 != NULL && num == 2)
             printf("       %c%d       ", player, juego->baseG->ficha2->Id);
         if(juego->baseG->ficha2 == NULL && num == 2)
-            printf("                ");
+            printf("         -      ");
 
         if(juego->baseG->ficha3 != NULL && num == 3)
             printf("       %c%d       ", player, juego->baseG->ficha3->Id);
         if(juego->baseG->ficha3 == NULL && num == 3)
-            printf("                ");
+            printf("         -      ");
 
         if(juego->baseG->ficha4 != NULL && num == 4)
             printf("       %c%d       ", player, juego->baseG->ficha4->Id);
         if(juego->baseG->ficha4 == NULL && num == 4)
-            printf("                ");
+            printf("         -      ");
 
 
         cmagenta();
@@ -440,22 +440,22 @@ void baseB(Board *juego, char player, int num){
     if(juego->baseB->ficha1 != NULL && num == 1)
         printf("       %c%d       ", player, juego->baseB->ficha1->Id);
     if(juego->baseB->ficha1 == NULL && num == 1)
-        printf("                ");
+        printf("         -      ");
 
     if(juego->baseB->ficha2 != NULL && num == 2)
         printf("       %c%d       ", player, juego->baseB->ficha2->Id);
     if(juego->baseB->ficha2 == NULL && num == 2)
-        printf("                ");
+        printf("         -      ");
 
     if(juego->baseB->ficha3 != NULL && num == 3)
         printf("       %c%d       ", player, juego->baseB->ficha3->Id);
     if(juego->baseB->ficha3 == NULL && num == 3)
-        printf("                ");
+        printf("         -      ");
 
     if(juego->baseB->ficha4 != NULL && num == 4)
         printf("       %c%d       ", player, juego->baseB->ficha4->Id);
     if(juego->baseB->ficha4 == NULL && num == 4)
-        printf("                ");
+        printf("         -      ");
 
     cmagenta();
 }
@@ -464,22 +464,22 @@ void baseY(Board *juego, char player, int num){
     if(juego->baseY->ficha1 != NULL && num == 1)
         printf("       %c%d       ", player, juego->baseY->ficha1->Id);
     if(juego->baseY->ficha1 == NULL && num == 1)
-        printf("                ");
+        printf("         -      ");
 
     if(juego->baseY->ficha2 != NULL && num == 2)
         printf("       %c%d       ", player, juego->baseY->ficha2->Id);
     if(juego->baseY->ficha2 == NULL && num == 2)
-        printf("                ");
+        printf("         -      ");
 
     if(juego->baseY->ficha3 != NULL && num == 3)
         printf("       %c%d       ", player, juego->baseY->ficha3->Id);
     if(juego->baseY->ficha3 == NULL && num == 3)
-        printf("                ");
+        printf("         -      ");
 
     if(juego->baseY->ficha4 != NULL && num == 4)
         printf("       %c%d       ", player, juego->baseY->ficha4->Id);
     if(juego->baseY->ficha4 == NULL && num == 4)
-        printf("                ");
+        printf("         -      ");
 
     cmagenta();
 
@@ -492,22 +492,22 @@ void finalR(Board *juego, char player, int num){
     if(juego->winR->end->ficha1 != NULL && num == 1)
         printf("       %c%d                ", player, juego->winR->end->ficha1->Id);
     if(juego->winR->end->ficha1 == NULL && num == 1)
-        printf("                         ");
+        printf("        -                ");
 
     if(juego->winR->end->ficha2 != NULL && num == 2)
         printf("       %c%d                ", player, juego->winR->end->ficha2->Id);
     if(juego->winR->end->ficha2 == NULL && num == 2)
-        printf("                         ");
+        printf("        -                ");
 
     if(juego->winR->end->ficha3 != NULL && num == 3)
         printf("       %c%d                ", player, juego->winR->end->ficha3->Id);
     if(juego->winR->end->ficha3 == NULL && num == 3)
-        printf("                         ");
+        printf("        -                ");
 
     if(juego->winR->end->ficha4 != NULL && num == 4)
         printf("       %c%d                ", player, juego->winR->end->ficha4->Id);
     if(juego->winR->end->ficha4 == NULL && num == 4)
-        printf("                         ");
+        printf("        -                ");
 
 
     cmagenta();
@@ -517,22 +517,22 @@ void finalG(Board *juego, char player, int num){
     if(juego->winG->end->ficha1 != NULL && num == 1)
         printf("       %c%d                ", player, juego->winG->end->ficha1->Id);
     if(juego->winG->end->ficha1 == NULL && num == 1)
-        printf("                         ");
+        printf("        -                ");
 
     if(juego->winG->end->ficha2 != NULL && num == 2)
         printf("       %c%d                ", player, juego->winG->end->ficha2->Id);
     if(juego->winG->end->ficha2 == NULL && num == 2)
-        printf("                         ");
+        printf("        -                ");
 
     if(juego->winG->end->ficha3 != NULL && num == 3)
         printf("       %c%d                ", player, juego->winG->end->ficha3->Id);
     if(juego->winG->end->ficha3 == NULL && num == 3)
-        printf("                         ");
+        printf("        -                ");
 
     if(juego->winG->end->ficha4 != NULL && num == 4)
         printf("       %c%d                ", player, juego->winG->end->ficha4->Id);
     if(juego->winG->end->ficha4 == NULL && num == 4)
-        printf("                         ");
+        printf("        -                ");
 
     cmagenta();
 }
@@ -541,22 +541,22 @@ void finalB(Board *juego, char player, int num){
     if(juego->winB->end->ficha1 != NULL && num == 1)
         printf("       %c%d                ", player, juego->winB->end->ficha1->Id);
     if(juego->winB->end->ficha1 == NULL && num == 1)
-        printf("                         ");
+        printf("        -                ");
 
     if(juego->winB->end->ficha2 != NULL && num == 2)
         printf("       %c%d                ", player, juego->winB->end->ficha2->Id);
     if(juego->winB->end->ficha2 == NULL && num == 2)
-        printf("                         ");
+        printf("        -                ");
 
     if(juego->winB->end->ficha3 != NULL && num == 3)
         printf("       %c%d                ", player, juego->winB->end->ficha3->Id);
     if(juego->winB->end->ficha3 == NULL && num == 3)
-        printf("                         ");
+        printf("        -                ");
 
     if(juego->winB->end->ficha4 != NULL && num == 4)
         printf("       %c%d                ", player, juego->winB->end->ficha4->Id);
     if(juego->winB->end->ficha4 == NULL && num == 4)
-        printf("                         ");
+        printf("        -                ");
 
     cmagenta();
 }
@@ -565,22 +565,22 @@ void finalY(Board *juego, char player, int num){
         if(juego->winY->end->ficha1 != NULL && num == 1)
             printf("       %c%d                ", player, juego->winY->end->ficha1->Id);
         if(juego->winY->end->ficha1 == NULL && num == 1)
-            printf("                         ");
+            printf("        -                ");
 
         if(juego->winY->end->ficha2 != NULL && num == 2)
             printf("       %c%d                ", player, juego->winY->end->ficha2->Id);
         if(juego->winY->end->ficha2 == NULL && num == 2)
-            printf("                         ");
+            printf("        -                ");
 
         if(juego->winY->end->ficha3 != NULL && num == 3)
             printf("       %c%d                ", player, juego->winY->end->ficha3->Id);
         if(juego->winY->end->ficha3 == NULL && num == 3)
-            printf("                         ");
+            printf("        -                ");
 
         if(juego->winY->end->ficha4 != NULL && num == 4)
             printf("       %c%d                ", player, juego->winY->end->ficha4->Id);
         if(juego->winY->end->ficha4 == NULL && num == 4)
-            printf("                         ");
+            printf("        -                ");
 
     cmagenta();
 }
@@ -767,7 +767,7 @@ void displayColorBoard(Board *juego){
     tag(); space(); tag(); hdiv(); tag(); hdiv(); tag(); hdiv(); tag(); space(); tag();
     enter();
     //12-14
-    tag(); space(); tag(); slot(juego, 12); tag(); safeSlot(juego, 13); tag(); slot(juego, 14); tag(); space(); tag();
+    tag(); space(); tag(); slot(juego, 12); vdiv(); safeSlot(juego, 13); vdiv(); slot(juego, 14); tag(); space(); tag();
     enter();
     bigdiv();
     enter();

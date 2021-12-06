@@ -5,7 +5,6 @@
 #include "parchis.h"
 #include "turnos.h"
 
-
 //Crea un tablero con la casilla 1 implementada.
 Board *newBoard(){
     Board *juego = malloc(sizeof(Board));
@@ -489,22 +488,839 @@ void displayBoard(Board *juego){
     printf("\n\n");
 
 }//Funcion para imprimir el tablero completo, asi como las posiciones de las fichas.
-void Savefile(Board*Tablero)
+void Savefile(Board*Tablero,char *Nombre)
 {
-    FILE* Save=fopen("A:\\Test Instalations\\Clion\\Sandbox\\parchisV\\JuegosGuardados\\save.dat","wb+");
+    int arregloParaVerSiSeGuardoAlgo[16]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    FILE* Save=fopen("juegosGuardados\\save.dat","wb+");
     if(Save){
         fwrite(Tablero,sizeof(Board),1,Save);
+        fwrite(Tablero->baseR,sizeof(Base),1,Save);
+        fwrite(Tablero->baseG,sizeof(Base),1,Save);
+        fwrite(Tablero->baseY,sizeof(Base),1,Save);
+        fwrite(Tablero->baseB,sizeof(Base),1,Save);
+        int i=0;
+        if(Tablero->baseR->ficha1!=NULL) {
+            arregloParaVerSiSeGuardoAlgo[i]=1;
+        }
+        i++;
+        if(Tablero->baseR->ficha2!=NULL) {
+            arregloParaVerSiSeGuardoAlgo[i]=1;
+
+        }
+        i++;
+        if(Tablero->baseR->ficha3!=NULL) {
+            arregloParaVerSiSeGuardoAlgo[i]=1;
+
+        }
+        i++;
+        if(Tablero->baseR->ficha4!=NULL) {
+            arregloParaVerSiSeGuardoAlgo[i]=1;
+
+        }
+        i++;
+
+        if(Tablero->baseG->ficha1!=NULL) {
+            arregloParaVerSiSeGuardoAlgo[i]=1;
+
+        }
+        i++;
+        if(Tablero->baseG->ficha2!=NULL) {
+            arregloParaVerSiSeGuardoAlgo[i]=1;
+
+        }
+        i++;
+        if(Tablero->baseG->ficha3!=NULL) {
+            arregloParaVerSiSeGuardoAlgo[i]=1;
+
+        }
+        i++;
+        if(Tablero->baseG->ficha4!=NULL) {
+            arregloParaVerSiSeGuardoAlgo[i]=1;
+        }
+        i++;
+
+        if(Tablero->baseY->ficha1!=NULL) {
+            arregloParaVerSiSeGuardoAlgo[i]=1;
+        }
+        i++;
+        if(Tablero->baseY->ficha2!=NULL) {
+            arregloParaVerSiSeGuardoAlgo[i]=1;
+        }
+        i++;
+        if(Tablero->baseY->ficha3!=NULL) {
+            arregloParaVerSiSeGuardoAlgo[i]=1;
+        }
+        i++;
+        if(Tablero->baseY->ficha4!=NULL) {
+            arregloParaVerSiSeGuardoAlgo[i]=1;
+
+        }
+        i++;
+
+        if(Tablero->baseB->ficha1!=NULL) {
+            arregloParaVerSiSeGuardoAlgo[i]=1;
+        }
+        i++;
+        if(Tablero->baseB->ficha2!=NULL) {
+            arregloParaVerSiSeGuardoAlgo[i]=1;
+        }
+        i++;
+        if(Tablero->baseB->ficha3!=NULL) {
+            arregloParaVerSiSeGuardoAlgo[i]=1;
+        }
+        i++;
+        if(Tablero->baseB->ficha4!=NULL) {
+            arregloParaVerSiSeGuardoAlgo[i]=1;
+
+        }
+
+        fwrite(arregloParaVerSiSeGuardoAlgo,sizeof(arregloParaVerSiSeGuardoAlgo),1,Save);
+        if(Tablero->baseR->ficha1!=NULL)
+            fwrite(Tablero->baseR->ficha1,sizeof(Ficha),1,Save);
+        if(Tablero->baseR->ficha2!=NULL)
+            fwrite(Tablero->baseR->ficha2,sizeof(Ficha),1,Save);
+        if(Tablero->baseR->ficha3!=NULL)
+            fwrite(Tablero->baseR->ficha3,sizeof(Ficha),1,Save);
+        if(Tablero->baseR->ficha4!=NULL)
+            fwrite(Tablero->baseR->ficha4,sizeof(Ficha),1,Save);
+
+        if(Tablero->baseG->ficha1!=NULL)
+            fwrite(Tablero->baseG->ficha1,sizeof(Ficha),1,Save);
+        if(Tablero->baseG->ficha2!=NULL)
+            fwrite(Tablero->baseG->ficha2,sizeof(Ficha),1,Save);
+        if(Tablero->baseG->ficha3!=NULL)
+            fwrite(Tablero->baseG->ficha3,sizeof(Ficha),1,Save);
+        if(Tablero->baseG->ficha4!=NULL)
+            fwrite(Tablero->baseG->ficha4,sizeof(Ficha),1,Save);
+
+        if(Tablero->baseY->ficha1!=NULL)
+            fwrite(Tablero->baseY->ficha1,sizeof(Ficha),1,Save);
+        if(Tablero->baseY->ficha2!=NULL)
+            fwrite(Tablero->baseY->ficha2,sizeof(Ficha),1,Save);
+        if(Tablero->baseY->ficha3!=NULL)
+            fwrite(Tablero->baseY->ficha3,sizeof(Ficha),1,Save);
+        if(Tablero->baseY->ficha4!=NULL)
+            fwrite(Tablero->baseY->ficha4,sizeof(Ficha),1,Save);
+
+        if(Tablero->baseB->ficha1!=NULL)
+            fwrite(Tablero->baseB->ficha1,sizeof(Ficha),1,Save);
+        if(Tablero->baseB->ficha2!=NULL)
+            fwrite(Tablero->baseB->ficha2,sizeof(Ficha),1,Save);
+        if(Tablero->baseB->ficha3!=NULL)
+            fwrite(Tablero->baseB->ficha3,sizeof(Ficha),1,Save);
+        if(Tablero->baseB->ficha4!=NULL)
+            fwrite(Tablero->baseB->ficha4,sizeof(Ficha),1,Save);
+
+
+        int arregloParaSaberDondeHayFichasEnVicLapYEndR[18]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+        int j=0;
+        CasVicLap *focuslapR=Tablero->winR;
+        int banderaR=1;
+        while(focuslapR!=NULL)
+        {
+            if(focuslapR->ficha1!=NULL)
+                arregloParaSaberDondeHayFichasEnVicLapYEndR[j]=1;
+            j++;
+            if(focuslapR->ficha2!=NULL)
+                arregloParaSaberDondeHayFichasEnVicLapYEndR[j]=1;
+            j++;
+
+            if(banderaR==1)
+            {
+                if(Tablero->winR->end->ficha1!=NULL)
+                    arregloParaSaberDondeHayFichasEnVicLapYEndR[j]=1;
+                j++;
+                if(Tablero->winR->end->ficha2!=NULL)
+                    arregloParaSaberDondeHayFichasEnVicLapYEndR[j]=1;
+                j++;
+                if(Tablero->winR->end->ficha3!=NULL)
+                    arregloParaSaberDondeHayFichasEnVicLapYEndR[j]=1;
+                j++;
+                if(Tablero->winR->end->ficha4!=NULL)
+                    arregloParaSaberDondeHayFichasEnVicLapYEndR[j]=1;
+                j++;
+                banderaR=0;
+            }
+            focuslapR=focuslapR->next;
+        }
+        fwrite(arregloParaSaberDondeHayFichasEnVicLapYEndR,sizeof(arregloParaSaberDondeHayFichasEnVicLapYEndR),1,Save);
+
+        focuslapR=Tablero->winR;
+        banderaR=1;
+        while(focuslapR!=NULL)
+        {
+            fwrite(focuslapR,sizeof (CasVicLap),1,Save);
+            if(focuslapR->ficha1!=NULL)
+                fwrite(focuslapR->ficha1,sizeof(Ficha),1,Save);
+            if(focuslapR->ficha2!=NULL)
+                fwrite(focuslapR->ficha2,sizeof(Ficha),1,Save);
+
+            if(banderaR==1)
+            {
+                fwrite(Tablero->winR->end,sizeof(Final),1,Save);
+                if(Tablero->winR->end->ficha1!=NULL)
+                    fwrite(Tablero->winR->end->ficha1,sizeof(Ficha),1,Save);
+                if(Tablero->winR->end->ficha2!=NULL)
+                    fwrite(Tablero->winR->end->ficha2,sizeof(Ficha),1,Save);
+                if(Tablero->winR->end->ficha3!=NULL)
+                    fwrite(Tablero->winR->end->ficha3,sizeof(Ficha),1,Save);
+                if(Tablero->winR->end->ficha4!=NULL)
+                    fwrite(Tablero->winR->end->ficha4,sizeof(Ficha),1,Save);
+                banderaR=0;
+            }
+            focuslapR=focuslapR->next;
+        }
+        int arregloParaSaberDondeHayFichasEnVicLapYEndG[18]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+        int k=0;
+        CasVicLap *focuslapG=Tablero->winG;
+        int banderaG=1;
+        while(focuslapG!=NULL)
+        {
+            if(focuslapG->ficha1!=NULL)
+                arregloParaSaberDondeHayFichasEnVicLapYEndG[k]=1;
+            j++;
+            if(focuslapG->ficha2!=NULL)
+                arregloParaSaberDondeHayFichasEnVicLapYEndG[k]=1;
+            j++;
+
+            if(banderaG==1)
+            {
+                if(Tablero->winG->end->ficha1!=NULL)
+                    arregloParaSaberDondeHayFichasEnVicLapYEndG[k]=1;
+                j++;
+                if(Tablero->winG->end->ficha2!=NULL)
+                    arregloParaSaberDondeHayFichasEnVicLapYEndG[k]=1;
+                j++;
+                if(Tablero->winG->end->ficha3!=NULL)
+                    arregloParaSaberDondeHayFichasEnVicLapYEndG[k]=1;
+                j++;
+                if(Tablero->winG->end->ficha4!=NULL)
+                    arregloParaSaberDondeHayFichasEnVicLapYEndG[k]=1;
+                j++;
+                banderaG=0;
+            }
+            focuslapG=focuslapG->next;
+        }
+        fwrite(arregloParaSaberDondeHayFichasEnVicLapYEndG,sizeof(arregloParaSaberDondeHayFichasEnVicLapYEndG),1,Save);
+
+        focuslapG=Tablero->winG;
+        banderaG=1;
+        while(focuslapG!=NULL)
+        {
+            fwrite(focuslapG,sizeof (CasVicLap),1,Save);
+            if(focuslapG->ficha1!=NULL)
+                fwrite(focuslapG->ficha1,sizeof(Ficha),1,Save);
+            if(focuslapG->ficha2!=NULL)
+                fwrite(focuslapG->ficha2,sizeof(Ficha),1,Save);
+
+            if(banderaG==1)
+            {
+                fwrite(Tablero->winG->end,sizeof(Final),1,Save);
+                if(Tablero->winG->end->ficha1!=NULL)
+                    fwrite(Tablero->winG->end->ficha1,sizeof(Ficha),1,Save);
+                if(Tablero->winG->end->ficha2!=NULL)
+                    fwrite(Tablero->winG->end->ficha2,sizeof(Ficha),1,Save);
+                if(Tablero->winG->end->ficha3!=NULL)
+                    fwrite(Tablero->winG->end->ficha3,sizeof(Ficha),1,Save);
+                if(Tablero->winG->end->ficha4!=NULL)
+                    fwrite(Tablero->winG->end->ficha4,sizeof(Ficha),1,Save);
+                banderaG=0;
+            }
+            focuslapG=focuslapG->next;
+        }
+
+
+        int arregloParaSaberDondeHayFichasEnVicLapYEndY[18]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+        int h=0;
+        CasVicLap *focuslapY=Tablero->winY;
+        int banderaY=1;
+        while(focuslapY!=NULL)
+        {
+            if(focuslapY->ficha1!=NULL)
+                arregloParaSaberDondeHayFichasEnVicLapYEndY[h]=1;
+            j++;
+            if(focuslapY->ficha2!=NULL)
+                arregloParaSaberDondeHayFichasEnVicLapYEndY[h]=1;
+            j++;
+
+            if(banderaY==1)
+            {
+                if(Tablero->winY->end->ficha1!=NULL)
+                    arregloParaSaberDondeHayFichasEnVicLapYEndY[h]=1;
+                j++;
+                if(Tablero->winY->end->ficha2!=NULL)
+                    arregloParaSaberDondeHayFichasEnVicLapYEndY[h]=1;
+                j++;
+                if(Tablero->winY->end->ficha3!=NULL)
+                    arregloParaSaberDondeHayFichasEnVicLapYEndY[h]=1;
+                j++;
+                if(Tablero->winY->end->ficha4!=NULL)
+                    arregloParaSaberDondeHayFichasEnVicLapYEndY[h]=1;
+                j++;
+                banderaY=0;
+            }
+            focuslapY=focuslapY->next;
+        }
+        fwrite(arregloParaSaberDondeHayFichasEnVicLapYEndY,sizeof(arregloParaSaberDondeHayFichasEnVicLapYEndY),1,Save);
+
+
+
+        focuslapY=Tablero->winY;
+        banderaY=1;
+        while(focuslapY!=NULL)
+        {
+            fwrite(focuslapY,sizeof (CasVicLap),1,Save);
+            if(focuslapY->ficha1!=NULL)
+                fwrite(focuslapY->ficha1,sizeof(Ficha),1,Save);
+            if(focuslapY->ficha2!=NULL)
+                fwrite(focuslapY->ficha2,sizeof(Ficha),1,Save);
+
+            if(banderaY==1)
+            {
+                fwrite(Tablero->winY->end,sizeof(Final),1,Save);
+                if(Tablero->winY->end->ficha1!=NULL)
+                    fwrite(Tablero->winY->end->ficha1,sizeof(Ficha),1,Save);
+                if(Tablero->winY->end->ficha2!=NULL)
+                    fwrite(Tablero->winY->end->ficha2,sizeof(Ficha),1,Save);
+                if(Tablero->winY->end->ficha3!=NULL)
+                    fwrite(Tablero->winY->end->ficha3,sizeof(Ficha),1,Save);
+                if(Tablero->winY->end->ficha4!=NULL)
+                    fwrite(Tablero->winY->end->ficha4,sizeof(Ficha),1,Save);
+                banderaY=0;
+            }
+            focuslapY=focuslapY->next;
+        }
+
+
+        int arregloParaSaberDondeHayFichasEnVicLapYEndB[18]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+        int l=0;
+        CasVicLap *focuslapB=Tablero->winB;
+        int banderaB=1;
+        while(focuslapB!=NULL)
+        {
+            if(focuslapB->ficha1!=NULL)
+                arregloParaSaberDondeHayFichasEnVicLapYEndB[l]=1;
+            j++;
+            if(focuslapB->ficha2!=NULL)
+                arregloParaSaberDondeHayFichasEnVicLapYEndB[l]=1;
+            j++;
+
+            if(banderaB==1)
+            {
+                if(Tablero->winB->end->ficha1!=NULL)
+                    arregloParaSaberDondeHayFichasEnVicLapYEndB[l]=1;
+                j++;
+                if(Tablero->winB->end->ficha2!=NULL)
+                    arregloParaSaberDondeHayFichasEnVicLapYEndB[l]=1;
+                j++;
+                if(Tablero->winB->end->ficha3!=NULL)
+                    arregloParaSaberDondeHayFichasEnVicLapYEndB[l]=1;
+                j++;
+                if(Tablero->winB->end->ficha4!=NULL)
+                    arregloParaSaberDondeHayFichasEnVicLapYEndB[l]=1;
+                j++;
+                banderaB=0;
+            }
+            focuslapB=focuslapB->next;
+        }
+        fwrite(arregloParaSaberDondeHayFichasEnVicLapYEndB,sizeof(arregloParaSaberDondeHayFichasEnVicLapYEndB),1,Save);
+
+
+        focuslapB=Tablero->winB;
+        banderaB=1;
+        while(focuslapB!=NULL)
+        {
+            fwrite(focuslapB,sizeof (CasVicLap),1,Save);
+            if(focuslapB->ficha1!=NULL)
+                fwrite(focuslapB->ficha1,sizeof(Ficha),1,Save);
+            if(focuslapB->ficha2!=NULL)
+                fwrite(focuslapB->ficha2,sizeof(Ficha),1,Save);
+
+            if(banderaB==1)
+            {
+                fwrite(Tablero->winB->end,sizeof(Final),1,Save);
+                if(Tablero->winB->end->ficha1!=NULL)
+                    fwrite(Tablero->winB->end->ficha1,sizeof(Ficha),1,Save);
+                if(Tablero->winB->end->ficha2!=NULL)
+                    fwrite(Tablero->winB->end->ficha2,sizeof(Ficha),1,Save);
+                if(Tablero->winB->end->ficha3!=NULL)
+                    fwrite(Tablero->winB->end->ficha3,sizeof(Ficha),1,Save);
+                if(Tablero->winB->end->ficha4!=NULL)
+                    fwrite(Tablero->winB->end->ficha4,sizeof(Ficha),1,Save);
+                banderaB=0;
+            }
+            focuslapB=focuslapB->next;
+        }
+
+
+        int arrayPaLasCasillasBrodiYaAyudamePlis[136]={0};
+        int g=0;
+        Casilla*focusnode=Tablero->inicio;
+        while(focusnode!=NULL)
+        {
+            if(focusnode->ficha1!=NULL)
+                arrayPaLasCasillasBrodiYaAyudamePlis[g]=1;
+            g++;
+            if(focusnode->ficha2!=NULL)
+                arrayPaLasCasillasBrodiYaAyudamePlis[g]=1;
+            g++;
+            focusnode=focusnode->next;
+        }
+
+        fwrite(arrayPaLasCasillasBrodiYaAyudamePlis,sizeof(arrayPaLasCasillasBrodiYaAyudamePlis),1,Save);
+
+        focusnode=Tablero->inicio;
+        while(focusnode!=NULL)
+        {
+            fwrite(focusnode,sizeof(Casilla),1,Save);
+
+            if(focusnode->ficha1!=NULL)
+                fwrite(focusnode->ficha1,sizeof(Ficha),1,Save);
+
+            if(focusnode->ficha2!=NULL)
+                fwrite(focusnode->ficha2,sizeof(Ficha),1,Save);
+
+
+            focusnode=focusnode->next;
+        }
+
+        fclose(Save);
+
     }
 
 }//Funcion para salvar el juego.
 Board* loadGame(Board *Tablero,int jugadores){
-    FILE *Save = fopen("A:\\Test Instalations\\Clion\\Sandbox\\parchisV\\JuegosGuardados\\save.dat", "r+b");
+    FILE *Save = fopen("juegosGuardados\\save.dat", "r+b");
     //Si existe, se abre y se recupera el juego
     if(Save != NULL){
         printf(" - - Loading Game - - \n");
         Tablero = malloc(sizeof(Board)); //Crea memoria dinámica
-        //Lee Save
         fread(Tablero, sizeof(Board), 1, Save);
+        Tablero->baseR=malloc(sizeof(Base));
+        Tablero->baseG=malloc(sizeof(Base));
+        Tablero->baseY=malloc(sizeof(Base));
+        Tablero->baseB=malloc(sizeof(Base));
+
+        fread(Tablero->baseR,sizeof(Base),1,Save);
+        fread(Tablero->baseG,sizeof(Base),1,Save);
+        fread(Tablero->baseY,sizeof(Base),1,Save);
+        fread(Tablero->baseB,sizeof(Base),1,Save);
+
+        int arregloParaVerSiSeGuardoAlgo[16];
+        int i=0;
+        fread(arregloParaVerSiSeGuardoAlgo,sizeof(arregloParaVerSiSeGuardoAlgo),1,Save);
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            Tablero->baseR->ficha1=malloc(sizeof(Ficha));
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            Tablero->baseR->ficha2=malloc(sizeof(Ficha));
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            Tablero->baseR->ficha3=malloc(sizeof(Ficha));
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            Tablero->baseR->ficha4=malloc(sizeof(Ficha));
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            Tablero->baseG->ficha1=malloc(sizeof(Ficha));
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            Tablero->baseG->ficha2=malloc(sizeof(Ficha));
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            Tablero->baseG->ficha3=malloc(sizeof(Ficha));
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            Tablero->baseG->ficha4=malloc(sizeof(Ficha));
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            Tablero->baseY->ficha1=malloc(sizeof(Ficha));
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            Tablero->baseY->ficha2=malloc(sizeof(Ficha));
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            Tablero->baseY->ficha3=malloc(sizeof(Ficha));
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            Tablero->baseY->ficha4=malloc(sizeof(Ficha));
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            Tablero->baseB->ficha1=malloc(sizeof(Ficha));
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            Tablero->baseB->ficha2=malloc(sizeof(Ficha));
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            Tablero->baseB->ficha3=malloc(sizeof(Ficha));
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            Tablero->baseB->ficha4=malloc(sizeof(Ficha));
+
+        i=0;
+
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            fread(Tablero->baseR->ficha1,sizeof (Ficha),1,Save);
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            fread(Tablero->baseR->ficha2,sizeof (Ficha),1,Save);
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            fread(Tablero->baseR->ficha3,sizeof (Ficha),1,Save);
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            fread(Tablero->baseR->ficha4,sizeof (Ficha),1,Save);
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            fread(Tablero->baseG->ficha1,sizeof (Ficha),1,Save);
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            fread(Tablero->baseG->ficha2,sizeof (Ficha),1,Save);
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            fread(Tablero->baseG->ficha3,sizeof (Ficha),1,Save);
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            fread(Tablero->baseG->ficha4,sizeof (Ficha),1,Save);
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            fread(Tablero->baseY->ficha1,sizeof (Ficha),1,Save);
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            fread(Tablero->baseY->ficha2,sizeof (Ficha),1,Save);
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            fread(Tablero->baseY->ficha3,sizeof (Ficha),1,Save);
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            fread(Tablero->baseY->ficha4,sizeof (Ficha),1,Save);
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            fread(Tablero->baseB->ficha1,sizeof (Ficha),1,Save);
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            fread(Tablero->baseB->ficha2,sizeof (Ficha),1,Save);
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            fread(Tablero->baseB->ficha3,sizeof (Ficha),1,Save);
+        i++;
+        if(arregloParaVerSiSeGuardoAlgo[i]==1)
+            fread(Tablero->baseB->ficha4,sizeof (Ficha),1,Save);
+
+        int arregloParaSaberDondeHayFichasEnVicLapYEndR[18];
+        int j=0;
+        fread(arregloParaSaberDondeHayFichasEnVicLapYEndR,sizeof(arregloParaSaberDondeHayFichasEnVicLapYEndR),1,Save);
+
+        Tablero->winR=malloc(sizeof(CasVicLap));
+        fread(Tablero->winR,sizeof(CasVicLap),1,Save);
+        if(arregloParaSaberDondeHayFichasEnVicLapYEndR[j]==1) {
+            Tablero->winR->ficha1 = malloc(sizeof(Ficha));
+            fread(Tablero->winR->ficha1, sizeof(Ficha), 1, Save);
+        }
+        j++;
+        if(arregloParaSaberDondeHayFichasEnVicLapYEndR[j]==1) {
+            Tablero->winR->ficha2 = malloc(sizeof(Ficha));
+            fread(Tablero->winR->ficha2, sizeof(Ficha), 1, Save);
+        }
+        j++;
+
+        Tablero->winR->end = malloc(sizeof(Final));
+        fread(Tablero->winR->end,sizeof (Final),1,Save);
+        if(arregloParaSaberDondeHayFichasEnVicLapYEndR[j]==1) {
+            Tablero->winR->end->ficha1 = malloc(sizeof(Ficha));
+            fread(Tablero->winR->end->ficha1, sizeof(Ficha), 1, Save);
+        }
+        j++;
+        if(arregloParaSaberDondeHayFichasEnVicLapYEndR[j]==1) {
+            Tablero->winR->end->ficha2 = malloc(sizeof(Ficha));
+            fread(Tablero->winR->end->ficha2, sizeof(Ficha), 1, Save);
+        }
+        j++;
+        if(arregloParaSaberDondeHayFichasEnVicLapYEndR[j]==1) {
+            Tablero->winR->end->ficha3 = malloc(sizeof(Ficha));
+            fread(Tablero->winR->end->ficha3, sizeof(Ficha), 1, Save);
+        }
+        j++;
+        if(arregloParaSaberDondeHayFichasEnVicLapYEndR[j]==1) {
+            Tablero->winR->end->ficha4 = malloc(sizeof(Ficha));
+            fread(Tablero->winR->end->ficha4, sizeof(Ficha), 1, Save);
+        }
+        j++;
+
+        Tablero->winR->next=malloc(sizeof(CasVicLap));
+        CasVicLap *focuslapR=Tablero->winR->next;
+        for(int i=0;i<=6;i++)
+        {
+            if(i<6) {
+                fread(focuslapR, sizeof(CasVicLap), 1, Save);
+                focuslapR->end = NULL;
+                if(arregloParaSaberDondeHayFichasEnVicLapYEndR[j]==1) {
+                    focuslapR->ficha1= malloc(sizeof(Ficha));
+                    fread(focuslapR->ficha1, sizeof(Ficha), 1, Save);
+                }
+                j++;
+                if(arregloParaSaberDondeHayFichasEnVicLapYEndR[j]==1) {
+                    focuslapR->ficha2 = malloc(sizeof(Ficha));
+                    fread(focuslapR->ficha2, sizeof(Ficha), 1, Save);
+                }
+                j++;
+                if(i<5) {
+                    focuslapR->next = malloc(sizeof(CasVicLap));
+                    focuslapR = focuslapR->next;
+                }
+            }
+            if(i==5) {
+                focuslapR->next = NULL;
+            }
+        }
+
+        int arregloParaSaberDondeHayFichasEnVicLapYEndG[18];
+        int k=0;
+        fread(arregloParaSaberDondeHayFichasEnVicLapYEndG,sizeof(arregloParaSaberDondeHayFichasEnVicLapYEndG),1,Save);
+
+        Tablero->winG=malloc(sizeof(CasVicLap));
+        fread(Tablero->winG,sizeof(CasVicLap),1,Save);
+        if(arregloParaSaberDondeHayFichasEnVicLapYEndG[k]==1) {
+            Tablero->winG->ficha1 = malloc(sizeof(Ficha));
+            fread(Tablero->winG->ficha1, sizeof(Ficha), 1, Save);
+        }
+        k++;
+        if(arregloParaSaberDondeHayFichasEnVicLapYEndG[k]==1) {
+            Tablero->winG->ficha2 = malloc(sizeof(Ficha));
+            fread(Tablero->winG->ficha2, sizeof(Ficha), 1, Save);
+        }
+        k++;
+
+        Tablero->winG->end = malloc(sizeof(Final));
+        fread(Tablero->winG->end,sizeof (Final),1,Save);
+        if(arregloParaSaberDondeHayFichasEnVicLapYEndG[k]==1) {
+            Tablero->winG->end->ficha1 = malloc(sizeof(Ficha));
+            fread(Tablero->winG->end->ficha1, sizeof(Ficha), 1, Save);
+        }
+        k++;
+        if(arregloParaSaberDondeHayFichasEnVicLapYEndG[k]==1) {
+            Tablero->winG->end->ficha2 = malloc(sizeof(Ficha));
+            fread(Tablero->winG->end->ficha2, sizeof(Ficha), 1, Save);
+        }
+        k++;
+        if(arregloParaSaberDondeHayFichasEnVicLapYEndG[k]==1) {
+            Tablero->winG->end->ficha3 = malloc(sizeof(Ficha));
+            fread(Tablero->winG->end->ficha3, sizeof(Ficha), 1, Save);
+        }
+        k++;
+        if(arregloParaSaberDondeHayFichasEnVicLapYEndG[k]==1) {
+            Tablero->winG->end->ficha4 = malloc(sizeof(Ficha));
+            fread(Tablero->winG->end->ficha4, sizeof(Ficha), 1, Save);
+        }
+        k++;
+
+        Tablero->winG->next=malloc(sizeof(CasVicLap));
+        CasVicLap *focuslapG=Tablero->winG->next;
+        for(int i=0;i<=6;i++)
+        {
+            if(i<6) {
+                fread(focuslapG, sizeof(CasVicLap), 1, Save);
+                focuslapG->end = NULL;
+                if(arregloParaSaberDondeHayFichasEnVicLapYEndG[k]==1) {
+                    focuslapG->ficha1= malloc(sizeof(Ficha));
+                    fread(focuslapG->ficha1, sizeof(Ficha), 1, Save);
+                }
+                k++;
+                if(arregloParaSaberDondeHayFichasEnVicLapYEndG[k]==1) {
+                    focuslapG->ficha2 = malloc(sizeof(Ficha));
+                    fread(focuslapG->ficha2, sizeof(Ficha), 1, Save);
+                }
+                k++;
+                if(i<5) {
+                    focuslapG->next = malloc(sizeof(CasVicLap));
+                    focuslapG = focuslapG->next;
+                }
+            }
+            if(i==5) {
+                focuslapG->next = NULL;
+            }
+        }
+
+        int arregloParaSaberDondeHayFichasEnVicLapYEndY[18];
+        int h=0;
+        fread(arregloParaSaberDondeHayFichasEnVicLapYEndY,sizeof(arregloParaSaberDondeHayFichasEnVicLapYEndY),1,Save);
+
+
+        Tablero->winY=malloc(sizeof(CasVicLap));
+        fread(Tablero->winY,sizeof(CasVicLap),1,Save);
+        if(arregloParaSaberDondeHayFichasEnVicLapYEndY[h]==1) {
+            Tablero->winY->ficha1 = malloc(sizeof(Ficha));
+            fread(Tablero->winY->ficha1, sizeof(Ficha), 1, Save);
+        }
+        j++;
+        if(arregloParaSaberDondeHayFichasEnVicLapYEndY[h]==1) {
+            Tablero->winY->ficha2 = malloc(sizeof(Ficha));
+            fread(Tablero->winY->ficha2, sizeof(Ficha), 1, Save);
+        }
+        j++;
+
+        Tablero->winY->end = malloc(sizeof(Final));
+        fread(Tablero->winY->end,sizeof (Final),1,Save);
+        if(arregloParaSaberDondeHayFichasEnVicLapYEndY[h]==1) {
+            Tablero->winY->end->ficha1 = malloc(sizeof(Ficha));
+            fread(Tablero->winY->end->ficha1, sizeof(Ficha), 1, Save);
+        }
+        j++;
+        if(arregloParaSaberDondeHayFichasEnVicLapYEndY[h]==1) {
+            Tablero->winY->end->ficha2 = malloc(sizeof(Ficha));
+            fread(Tablero->winY->end->ficha2, sizeof(Ficha), 1, Save);
+        }
+        j++;
+        if(arregloParaSaberDondeHayFichasEnVicLapYEndY[h]==1) {
+            Tablero->winY->end->ficha3 = malloc(sizeof(Ficha));
+            fread(Tablero->winY->end->ficha3, sizeof(Ficha), 1, Save);
+        }
+        j++;
+        if(arregloParaSaberDondeHayFichasEnVicLapYEndY[h]==1) {
+            Tablero->winY->end->ficha4 = malloc(sizeof(Ficha));
+            fread(Tablero->winY->end->ficha4, sizeof(Ficha), 1, Save);
+        }
+        j++;
+
+
+        Tablero->winY->next=malloc(sizeof(CasVicLap));
+        CasVicLap *focuslapY=Tablero->winY->next;
+        for(int i=0;i<=6;i++)
+        {
+            if(i<6) {
+                fread(focuslapY, sizeof(CasVicLap), 1, Save);
+                focuslapY->end = NULL;
+                if(arregloParaSaberDondeHayFichasEnVicLapYEndY[h]==1) {
+                    focuslapY->ficha1 = malloc(sizeof(Ficha));
+                    fread(focuslapY->ficha1, sizeof(Ficha), 1, Save);
+                }
+                j++;
+                if(arregloParaSaberDondeHayFichasEnVicLapYEndY[h]==1) {
+                    focuslapY->ficha2 = malloc(sizeof(Ficha));
+                    fread(focuslapY->ficha2, sizeof(Ficha), 1, Save);
+                }
+                j++;
+                if(i<5) {
+                    focuslapY->next = malloc(sizeof(CasVicLap));
+                    focuslapY = focuslapY->next;
+                }
+            }
+            if(i==5) {
+                focuslapY->next = NULL;
+            }
+        }
+
+        int arregloParaSaberDondeHayFichasEnVicLapYEndB[18];
+        int l=0;
+        fread(arregloParaSaberDondeHayFichasEnVicLapYEndB,sizeof(arregloParaSaberDondeHayFichasEnVicLapYEndB),1,Save);
+
+
+        Tablero->winB=malloc(sizeof(CasVicLap));
+        fread(Tablero->winB,sizeof(CasVicLap),1,Save);
+        if(arregloParaSaberDondeHayFichasEnVicLapYEndB[l]==1) {
+            Tablero->winB->ficha1 = malloc(sizeof(Ficha));
+            fread(Tablero->winB->ficha1, sizeof(Ficha), 1, Save);
+        }
+        l++;
+        if(arregloParaSaberDondeHayFichasEnVicLapYEndB[l]==1) {
+            Tablero->winB->ficha2 = malloc(sizeof(Ficha));
+            fread(Tablero->winB->ficha2, sizeof(Ficha), 1, Save);
+        }
+        l++;
+
+        Tablero->winB->end = malloc(sizeof(Final));
+        fread(Tablero->winB->end,sizeof (Final),1,Save);
+        if(arregloParaSaberDondeHayFichasEnVicLapYEndB[l]==1) {
+            Tablero->winB->end->ficha1 = malloc(sizeof(Ficha));
+            fread(Tablero->winB->end->ficha1, sizeof(Ficha), 1, Save);
+        }
+        l++;
+        if(arregloParaSaberDondeHayFichasEnVicLapYEndB[l]==1) {
+            Tablero->winB->end->ficha2 = malloc(sizeof(Ficha));
+            fread(Tablero->winB->end->ficha2, sizeof(Ficha), 1, Save);
+        }
+        l++;
+        if(arregloParaSaberDondeHayFichasEnVicLapYEndB[l]==1) {
+            Tablero->winB->end->ficha3 = malloc(sizeof(Ficha));
+            fread(Tablero->winB->end->ficha3, sizeof(Ficha), 1, Save);
+        }
+        l++;
+        if(arregloParaSaberDondeHayFichasEnVicLapYEndB[l]==1) {
+            Tablero->winB->end->ficha4 = malloc(sizeof(Ficha));
+            fread(Tablero->winB->end->ficha4, sizeof(Ficha), 1, Save);
+        }
+        l++;
+
+        Tablero->winB->next=malloc(sizeof(CasVicLap));
+        CasVicLap *focuslapB=Tablero->winB->next;
+        for(int i=0;i<=6;i++)
+        {
+            if(i<6) {
+                fread(focuslapB, sizeof(CasVicLap), 1, Save);
+                focuslapB->end = NULL;
+                if(arregloParaSaberDondeHayFichasEnVicLapYEndB[l]==1) {
+                    focuslapB->ficha1 = malloc(sizeof(Ficha));
+                    fread(focuslapB->ficha1, sizeof(Ficha), 1, Save);
+                }
+                l++;
+                if(arregloParaSaberDondeHayFichasEnVicLapYEndB[l]==1) {
+                    focuslapB->ficha2 = malloc(sizeof(Ficha));
+                    fread(focuslapB->ficha2, sizeof(Ficha), 1, Save);
+                }
+                l++;
+                if(i<5) {
+                    focuslapB->next = malloc(sizeof(CasVicLap));
+                    focuslapB = focuslapB->next;
+                }
+            }
+            if(i==5) {
+                focuslapB->next = NULL;
+            }
+        }
+
+        int arrayPaLasCasillasBrodiYaAyudamePlis[136]={0};
+        int g=0;
+        fread(arrayPaLasCasillasBrodiYaAyudamePlis,sizeof(arrayPaLasCasillasBrodiYaAyudamePlis),1,Save);
+
+        Tablero->inicio=malloc(sizeof(Casilla));
+        fread(Tablero->inicio,sizeof(Casilla),1,Save);
+        if(arrayPaLasCasillasBrodiYaAyudamePlis[g]==1) {
+            Tablero->inicio->ficha1 = malloc(sizeof(Ficha));
+            fread(Tablero->inicio->ficha1, sizeof(Ficha), 1, Save);
+        }
+        g++;
+        if(arrayPaLasCasillasBrodiYaAyudamePlis[g]==1) {
+            Tablero->inicio->ficha2 = malloc(sizeof(Ficha));
+            fread(Tablero->inicio->ficha2, sizeof(Ficha), 1, Save);
+        }
+        g++;
+
+        Tablero->inicio->next=malloc(sizeof(Casilla));
+        Casilla*focusnode=Tablero->inicio->next;
+        for(int i=0;i<67;i++)
+        {
+            fread(focusnode,sizeof(Casilla),1,Save);
+            if(arrayPaLasCasillasBrodiYaAyudamePlis[g]==1) {
+                focusnode->ficha1 = malloc(sizeof(Ficha));
+                fread(focusnode->ficha1, sizeof(Ficha), 1, Save);
+            }
+            g++;
+            if(arrayPaLasCasillasBrodiYaAyudamePlis[g]==1) {
+                focusnode->ficha2 = malloc(sizeof(Ficha));
+                fread(focusnode->ficha2, sizeof(Ficha), 1, Save);
+            }
+            g++;
+            if(i<66)
+            {
+                focusnode->next=malloc(sizeof(Casilla));
+                focusnode=focusnode->next;
+            }
+            if(i==66)
+            {
+                focusnode->next=NULL;
+            }
+        }
+
         fclose(Save);
 
     }else{
@@ -514,3 +1330,11 @@ Board* loadGame(Board *Tablero,int jugadores){
     }
     return Tablero;
 }//Funcion para cargar el juego.
+Board* iniciarEditor(int jugadores)
+{
+    Board*juegoEditado=newBoard();//Crea tablero nuevo
+    creacionMaestra(juegoEditado,jugadores);//Completa el tablero nuevo
+    editorDeJuego(juegoEditado);//Permite al usuario editar las posiciones de las fichas de acuerdo a movimientos de dados introducidos.
+    displayBoard(juegoEditado);
+    return juegoEditado;
+}

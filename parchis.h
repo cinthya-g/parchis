@@ -78,10 +78,10 @@ void beginning(Board* juego);
 void ending(Board* juego);
 void finishEnding(Board* juego, int contador,char Player);
 void creacionMaestra(Board *juego,int jugadores);
-Board* loadGame(Board *Tablero,int jugadores);
-void Savefile(Board*Tablero);
 
 void displayBoard(Board *juego);
-
+void Savefile(Board *Tablero,char *Nombre);
+Board* loadGame(Board *Tablero,int jugadores);
+Board* iniciarEditor(int jugadores);
 
 #endif //PARCHIS_PARCHIS_H
