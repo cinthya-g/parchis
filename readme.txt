@@ -1,6 +1,4 @@
 *********************************************************SUPER PARCHIS****************************************************************
-*ajustar .txt al tamaño del borde superior del título
-para una mejor lectura
 
 --> INSTRUCCIONES DE COMPILACIÓN Y REQUISITOS
 Debido a la utilización de la libreria "Windows.h", el programa sólo puede compilarse en computadoras con Windows como SO.
@@ -11,6 +9,9 @@ Debido a la utilización de la libreria "Windows.h", el programa sólo puede com
 --> INTERFAZ
 La implementación del programa queda a nivel consola (stdout) con interacción del usuario en stdin.
 Las reglas se encuentran dentro del programa, al seleccionar la opción '2' en el menú.
+
+--> GUARDADO
+Se guarda un archivo que guarda cada movimiento, pero que sólo se reanuda.
 
 **************************************************************************************************************************************
 
