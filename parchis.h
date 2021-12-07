@@ -70,18 +70,8 @@ struct board{
 };
 typedef struct board Board;
 
-Board* newBoard();
-void emptyEnding(Board *juego, char Player);
-
-void finishBoard(Board* juego, int contador);
-void beginning(Board* juego);
-void ending(Board* juego);
-void finishEnding(Board* juego, int contador,char Player);
-void creacionMaestra(Board *juego,int jugadores);
-
-void displayBoard(Board *juego);
 void Savefile(Board *Tablero,char *Nombre);
-Board* loadGame(Board *Tablero,int jugadores);
-Board* iniciarEditor(int jugadores);
+Board *loadGame(Board *Tablero,int jugadores);
+Board *iniciarEditor(int jugadores);
 
 #endif //PARCHIS_PARCHIS_H

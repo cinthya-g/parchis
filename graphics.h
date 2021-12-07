@@ -19,17 +19,12 @@ void Color(int Background, int Text);
 //Le da un color caracteristico al resto de la consola que no sea el tablero
 void consoleColor();
 
-/*
- * Despliega el tablero a partir de funciones que se dedican a imprimir aspectos especificos
- * de este.
- */
+
+//Despliega el tablero a partir de funciones que se dedican a imprimir aspectos especificos de este.
 void displayColorBoard(Board *juego);
 
-//Segun el jugador en turno, cambia el color de la ficha que se mueve en el tablero.
-void validarColor(char Player);
-
 //Muestra el título de la pantalla principal.
-void titleScreen();
+int titleScreen();
 
 
 #endif //PARCHIS_GRAPHICS_H

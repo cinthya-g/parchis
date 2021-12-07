@@ -1,0 +1,4 @@
+/*
+* Nota para que se pueda subir la carpeta "juegosGuardados"
+* a GitHub y se guarden en la computadora de destino.
+*/

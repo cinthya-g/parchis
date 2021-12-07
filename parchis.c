@@ -4,6 +4,7 @@
 #include <time.h>
 #include "parchis.h"
 #include "turnos.h"
+#include "graphics.h"
 
 //Crea un tablero con la casilla 1 implementada.
 Board *newBoard(){
@@ -490,8 +491,9 @@ void displayBoard(Board *juego){
 }//Funcion para imprimir el tablero completo, asi como las posiciones de las fichas.
 void Savefile(Board*Tablero,char *Nombre)
 {
+    char *ruta = "..\\juegosGuardados\\save.dat";
     int arregloParaVerSiSeGuardoAlgo[16]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-    FILE* Save=fopen("juegosGuardados\\save.dat","wb+");
+    FILE* Save=fopen(ruta,"wb+");
     if(Save){
         fwrite(Tablero,sizeof(Board),1,Save);
         fwrite(Tablero->baseR,sizeof(Base),1,Save);
@@ -890,7 +892,8 @@ void Savefile(Board*Tablero,char *Nombre)
 
 }//Funcion para salvar el juego.
 Board* loadGame(Board *Tablero,int jugadores){
-    FILE *Save = fopen("juegosGuardados\\save.dat", "r+b");
+    char *ruta = "..\\juegosGuardados\\save.dat";
+    FILE *Save = fopen(ruta, "r+b");
     //Si existe, se abre y se recupera el juego
     if(Save != NULL){
         printf(" - - Loading Game - - \n");
@@ -1337,4 +1340,4 @@ Board* iniciarEditor(int jugadores)
     editorDeJuego(juegoEditado);//Permite al usuario editar las posiciones de las fichas de acuerdo a movimientos de dados introducidos.
     displayBoard(juegoEditado);
     return juegoEditado;
-}
+} //Pone en marcha el editor custom del juego.

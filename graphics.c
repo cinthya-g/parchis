@@ -2,11 +2,8 @@
 // Created by cinth on 01/12/2021.
 //
 #include <stdio.h>
-#include <stdlib.h>
 #include <Windows.h>
-
 #include "graphics.h"
-#include "parchis.h"
 
 void Color(int Background, int Text){
 
@@ -29,7 +26,7 @@ void validarColor(char Player){
 
 //Funciones que establecen colores especificos de letra y fondo de letra en consola.
 void consoleColor(){
-    Color(BLACK, LGREEN);
+    Color(BLACK, LGREY);
 }
 void cmagenta(){
     Color(BLACK, MAGENTA);
@@ -617,8 +614,26 @@ void enter(){
     printf("\n");
 }
 
+//Imprime reglas
+void rules(){
+    printf("\n\t1. Parchis se puede jugar de 2 a 4 jugadores (rojo, azul, amarillo y verde).");
+    printf("\n\t2. Inicia aquel color con mayor suma en su primer tiro de dados y se continua a la derecha.");
+    printf("\n\t3. Las fichas se moveran en sentido antihorario siempre y saldran de su respectiva casilla de "
+           "\n\t   salida: aquella que este frente a su base. ");
+    printf("\n\t4. Solo se podra sacar ficha de su base si se saca un 5 o los dados suman 5.");
+    printf("\n\t5. El objetivo es dar toda la vuelta al tablero y llegar hasta el final de la franja de tu color\n"
+           "\t   (llamada Victory Lap). Esto con las 4 fichas.");
+    printf("\n\t6. Si caes en donde otro jugador sin que esta sea Safe Slot (casilla gris) o su casilla de salida, \n"
+           "\t   entonces podras comertelo y ganar 20 movimientos. \n"
+           "\t   Si te comen, regresas a tu base y esperaras otro 5 para volver a sacar tu ficha.");
+    printf("\n\t7. No podras mover tu ficha si frente a ti hay 2 del mismo color formando una barrera.\n"
+           "\t   Cuando pase esto y has seleccionado una ficha obstruida, entonces tendras que dejar pasar\n"
+           "\t   6 turnos de manera obligatoria. Atento al tablero!");
+    printf("\n\t8. Quien lleve sus 4 fichas al final de su Victory Lap, GANA.\n");
+}
+
 //Pantalla de inicio.
-void titleScreen() {
+int titleScreen() {
     cmagenta();
     bigdiv();
     enter();
@@ -633,6 +648,20 @@ void titleScreen() {
     enter();
     bigdiv();
     enter();
+    printf("\t 1. Jugar\n\t 2. Reglas\n\t>>");
+    int op = 0;
+    do{
+        scanf("%d", &op);
+    }while(op < 1 || op > 2);
+    enter();
+    if(op==2){
+        bigdiv();
+        rules();
+    }
+    bigdiv();
+    enter();
+
+    return 0;
 }
 
 //Conjunto de funciones anteriores que imprime el tablero en consola.
@@ -774,3 +803,4 @@ void displayColorBoard(Board *juego){
 
     consoleColor();
 }
+
